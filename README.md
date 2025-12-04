@@ -2,28 +2,28 @@
 
 ## Overview
 This project implements an end-to-end bioinformatics pipeline to prioritize therapeutic gene targets for hearing loss. It integrates multi-species single-cell RNA-seq data (human and mouse) across development, maturation, and aging stages to identify genes that are:
-1.  Highly specific to hair cells.
-2.  Conserved between human and mouse.
-3.  Supported by GWAS evidence for hearing traits.
-4.  Dynamically regulated during development or aging.
+1.  **Highly specific to hair cells** (Target specificity).
+2.  **Conserved between human and mouse** (Translational potential).
+3.  **Supported by GWAS evidence** for hearing traits (Clinical relevance).
+4.  **Dynamically regulated** during development or aging (Regenerative potential).
 
 ## Datasets
 The pipeline utilizes the following public datasets:
 *   **GSE213796**: Human fetal and adult inner ear snRNA-seq.
 *   **GSE114157**: Mouse mature cochlear hair cells (Smart-seq2).
-*   **GSE60019**: Mouse cochlear and utricle development (RNA-seq).
+*   **GSE60019**: Mouse cochlear and utricle development (Bulk RNA-seq).
 *   **GSE274279**: Mouse cochlea and utricle aging snRNA-seq.
 
 ## Therapeutic Priority Score (TPS)
-The TPS is a composite metric calculated as:
+The TPS is a composite metric calculated using unscaled log-normalized expression data:
 ```
-TPS = 0.25 * HC_Specificity + 
-      0.20 * Dev_Peak_Expression + 
-      0.20 * Aging_Decline + 
+TPS = 0.30 * HC_Specificity + 
+      0.15 * Dev_Peak_Expression + 
+      0.15 * Aging_Decline + 
       0.15 * Species_Conservation + 
-      0.20 * GWAS_Support
+      0.25 * GWAS_Support
 ```
-Genes are ranked by TPS to suggest the most promising candidates for gene therapy or drug targeting.
+Genes are ranked by TPS to suggest the most promising candidates for gene therapy or drug targeting. Top candidates include **MYO7A**, **MYO6**, **PTPRQ**, and **USH1C**.
 
 ## Installation & Usage
 
@@ -34,7 +34,7 @@ Genes are ranked by TPS to suggest the most promising candidates for gene therap
 ### Setup
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/hearing-gene-prioritization.git
+    git clone https://github.com/omrozmn/hearing-gene-prioritization.git
     cd hearing-gene-prioritization
     ```
 2.  Install dependencies:
@@ -43,23 +43,27 @@ Genes are ranked by TPS to suggest the most promising candidates for gene therap
     ```
 
 ### Running the Pipeline
-Execute the main script to download data (if configured) and run the full analysis:
+The pipeline scripts are located in the `src` and `scripts` directories. To reproduce the analysis:
 ```bash
+# Ensure data is downloaded first (see scripts/01_download_data.py)
 python src/main.py
 ```
-Results will be saved in the `results/` directory.
+Results will be saved in the `results/` directory, including:
+*   `therapeutic_priority_scores.csv`: The ranked list of genes.
+*   `figures/`: Generated UMAPs, heatmaps, and dotplots.
 
 ## Deployment
-To deploy the results dashboard to GitHub Pages:
-1.  Commit all changes, including the `results/` folder.
-2.  Push to GitHub.
-3.  Go to repository Settings > Pages.
-4.  Select the `main` branch and root folder (or `docs` if configured).
-5.  The site will be live at `https://yourusername.github.io/hearing-gene-prioritization/`.
+This project includes a web dashboard to visualize the results.
+*   **Live Demo:** [https://omrozmn.github.io/hearing-gene-prioritization/](https://omrozmn.github.io/hearing-gene-prioritization/)
+
+To deploy your own:
+1.  Push the repository to GitHub.
+2.  Go to Settings > Pages.
+3.  Select `main` branch and `/` root folder.
 
 ## Citation
 If you use this pipeline or results, please cite:
-> [Author Name], et al. "Integrative Multi-Omics Prioritization of Hearing Loss Therapeutic Targets." (2025).
+> "Integrative Multi-Omics Prioritization of Hearing Loss Therapeutic Targets." (2025).
 
 ---
 *Created by Antigravity AI*
