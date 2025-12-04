@@ -261,12 +261,64 @@
             </div>
         </section>
 
-        <section id="download" style="text-align: center;">
+        <section id="advanced-analysis">
+            <h2>Advanced Analysis</h2>
+            <p>Deep dive into cell-type specific targets, injury response, and biological pathways.</p>
+
+            <h3>1. Cell-Type Specific Targets</h3>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="card">
+                    <h4>Hair Cells</h4>
+                    <img src="results/paper_figures/top10_Hair_Cells.png" alt="Hair Cell Targets">
+                </div>
+                <div class="card">
+                    <h4>Supporting Cells</h4>
+                    <img src="results/paper_figures/top10_Supporting_Cells.png" alt="Supporting Cell Targets">
+                </div>
+                <div class="card">
+                    <h4>Spiral Ganglion</h4>
+                    <img src="results/paper_figures/top10_SGN.png" alt="SGN Targets">
+                </div>
+                <div class="card">
+                    <h4>Stria Vascularis</h4>
+                    <img src="results/paper_figures/top10_Stria_Vascularis.png" alt="Stria Targets">
+                </div>
+            </div>
+
+            <h3>2. Mechanisms & Pathways</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>Noise Injury Response</h4>
+                    <img src="results/paper_figures/noise_volcano.png" alt="Noise Volcano Plot">
+                    <p>Genes downregulated after noise trauma (simulated integration).</p>
+                </div>
+                <div class="card">
+                    <h4>Pathway Enrichment</h4>
+                    <img src="results/paper_figures/pathway_barplot.png" alt="Pathway Enrichment">
+                    <p>Top biological processes enriched in priority targets.</p>
+                </div>
+            </div>
+
+            <h3>3. TPS vs Specificity</h3>
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <img src="results/paper_figures/Figure3_TPS_Ranking.png" alt="TPS Ranking">
+            </div>
+        </section>
+
+        <section id="download">
             <h2>Get the Data</h2>
             <p>Download the full analysis results and scoring metrics.</p>
-            <a href="results/therapeutic_priority_scores.csv" class="btn" download>Download Priority Scores (CSV)</a>
-            <a href="https://github.com/omrozmn/hearing-gene-prioritization" class="btn"
-                style="background: #333; margin-left: 1rem;">View on GitHub</a>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <a href="results/therapeutic_priority_scores.csv" class="btn" download>Base Priority Scores (v2)</a>
+                <a href="results/TPS_v4_druggability.csv" class="btn" style="background: #2c5282;" download>Final
+                    Druggability Scores (v4)</a>
+                <a href="results/celltype_specific_scores.csv" class="btn" style="background: #276749;"
+                    download>Cell-Type Specific Scores</a>
+            </div>
+            <div style="margin-top: 1rem;">
+                <a href="https://github.com/omrozmn/hearing-gene-prioritization" class="btn"
+                    style="background: #333;">View on GitHub</a>
+            </div>
         </section>
 
         <section id="references" style="border-top: 1px solid #e2e8f0; padding-top: 2rem;">
