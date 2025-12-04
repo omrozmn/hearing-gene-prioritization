@@ -25,6 +25,18 @@ TPS = 0.30 * HC_Specificity +
 ```
 Genes are ranked by TPS to suggest the most promising candidates for gene therapy or drug targeting. Top candidates include **MYO7A**, **MYO6**, **PTPRQ**, and **USH1C**.
 
+## Advanced Analysis (Phase 1 & 2)
+Beyond the base TPS, the pipeline now includes advanced modules:
+1.  **Cell-Type Specific Scoring:** Identifies targets unique to Hair Cells, Supporting Cells, SGNs, and Stria Vascularis.
+2.  **Noise Injury Integration:** Incorporates data from noise-exposed cochleae to prioritize rescue targets (TPS v3).
+3.  **Pathway Enrichment:** GO & KEGG analysis to reveal biological mechanisms (e.g., Sensory Perception, Ion Transport).
+4.  **Druggability:** Integrates pLI scores and subcellular localization for clinical feasibility (TPS v4).
+
+## Manuscript & Validation
+This repository includes a `manuscript/` directory with auto-generated drafts for a scientific paper:
+*   `abstract.md`, `methods.md`, `results.md`
+*   `sanity_check_report.md`: Validates that known deafness genes (e.g., *OTOF*, *MYO7A*) are highly ranked.
+
 ## Installation & Usage
 
 ### Prerequisites
@@ -46,10 +58,12 @@ Genes are ranked by TPS to suggest the most promising candidates for gene therap
 The pipeline scripts are located in the `src` and `scripts` directories. To reproduce the analysis:
 ```bash
 # Ensure data is downloaded first (see scripts/01_download_data.py)
-python src/main.py
+python scripts/02_pipeline.py
+python scripts/04_advanced_analysis.py
 ```
 Results will be saved in the `results/` directory, including:
 *   `therapeutic_priority_scores.csv`: The ranked list of genes.
+*   `TPS_v4_druggability.csv`: Final prioritized list with druggability info.
 *   `figures/`: Generated UMAPs, heatmaps, and dotplots.
 
 ## Deployment
