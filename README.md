@@ -12,7 +12,7 @@ The pipeline utilizes the following public datasets:
 *   **[GSE213796](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE213796)**: Human fetal and adult inner ear snRNA-seq.
 *   **[GSE114157](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE114157)**: Mouse mature cochlear hair cells (Smart-seq2).
 *   **[GSE60019](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE60019)**: Mouse cochlear and utricle development (Bulk RNA-seq).
-*   **[GSE274279](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274279)**: Mouse cochlea and utricle aging snRNA-seq.
+*   **[GSE274279](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274279)**: Mouse cochlea and utricle aging snRNA-seq (Xia et al., 2025).
 
 ## Therapeutic Priority Score (TPS)
 The TPS is a composite metric calculated using unscaled log-normalized expression data:
