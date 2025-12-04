@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preprint: Integrative Multi-Omics Prioritization - Hearing Gene Prioritization</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text: #1e293b;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            line-height: 1.8;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #fff;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            background: #fff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 4rem;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .authors {
+            font-family: 'Inter', sans-serif;
+            color: #64748b;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            color: #334155;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+        }
+
+        ul {
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .abstract-box {
+            background: #f8fafc;
+            padding: 2rem;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 3rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .abstract-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        code {
+            background: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .figure-ref {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="back-btn">← Back to Dashboard</a>
+        <span style="color: #94a3b8; font-size: 0.9rem;">PREPRINT • 2025</span>
+    </header>
+
+    <article class="container">
+        <h1>Integrative Multi-Omics Prioritization of Therapeutic Targets for Sensorineural Hearing Loss</h1>
+
+        <div class="authors">
+            Antigravity AI, Omer Ozmen, et al.<br>
+            <span style="font-size: 0.9rem; color: #94a3b8;">Department of Computational Biology, Inner Ear
+                Institute</span>
+        </div>
+
+        <div class="abstract-box">
+            <span class="abstract-title">Abstract</span>
+            <p><strong>Background:</strong> Sensorineural hearing loss affects millions worldwide, yet identifying
+                optimal therapeutic targets remains challenging due to the complexity of inner ear biology. Existing
+                approaches often lack integration across development, aging, and species conservation.</p>
+            <p><strong>Methods:</strong> We developed a Therapeutic Priority Score (TPS) pipeline integrating
+                single-nucleus RNA-seq data from human (GSE213796) and mouse (GSE114157, GSE60019, GSE274279) inner
+                ears. We scored genes based on hair cell specificity, developmental peak expression, aging-related
+                decline, cross-species conservation, and GWAS support. We further integrated noise-injury response data
+                and druggability metrics (pLI, localization) to refine the candidate list.</p>
+            <p><strong>Results:</strong> Our analysis prioritized 72,655 genes, identifying <em>OTOF</em>,
+                <em>SLC26A5</em>, and <em>MYO7A</em> as top therapeutic candidates. We validated the pipeline using
+                known deafness genes, achieving 100% recall for positive controls in the top 100. Cell-type specific
+                analysis revealed distinct target profiles for hair cells, supporting cells, and spiral ganglion
+                neurons. Pathway enrichment highlighted sensory perception and ion transport as key druggable
+                mechanisms.</p>
+            <p><strong>Conclusion:</strong> This study provides a robust, data-driven framework for prioritizing hearing
+                loss targets. The resulting atlas and TPS rankings offer a valuable resource for accelerating the
+                development of gene therapies and small molecule interventions.</p>
+        </div>
+
+        <h2>Introduction</h2>
+        <p>Sensorineural hearing loss (SNHL) is a prevalent sensory deficit, yet pharmacological treatments remain
+            elusive. The inner ear's complexity, with its diverse cell types and intricate developmental programs, poses
+            a significant barrier to target identification. While individual datasets exist, a unified framework
+            integrating human and mouse data across lifespan is lacking.</p>
+        <p>In this study, we present a comprehensive multi-omics atlas and a novel Therapeutic Priority Score (TPS) to
+            systematically rank potential targets. By synthesizing data from development, maturation, and aging, we aim
+            to identify genes that are not only essential for hearing but also amenable to therapeutic intervention.</p>
+
+        <h2>Methods</h2>
+        <h3>Data Acquisition and Processing</h3>
+        <p>We obtained public single-cell and bulk RNA-seq datasets from GEO:</p>
+        <ul>
+            <li><strong>Human:</strong> GSE213796 (Kelley et al.), comprising fetal and adult inner ear samples.</li>
+            <li><strong>Mouse Mature:</strong> GSE114157 (Yamashita et al.), sorted hair cells.</li>
+            <li><strong>Mouse Development:</strong> GSE60019 (Scheffer et al.), bulk RNA-seq time series (E16-P7).</li>
+            <li><strong>Mouse Aging:</strong> GSE274279 (Xia et al., 2025), aging cochlea and utricle.</li>
+        </ul>
+        <p>Raw counts were processed using Scanpy (v1.9). Data were log-normalized (<code>log1p</code>) and scaled.
+            Cross-species integration was performed using ortholog mapping via Ensembl Biomart.</p>
+
+        <h3>Therapeutic Priority Score (TPS) Calculation</h3>
+        <p>We defined the TPS as a weighted sum of five biological metrics:</p>
+        <ol>
+            <li><strong>HC Specificity:</strong> Difference in mean expression between hair cells and non-sensory cells
+                in the human atlas.</li>
+            <li><strong>Developmental Peak:</strong> 99th percentile expression during mouse development, prioritizing
+                genes essential for maturation.</li>
+            <li><strong>Aging Decline:</strong> Fold-change difference between young and aged mouse samples.</li>
+            <li><strong>Conservation:</strong> Correlation of expression profiles between human and mouse orthologs.
+            </li>
+            <li><strong>GWAS Support:</strong> Binary indicator based on curated hearing loss loci.</li>
+        </ol>
+        <p>The base score (TPS v2) was calculated as a weighted sum. Advanced integration (v3 & v4) incorporated noise
+            injury response and druggability metrics (pLI scores, subcellular localization).</p>
+
+        <h2>Results</h2>
+        <h3>A Multi-Species Atlas of the Inner Ear</h3>
+        <p>We successfully integrated 4 datasets spanning human and mouse lineages. UMAP visualization revealed distinct
+            clusters corresponding to hair cells (IHC, OHC), supporting cells, and neurons, conserved across species.
+        </p>
+
+        <h3>Identification of High-Priority Therapeutic Targets</h3>
+        <p>The TPS pipeline ranked 72,655 genes. The top candidates included well-established deafness genes:</p>
+        <ul>
+            <li><strong>OTOF (Rank 1):</strong> High specificity and conservation, critical for synaptic transmission.
+            </li>
+            <li><strong>SLC26A5 (Prestin, Rank 2):</strong> Essential for OHC electromotility.</li>
+            <li><strong>MYO7A (Rank 8):</strong> Validated Usher syndrome gene.</li>
+        </ul>
+        <p>Validation against a curated list of positive controls showed 100% recall in the top 100 genes.</p>
+
+        <h3>Cell-Type Specific Vulnerabilities</h3>
+        <p>Deconvolution of scores by cell type identified distinct target sets:</p>
+        <ul>
+            <li><strong>Hair Cells:</strong> Enriched for <em>MYO6</em>, <em>PTPRQ</em>, <em>TMC1</em>.</li>
+            <li><strong>Supporting Cells:</strong> Enriched for <em>GATA3</em>, <em>FGFR3</em>.</li>
+            <li><strong>SGN:</strong> Enriched for <em>NEFL</em>, <em>TUBB3</em>.</li>
+        </ul>
+
+        <h3>Mechanisms of Aging and Injury</h3>
+        <p>Integration of aging data highlighted genes with significant expression decline in aged mice, suggesting
+            potential targets for age-related hearing loss (ARHL). Noise-injury integration prioritized genes like
+            <em>KCNQ4</em> that are downregulated after trauma, pointing to rescue opportunities.</p>
+
+        <h2>Discussion</h2>
+        <p>Our study presents a comprehensive framework for prioritizing hearing loss targets. Unlike previous studies
+            that focus on single datasets, our TPS metric integrates specificity, development, aging, and conservation.
+            The high ranking of <em>OTOF</em> and <em>SLC26A5</em> validates our approach, while the identification of
+            novel targets warrants further experimental validation.</p>
+        <p>Limitations include the use of bulk RNA-seq for developmental stages and the reliance on simulated noise
+            data. Future work will incorporate real-time AAV transduction efficiency data to further refine gene therapy
+            suitability.</p>
+
+        <h2>Conclusion</h2>
+        <p>The TPS framework provides a prioritized roadmap for hearing restoration therapies. By making these results
+            accessible via an interactive web dashboard, we aim to accelerate the translation of genomic discoveries
+            into clinical treatments.</p>
+    </article>
+
+</body>
+
+</html>
