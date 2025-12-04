@@ -143,6 +143,8 @@
         .lightbox[style*="display: flex"],
         .lightbox.show {
             display: flex !important;
+            flex-direction: column;
+            /* Stack image and caption */
             align-items: center;
             justify-content: center;
         }
@@ -167,12 +169,24 @@
             }
         }
 
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+
         .lightbox .close {
             position: absolute;
-            top: 20px;
+            top: 15px;
             right: 35px;
             color: #f1f1f1;
-            font-size: 50px;
+            font-size: 40px;
             font-weight: bold;
             transition: 0.3s;
             cursor: pointer;
