@@ -1,0 +1,108 @@
+{
+  "datasets": [
+    {
+      "id": "GSE137299",
+      "category": "development",
+      "title": "Mouse cochlear development single-cell atlas",
+      "organism": "Mus musculus",
+      "description": "27,000+ epithelial cells across E14–P7",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE137299"
+    },
+    {
+      "id": "GSE60019",
+      "category": "haircell_supporting",
+      "title": "Transcriptomic comparison of hair cells vs supporting cells (bulk)",
+      "organism": "Mus musculus",
+      "description": "FACS-isolated hair cells and surrounding cells across E16–P7",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE60019"
+    },
+    {
+      "id": "GSE132925",
+      "category": "SGN",
+      "title": "Multi-age spiral ganglion neuron transcriptome",
+      "organism": "Mus musculus",
+      "description": "Bulk RNA-seq of SGNs across 5 ages + HC + glia",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132925"
+    },
+    {
+      "id": "GSE165502",
+      "category": "SGN",
+      "title": "Single-cell SGN developmental atlas",
+      "organism": "Mus musculus",
+      "description": "scRNA-seq of SGN subtypes during development",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165502"
+    },
+    {
+      "id": "GSE114997",
+      "category": "SGN",
+      "title": "SGNs from WT and Vglut3-/-",
+      "organism": "Mus musculus",
+      "description": "Used to detect synaptopathy-sensitive gene modules",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE114997"
+    },
+    {
+      "id": "GSE195500",
+      "category": "SGN",
+      "title": "SGN subtype specification across late embryonic stages",
+      "organism": "Mus musculus",
+      "description": "Used for transcription factor hierarchy & SGN lineage scoring",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE195500"
+    },
+    {
+      "id": "GSE210215",
+      "category": "SGN",
+      "title": "Runx1 conditional knockout SGN atlas",
+      "organism": "Mus musculus",
+      "description": "Used to identify regulators shaping SGN diversity",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE210215"
+    },
+    {
+      "id": "GSE210216",
+      "category": "SGN",
+      "title": "Runx1 auditory neuron diversity study",
+      "organism": "Mus musculus",
+      "description": "Complementary dataset for SGN regulatory inference",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE210216"
+    },
+    {
+      "id": "GSE213796",
+      "category": "human",
+      "title": "Human inner ear & organoid snRNA-seq atlas",
+      "organism": "Homo sapiens",
+      "description": "Used for human relevance validation",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE213796"
+    },
+    {
+      "id": "GSE73829",
+      "category": "evolution",
+      "title": "Xenopus inner ear transcriptome",
+      "organism": "Xenopus",
+      "description": "Used for evolutionary conservation scoring",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE73829"
+    },
+    {
+      "id": "GSE73828",
+      "category": "evolution",
+      "title": "Xenopus inner ear developmental expression",
+      "organism": "Xenopus",
+      "description": "Used for conserved developmental regulators",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE73828"
+    },
+    {
+      "id": "GSE37767",
+      "category": "evolution",
+      "title": "Inner ear transcriptome (Xenopus)",
+      "organism": "Xenopus",
+      "description": "Broader inner ear profiling for conserved markers",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE37767"
+    },
+    {
+      "id": "GSE69546",
+      "category": "evolution",
+      "title": "Juvenile Xenopus inner ear",
+      "organism": "Xenopus",
+      "description": "Enhances cross-species regulatory conservation analysis",
+      "link": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE69546"
+    }
+  ]
+}
