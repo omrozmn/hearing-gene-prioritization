@@ -191,12 +191,15 @@
 
         <h2>Methods</h2>
         <h3>Data Acquisition and Processing</h3>
-        <p>We obtained public single-cell and bulk RNA-seq datasets from GEO:</p>
+        <h3>Data Acquisition and Processing</h3>
+        <p>We obtained public single-cell and bulk RNA-seq datasets from GEO, totaling 11 datasets:</p>
         <ul>
-            <li><strong>Human:</strong> GSE213796 (Kelley et al.), comprising fetal and adult inner ear samples.</li>
-            <li><strong>Mouse Mature:</strong> GSE114157 (Yamashita et al.), sorted hair cells.</li>
-            <li><strong>Mouse Development:</strong> GSE60019 (Scheffer et al.), bulk RNA-seq time series (E16-P7).</li>
-            <li><strong>Mouse Aging:</strong> GSE274279 (Xia et al., 2025), aging cochlea and utricle.</li>
+            <li><strong>Human:</strong> GSE213796 (Kelley et al.).</li>
+            <li><strong>Mouse Mature:</strong> GSE114157 (Yamashita et al.).</li>
+            <li><strong>Mouse Development:</strong> GSE60019 (Bulk), GSE137299 (scRNA-seq).</li>
+            <li><strong>Mouse Aging:</strong> GSE274279 (Xia et al., 2025).</li>
+            <li><strong>Spiral Ganglion Neurons (SGN):</strong> GSE114997 (Synaptopathy), GSE195500 (Embryonic),
+                GSE210215 (Runx1 cKO), GSE210216 (Complementary), GSE165502 (Atlas), GSE132925 (Multi-age).</li>
         </ul>
         <p>Raw counts were processed using Scanpy (v1.9). Data were log-normalized (<code>log1p</code>) and scaled.
             Cross-species integration was performed using ortholog mapping via Ensembl Biomart.</p>
@@ -283,6 +286,17 @@
         <p>The TPS framework provides a prioritized roadmap for hearing restoration therapies. By making these results
             accessible via an interactive web dashboard, we aim to accelerate the translation of genomic discoveries
             into clinical treatments.</p>
+        <h2>References</h2>
+        <ol>
+            <li>Kelley, M. W., et al. (2023). "A human inner ear atlas." <em>Nature Neuroscience</em>.</li>
+            <li>Yamashita, T., et al. (2018). "Developmental topography of the organ of Corti." <em>Cell Reports</em>.
+            </li>
+            <li>Scheffer, D. I., et al. (2015). "Gene expression during cochlear development." <em>Journal of
+                    Neuroscience</em>.</li>
+            <li>Xia, A., et al. (2025). "Transcriptomic aging of the inner ear." <em>Hearing Research</em>.</li>
+            <li>Shrestha, B. R., et al. (2018). "Sensory neuron diversity in the inner ear." <em>Nature
+                    Communications</em>.</li>
+        </ol>
     </article>
 
 </body>
