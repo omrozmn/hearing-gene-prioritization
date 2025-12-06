@@ -15,9 +15,95 @@
             --secondary: #1e293b;
             --accent: #f59e0b;
             --bg: #f8fafc;
-            height: 500px;
-            border: none;
-            background: #fff;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        p.subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-top: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.2s;
+            border-top: 4px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-top-color: var(--primary);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: zoom-in;
+            transition: opacity 0.2s;
+        }
+
+        .card img:hover {
+            opacity: 0.9;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--secondary);
         }
 
         .btn {
@@ -35,17 +121,48 @@
             background: #1d4ed8;
         }
 
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
         footer {
             text-align: center;
             padding: 2rem;
             color: #64748b;
             border-top: 1px solid #e2e8f0;
+            margin-top: 4rem;
         }
 
         /* Lightbox modal styles */
         .lightbox {
             display: none;
-            /* Hidden by default */
             position: fixed;
             z-index: 9999;
             left: 0;
@@ -53,16 +170,13 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.75);
+            background-color: rgba(0, 0, 0, 0.85);
             padding: 40px;
         }
 
-        /* When lightbox is shown, use flex for centering */
-        .lightbox[style*="display: flex"],
         .lightbox.show {
             display: flex !important;
             flex-direction: column;
-            /* Stack image and caption */
             align-items: center;
             justify-content: center;
         }
@@ -73,18 +187,7 @@
             max-height: 85vh;
             object-fit: contain;
             border-radius: 4px;
-            animation: zoom 0.3s;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
-
-        @keyframes zoom {
-            from {
-                transform: scale(0.8)
-            }
-
-            to {
-                transform: scale(1)
-            }
         }
 
         #caption {
@@ -95,7 +198,7 @@
             text-align: center;
             color: #ccc;
             padding: 10px 0;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-top: 1rem;
         }
 
@@ -111,30 +214,8 @@
             z-index: 10000;
         }
 
-        .lightbox .close:hover,
-        .lightbox .close:focus {
+        .lightbox .close:hover {
             color: #bbb;
-            text-decoration: none;
-        }
-
-        #caption {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
-            text-align: center;
-            color: #ccc;
-            padding: 10px 0;
-            font-size: 1.1rem;
-        }
-
-        .card img {
-            cursor: zoom-in;
-            transition: opacity 0.2s;
-        }
-
-        .card img:hover {
-            opacity: 0.9;
         }
     </style>
 </head>
@@ -143,54 +224,158 @@
 
     <header>
         <h1>Hearing Gene Prioritization</h1>
-        <p class="subtitle">A comprehensive bioinformatics pipeline for identifying therapeutic targets in the inner ear
-        </p>
+        <p class="subtitle">An integrative multi-omics framework to prioritize gene therapy targets for sensorineural
+            hearing loss.</p>
         <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
-            <a href="#advanced-analysis" class="btn"
+            <a href="#results" class="btn"
                 style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5);">Explore Results</a>
             <a href="paper.html" class="btn" style="background: #fff; color: var(--primary);">Read Paper (Preprint)</a>
         </div>
     </header>
 
     <main>
-        <section id="figures">
-            <h2>Atlas Visualization</h2>
+        <!-- What is TPS -->
+        <section id="about">
+            <h2>What is TPS?</h2>
+            <p>The <strong>Therapeutic Priority Score (TPS)</strong> is a data-driven metric designed to rank genes
+                based on their potential as therapeutic targets. By integrating single-cell transcriptomics from human
+                and mouse inner ears across development, aging, and injury models, TPS identifies candidates that are
+                not only essential for hearing but also amenable to intervention.</p>
+        </section>
+
+        <!-- Biological Modules -->
+        <section id="modules">
+            <h2>Biological Modules</h2>
             <div class="grid">
                 <div class="card">
-                    <h3>Human Inner Ear</h3>
-                    <img src="results/figures/umap_human.png" alt="Human UMAP">
-                    <p>Integrated single-nucleus RNA-seq atlas of human fetal and adult inner ear.</p>
+                    <h3>🧬 HC Regulatory</h3>
+                    <p>Prioritizes genes co-regulated with master hair cell drivers (<em>ATOH1</em>, <em>POU4F3</em>),
+                        ensuring targets are central to hair cell identity.</p>
                 </div>
                 <div class="card">
-                    <h3>Mouse Development</h3>
-                    <img src="results/figures/umap_mouse_dev.png" alt="Mouse Dev UMAP">
-                    <p>Developmental trajectory of cochlear hair cells and supporting cells.</p>
+                    <h3>🔄 SC Plasticity</h3>
+                    <p>Identifies genes linked to regeneration and supporting cell plasticity (<em>SOX2</em>,
+                        <em>LGR5</em>), key for hair cell regeneration therapies.</p>
                 </div>
                 <div class="card">
-                    <h3>Mouse Aging</h3>
-                    <img src="results/figures/umap_mouse_aging.png" alt="Mouse Aging UMAP">
-                    <p>Age-related transcriptomic changes in the cochlea.</p>
+                    <h3>⚡ SGN Vulnerability</h3>
+                    <p>Focuses on spiral ganglion neuron maintenance and protection against noise-induced synaptopathy,
+                        integrating 6 distinct SGN datasets.</p>
+                </div>
+                <div class="card">
+                    <h3>🌍 Human Transferability</h3>
+                    <p>Ensures mouse discoveries are relevant to humans by scoring conservation in the human inner ear
+                        atlas.</p>
                 </div>
             </div>
         </section>
 
-        <section id="analysis">
-            <h2>Expression Analysis</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Hair Cell Specificity</h3>
-                    <img src="results/figures/haircell_heatmap.png" alt="Heatmap">
-                </div>
-                <div class="card">
-                    <h3>Gene Expression Dotplot</h3>
-                    <img src="results/figures/gene_dotplot.png" alt="Dotplot">
-                </div>
+        <!-- Datasets -->
+        <section id="datasets">
+            <h2>Integrated Datasets</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dataset ID</th>
+                            <th>Organism</th>
+                            <th>Type</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GSE213796</td>
+                            <td>Human</td>
+                            <td>snRNA-seq</td>
+                            <td>Human Atlas & Conservation</td>
+                        </tr>
+                        <tr>
+                            <td>GSE114157</td>
+                            <td>Mouse</td>
+                            <td>Smart-seq2</td>
+                            <td>Mature Hair Cell Specificity</td>
+                        </tr>
+                        <tr>
+                            <td>GSE60019</td>
+                            <td>Mouse</td>
+                            <td>Bulk RNA</td>
+                            <td>Developmental Trajectory</td>
+                        </tr>
+                        <tr>
+                            <td>GSE274279</td>
+                            <td>Mouse</td>
+                            <td>snRNA-seq</td>
+                            <td>Aging & Decline</td>
+                        </tr>
+                        <tr>
+                            <td>GSE137299</td>
+                            <td>Mouse</td>
+                            <td>scRNA-seq</td>
+                            <td>Developmental Peak</td>
+                        </tr>
+                        <tr>
+                            <td>GSE114997</td>
+                            <td>Mouse</td>
+                            <td>Bulk RNA</td>
+                            <td>SGN Synaptopathy</td>
+                        </tr>
+                        <tr>
+                            <td>GSE195500</td>
+                            <td>Mouse</td>
+                            <td>scRNA-seq</td>
+                            <td>Embryonic SGN</td>
+                        </tr>
+                        <tr>
+                            <td>GSE210215</td>
+                            <td>Mouse</td>
+                            <td>scRNA-seq</td>
+                            <td>SGN Diversity (Runx1 cKO)</td>
+                        </tr>
+                        <tr>
+                            <td>GSE210216</td>
+                            <td>Mouse</td>
+                            <td>scRNA-seq</td>
+                            <td>SGN Complementary</td>
+                        </tr>
+                        <tr>
+                            <td>GSE165502</td>
+                            <td>Mouse</td>
+                            <td>scRNA-seq</td>
+                            <td>SGN Atlas</td>
+                        </tr>
+                        <tr>
+                            <td>GSE132925</td>
+                            <td>Mouse</td>
+                            <td>Bulk RNA</td>
+                            <td>Multi-age SGN</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
+        <!-- Key Results -->
         <section id="results">
-            <h2>Therapeutic Priority Scores</h2>
-            <p>Interactive table of top ranked genes based on specificity, conservation, and disease relevance.</p>
+            <h2>Key Results</h2>
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="card">
+                    <h3>Top 30 Therapeutic Candidates</h3>
+                    <img src="results/paper_figures/TPS_Top30.png" alt="Top 30 Candidates">
+                    <p>Ranked by final TPS. Top genes include <em>OTOF</em>, <em>SLC26A5</em>, and <em>MYO7A</em>.</p>
+                </div>
+                <div class="card">
+                    <h3>Module Contribution</h3>
+                    <img src="results/paper_figures/TPS_Module_Heatmap.png" alt="Module Heatmap">
+                    <p>Heatmap showing how each module (HC, SC, SGN, Human) contributes to the score.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Table -->
+        <section id="interactive-table">
+            <h2>Full Rankings</h2>
+            <p>Interactive table of top ranked genes. Download the full CSV for complete data.</p>
             <div class="table-container">
                 <div id="csv-table-wrapper" style="overflow-x: auto; max-height: 500px;">
                     <p>Loading data...</p>
@@ -198,76 +383,19 @@
             </div>
         </section>
 
-        <section id="advanced-analysis">
-            <h2>Advanced Analysis</h2>
-            <p>Deep dive into cell-type specific targets, injury response, and biological pathways.</p>
-
-            <h3>1. Cell-Type Specific Targets</h3>
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <div class="card">
-                    <h4>Hair Cells</h4>
-                    <img src="results/paper_figures/top10_Hair_Cells.png" alt="Hair Cell Targets">
-                    <p>Top 10 genes specifically expressed in hair cells. These are prime targets for sensorineural
-                        hearing loss therapies.</p>
-                </div>
-                <div class="card">
-                    <h4>Supporting Cells</h4>
-                    <img src="results/paper_figures/top10_Supporting_Cells.png" alt="Supporting Cell Targets">
-                    <p>Genes enriched in supporting cells (Deiters, Pillar). Crucial for structural integrity and
-                        potential regeneration.</p>
-                </div>
-                <div class="card">
-                    <h4>Spiral Ganglion</h4>
-                    <img src="results/paper_figures/top10_SGN.png" alt="SGN Targets">
-                    <p>Spiral Ganglion Neuron markers. Targets for auditory neuropathy and neural regeneration.</p>
-                </div>
-                <div class="card">
-                    <h4>Stria Vascularis</h4>
-                    <img src="results/paper_figures/top10_Stria_Vascularis.png" alt="Stria Targets">
-                    <p>Genes specific to the stria vascularis. Important for endocochlear potential and metabolic
-                        homeostasis.</p>
-                </div>
-            </div>
-
-            <h3>2. Mechanisms & Pathways</h3>
-            <div class="grid">
-                <div class="card">
-                    <h4>Noise Injury Response</h4>
-                    <img src="results/paper_figures/noise_volcano.png" alt="Noise Volcano Plot">
-                    <p>Volcano plot showing genes downregulated after noise trauma. Red dots indicate vulnerable targets
-                        needing rescue.</p>
-                </div>
-                <div class="card">
-                    <h4>Pathway Enrichment</h4>
-                    <img src="results/paper_figures/pathway_barplot.png" alt="Pathway Enrichment">
-                    <p>Biological processes enriched in the top 50 priority genes. Highlights key mechanisms like
-                        sensory perception and ion transport.</p>
-                </div>
-            </div>
-
-            <h3>3. TPS vs Specificity</h3>
-            <div class="card" style="max-width: 800px; margin: 0 auto;">
-                <img src="results/paper_figures/Figure3_TPS_Ranking.png" alt="TPS Ranking">
-                <p>Scatter plot correlating Therapeutic Priority Score (TPS) with Hair Cell Specificity. Top candidates
-                    (red) show both high specificity and high overall score.</p>
-            </div>
-        </section>
-
+        <!-- Download -->
         <section id="download">
             <h2>Get the Data</h2>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-                <a href="results/therapeutic_priority_scores.csv" class="btn" download>Base Priority Scores (v2)</a>
-                <a href="results/TPS_v4_druggability.csv" class="btn" style="background: #2c5282;" download>Final
-                    Druggability Scores (v4)</a>
+                <a href="results/TPS_final.csv" class="btn" download>Download Full TPS Table (CSV)</a>
                 <a href="results/celltype_specific_scores.csv" class="btn" style="background: #276749;"
                     download>Cell-Type Specific Scores</a>
-            </div>
-            <div style="margin-top: 1rem;">
                 <a href="https://github.com/omrozmn/hearing-gene-prioritization" class="btn"
                     style="background: #333;">View on GitHub</a>
             </div>
         </section>
 
+        <!-- References -->
         <section id="references" style="border-top: 1px solid #e2e8f0; padding-top: 2rem;">
             <h2>Data Sources & References</h2>
             <p>This project utilizes public datasets. Please cite the original authors if you use these results.</p>
@@ -291,7 +419,7 @@
                 <li style="background: #fff; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
                     <strong>Mouse Aging</strong><br>
                     <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274279" target="_blank"
-                        style="color: var(--primary);">GSE274279</a> (Xia et al., Cell Rep 2025)
+                        style="color: var(--primary);">GSE274279</a> (Xia et al., 2025)
                 </li>
             </ul>
         </section>
@@ -301,6 +429,7 @@
         <p>&copy; 2025 Hearing Gene Prioritization Project. Built with Scanpy & Python.</p>
     </footer>
 
+    <!-- Lightbox -->
     <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
         <span class="close">&times;</span>
         <img class="lightbox-content" id="lightbox-img">
@@ -308,46 +437,43 @@
     </div>
 
     <script>
-        // Lightbox logic with proper event handling
+        // Lightbox logic
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const captionText = document.getElementById('caption');
 
-        // Open lightbox when clicking on any image
         document.querySelectorAll('.card img').forEach(img => {
             img.onclick = function (e) {
                 e.stopPropagation();
-                lightbox.style.display = "flex";
+                lightbox.classList.add('show');
+                lightbox.style.display = 'flex';
                 lightboxImg.src = this.src;
                 captionText.innerHTML = this.alt || this.parentElement.querySelector('h3')?.textContent || '';
             }
         });
 
-        // Close lightbox when clicking on background or close button
         lightbox.onclick = function (e) {
             if (e.target === lightbox || e.target.className === 'close') {
-                lightbox.style.display = "none";
+                lightbox.classList.remove('show');
+                lightbox.style.display = 'none';
             }
         }
 
-        // Close lightbox with Escape key
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && lightbox.style.display === "flex") {
-                lightbox.style.display = "none";
+                lightbox.classList.remove('show');
+                lightbox.style.display = 'none';
             }
         });
 
-        // Simple CSV parser and table renderer
-        fetch('results/therapeutic_priority_scores.csv')
+        // CSV Parser
+        fetch('results/TPS_final.csv')
             .then(response => response.text())
             .then(csvText => {
                 const rows = csvText.trim().split('\n');
                 if (rows.length === 0) return;
 
                 const table = document.createElement('table');
-                table.style.width = '100%';
-                table.style.borderCollapse = 'collapse';
-                table.style.fontSize = '0.9rem';
 
                 // Header
                 const thead = document.createElement('thead');
@@ -356,12 +482,6 @@
                 headers.forEach(header => {
                     const th = document.createElement('th');
                     th.textContent = header.trim();
-                    th.style.textAlign = 'left';
-                    th.style.padding = '12px';
-                    th.style.borderBottom = '2px solid #e2e8f0';
-                    th.style.backgroundColor = '#f8fafc';
-                    th.style.position = 'sticky';
-                    th.style.top = '0';
                     headerRow.appendChild(th);
                 });
                 thead.appendChild(headerRow);
@@ -369,18 +489,13 @@
 
                 // Body
                 const tbody = document.createElement('tbody');
-                // Show top 100 rows max to avoid freezing if large
-                const dataRows = rows.slice(1, 101);
+                const dataRows = rows.slice(1, 101); // Top 100
                 dataRows.forEach((row, index) => {
                     const tr = document.createElement('tr');
-                    tr.style.borderBottom = '1px solid #e2e8f0';
-                    tr.style.backgroundColor = index % 2 === 0 ? '#fff' : '#f8fafc';
-
                     const cells = row.split(',');
                     cells.forEach(cell => {
                         const td = document.createElement('td');
                         td.textContent = cell.trim();
-                        td.style.padding = '10px 12px';
                         tr.appendChild(td);
                     });
                     tbody.appendChild(tr);
