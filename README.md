@@ -81,3 +81,11 @@ If you use this pipeline or results, please cite:
 
 ---
 *Created by Antigravity AI*
+
+## 📊 Dataset Sources (Automatically Generated)
+
+This project integrates multiple validated inner-ear transcriptomic datasets across development, species, neuronal subtypes, inflammation models, and human inner ear organoids.  
+A full manifest is stored in **data/dataset_manifest.json**.
+
+To add new datasets, update the manifest file and rebuild the analysis pipeline.
+
