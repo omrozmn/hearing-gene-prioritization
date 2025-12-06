@@ -17,6 +17,7 @@ The pipeline utilizes a comprehensive set of public datasets:
 *   **[GSE165502](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165502)**: Mouse Spiral Ganglion Neuron (SGN) scRNA-seq.
 *   **[GSE210215](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE210215)**: Runx1 cKO SGN atlas.
 *   **[GSE210216](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE210216)**: Complementary Runx1 SGN study.
+*   **[GSE132925](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132925)**: Multi-age SGN transcriptome.
 
 ## Therapeutic Priority Score (TPS)
 The TPS is a composite metric derived from four key biological modules:
