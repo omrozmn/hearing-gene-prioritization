@@ -178,6 +178,7 @@
                 development of gene therapies and small molecule interventions.</p>
         </div>
 
+
         <h2>Introduction</h2>
         <p>Sensorineural hearing loss (SNHL) is a prevalent sensory deficit, yet pharmacological treatments remain
             elusive. The inner ear's complexity, with its diverse cell types and intricate developmental programs, poses
@@ -243,6 +244,31 @@
             potential targets for age-related hearing loss (ARHL). Noise-injury integration prioritized genes like
             <em>KCNQ4</em> that are downregulated after trauma, pointing to rescue opportunities.
         </p>
+
+        <section id="tps-v2">
+            <h3>TPS v2.0: Biological Modules</h3>
+            <p>We refined the prioritization using specific biological modules:</p>
+            <ul>
+                <li><strong>HC Regulatory Module:</strong> Correlation with key drivers (Atoh1, Pou4f3, Gfi1).</li>
+                <li><strong>SC Plasticity Module:</strong> Correlation with regeneration markers (Sox2, Hes1, Lgr5).
+                </li>
+                <li><strong>SGN Vulnerability Module:</strong> Specificity to spiral ganglion neurons and noise
+                    sensitivity.</li>
+                <li><strong>Human Transferability:</strong> Conservation in human organoid atlas.</li>
+            </ul>
+
+            <div class="figure-container">
+                <img src="results/paper_figures/TPS_v2_Module_Heatmap.png" alt="TPS v2.0 Module Heatmap">
+                <p class="figure-caption"><strong>Figure 5: Module Scores.</strong> Heatmap showing the contribution of
+                    each biological module to the top candidate genes.</p>
+            </div>
+
+            <div class="figure-container">
+                <img src="results/paper_figures/TPS_v2_Top30.png" alt="TPS v2.0 Final Ranking">
+                <p class="figure-caption"><strong>Figure 6: TPS v2.0 Final Ranking.</strong> The top 30 therapeutic
+                    targets based on the weighted sum of biological module scores.</p>
+            </div>
+        </section>
 
         <h2>Discussion</h2>
         <p>Our study presents a comprehensive framework for prioritizing hearing loss targets. Unlike previous studies
