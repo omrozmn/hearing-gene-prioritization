@@ -15,7 +15,6 @@ The pipeline utilizes a comprehensive set of public datasets:
 *   **[GSE274279](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274279)**: Mouse cochlea and utricle aging snRNA-seq (Xia et al., 2025).
 *   **[GSE137299](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE137299)**: Mouse developmental scRNA-seq (E14-P7).
 *   **[GSE165502](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165502)**: Mouse Spiral Ganglion Neuron (SGN) scRNA-seq.
-*   **Xenopus Datasets**: GSE73829, GSE73828, GSE37767, GSE69546 (Evolutionary conservation).
 
 ## Therapeutic Priority Score (TPS)
 The TPS is a composite metric derived from four key biological modules:
