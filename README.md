@@ -77,11 +77,23 @@ print(tps.head(20))
 
 ## 📊 Datasets
 
-- GSE213796: Human (41,697 cells)
-- GSE114157: Mouse SGN
-- GSE60019: Mouse Development
-- GSE274279: Mouse Aging
-- Literature: GWAS genes
+The pipeline integrates **9 public datasets** from GEO and literature:
+
+| Dataset | Species | Type | Cells/Samples | Purpose |
+|---------|---------|------|---------------|---------|
+| **GSE213796** | Human | snRNA-seq | 41,697 cells | **HC Specificity** (2,297 HC cells) |
+| **GSE114157** | Mouse | scRNA-seq | 3,000 cells | SGN Specificity |
+| **GSE60019** | Mouse | Bulk RNA-seq | 16 samples | Developmental Peak (E16-P7) |
+| **GSE274279** | Mouse | snRNA-seq | 3,000 cells | Aging Decline (12M vs 24M) |
+| GSE137299 | Mouse | scRNA-seq | Dev series | Developmental validation |
+| GSE165502 | Mouse | scRNA-seq | SGN atlas | SGN subtype markers |
+| GSE210215 | Mouse | scRNA-seq | Runx1 cKO | SGN differentiation |
+| GSE210216 | Mouse | scRNA-seq | Runx1 study | SGN complementary |
+| GSE132925 | Mouse | RNA-seq | Multi-age | SGN aging trajectories |
+| **Literature** | Human | Curated | - | **GWAS deafness genes** |
+
+**Primary datasets** (used for TPS calculation): GSE213796, GSE114157, GSE60019, GSE274279, Literature  
+**Supporting datasets** (validation & annotation): GSE137299, GSE165502, GSE210215, GSE210216, GSE132925
 
 ---
 
