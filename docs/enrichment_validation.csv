@@ -1,0 +1,4 @@
+Gene_Set,Found,Total,Expected,Fold,P_value,Genes
+Hereditary Deafness,10,20,0.1,182.4x,2.72e-21,"CDH23, GJB2, GJB6, MYO7A, OTOF, POU4F3, STRC, TECTA, TMC1, USH2A"
+HC Differentiation,5,12,0.0,152.0x,1.09e-10,"ATOH1, ESPN, GFI1, MYO7A, POU4F3"
+Sensory Sound,7,12,0.0,212.8x,7.35e-16,"CABP2, CDH23, MYO7A, OTOA, OTOF, TMC1, TMC2"

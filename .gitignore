@@ -1,0 +1,4 @@
+# Exclude everything except docs/
+/*
+!/docs/
+!/.gitignore
