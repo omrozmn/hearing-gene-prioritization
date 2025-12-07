@@ -494,6 +494,23 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <h3 style="margin-top: 30px;">Enrichment Visualization</h3>
+                <img src="assets/figures/enrichment_barplot.png" alt="Enrichment Validation"
+                    style="width: 100%; max-width: 700px; margin: 20px auto; display: block; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <p style="text-align: center; color: #666; margin-top: 10px;">
+                    <em>Figure 1. Hypergeometric enrichment test showing significant enrichment of known gene sets in
+                        top 100 TPS genes.</em>
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Top 30 Genes Comparison</h2>
+                <img src="assets/figures/top30_comparison.png" alt="Top 30 Genes"
+                    style="width: 100%; max-width: 900px; margin: 20px auto; display: block; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <p style="text-align: center; color: #666; margin-top: 10px;">
+                    <em>Figure 2. Top 30 highest-ranked genes by TPS score, colored by functional category.</em>
+                </p>
             </div>
 
             <div class="card">
@@ -822,15 +839,24 @@ by_sgn = tps.sort_values('sgn_specificity', ascending=False)</code></pre>
                             <li>Gold-standard validation: enrichment p < 10⁻¹⁰</li>
                         </ul>
 
-                        <h3><i class="fas fa-book"></i> Resources</h3>
+                        <h3>Figures</h3>
+                        <div style="margin: 20px 0;">
+                            <h4 style="margin: 20px 0 10px;">Figure 3. Leave-One-Component-Out (LOCO) Validation</h4>
+                            <img src="assets/figures/loco_heatmap.png" alt="LOCO Heatmap"
+                                style="width: 100%; max-width: 800px; margin: 10px auto; display: block; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <p style="text-align: center; color: #666; margin-top: 10px;">
+                                <em>Stability testing: Canonical gene rankings when each TPS component is removed.</em>
+                            </p>
+                        </div>
                         <p style="color: #666; margin: 15px 0;">
-                            <em>Figures will be uploaded to bioRxiv upon submission</em>
+                            <em>Additional figures (workflow, heatmaps) available in Methods section and GitHub
+                                repository.</em>
                         </p>
 
                         <h3 style="margin-top: 30px;">Download Preprint</h3>
                         <p>
                             <a href="#" class="btn">Download PDF (Coming Soon)</a>
-                            <a href="https://github.com/your-repo/tps" class="btn"
+                            <a href="https://github.com/omrozmn/hearing-gene-prioritization" class="btn"
                                 style="margin-left: 10px; background: #2d3748;">GitHub Repository</a>
                         </p>
 
