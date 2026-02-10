@@ -1,45 +1,41 @@
-# Hearing Gene Prioritization Pipeline
+# Hearing Gene Prioritization Pipeline (TPS v2.0)
 
 ## Overview
-This project implements an end-to-end bioinformatics pipeline to prioritize therapeutic gene targets for hearing loss. It integrates multi-species single-cell RNA-seq data (human and mouse) across development, maturation, and aging stages to identify genes that are:
-1.  **Highly specific to hair cells** (Target specificity).
-2.  **Conserved between human and mouse** (Translational potential).
-3.  **Supported by GWAS evidence** for hearing traits (Clinical relevance).
-4.  **Dynamically regulated** during development or aging (Regenerative potential).
+This project implements the **Therapeutic Priority Score (TPS)**, an integrative multi-omics framework to prioritize gene therapy targets for sensorineural hearing loss. It synthesizes 15 datasets across human and mouse models (2023-2025) to identify targets that are:
+1.  **Strictly Specific** to the inner ear (Safety Axis).
+2.  **Developmentally Potent** for regeneration (Efficacy Axis).
+3.  **Vulnerable** to aging and noise trauma.
 
-## Datasets
-The pipeline utilizes a comprehensive set of public datasets:
-*   **[GSE213796](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE213796)**: Human fetal and adult inner ear snRNA-seq.
-*   **[GSE114157](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE114157)**: Mouse mature cochlear hair cells (Smart-seq2).
-*   **[GSE60019](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE60019)**: Mouse cochlear and utricle development (Bulk RNA-seq).
-*   **[GSE274279](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE274279)**: Mouse cochlea and utricle aging snRNA-seq (Xia et al., 2025).
-*   **[GSE137299](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE137299)**: Mouse developmental scRNA-seq (E14-P7).
-*   **[GSE165502](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165502)**: Mouse Spiral Ganglion Neuron (SGN) scRNA-seq.
-*   **[GSE210215](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE210215)**: Runx1 cKO SGN atlas.
-*   **[GSE210216](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE210216)**: Complementary Runx1 SGN study.
-*   **[GSE132925](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132925)**: Multi-age SGN transcriptome.
+**Key Innovation (v2.0):** Unlike traditional rankings, TPS explicitly **decouples** biological discovery from human genetic evidence (GWAS). GWAS is used only for independent validation, preventing circular reasoning.
+
+## Datasets (Key Examples)
+The pipeline integrates 15 validated datasets, including:
+*   **Wang et al. (2024)**: Diseased Human Utricle Atlas (Regenerative signal).
+*   **Kelley et al. (2023)**: Human Inner Ear Organoid Atlas.
+*   **Xia et al. (2025)**: Mouse Cochlea Aging Atlas.
+*   **GSE194089**: Spatial Tonotopy Gradients.
+*   *...and 11 others spanning development and injury models.*
 
 ## Therapeutic Priority Score (TPS)
-The TPS is a composite metric derived from four key biological modules:
-```
-TPS = 0.30 * HC_Regulatory_Module + 
-      0.20 * SC_Plasticity_Module + 
-      0.25 * SGN_Vulnerability_Module + 
-      0.25 * Human_Transferability
-```
-*   **HC Regulatory Module:** Correlation with key drivers (*ATOH1*, *POU4F3*, *GFI1*).
-*   **SC Plasticity Module:** Correlation with regeneration markers (*SOX2*, *HES1*, *LGR5*).
-*   **SGN Vulnerability Module:** Specificity to spiral ganglion neurons and noise sensitivity.
-*   **Human Transferability:** Conservation in human organoid atlas.
+The score is calculated using a **Weighted Multi-Criteria Decision Analysis (MCDA)** framework structured along two clinical axes.
 
-Genes are ranked by TPS to suggest the most promising candidates for gene therapy or drug targeting. Top candidates include **OTOF**, **SLC26A5**, and **MYO7A**.
+### 1. Safety Axis (40%)
+*   **Human-Integrated Specificity ($S_{hc}$, 40%):** Penalizes off-target expression to minimize toxicity.
 
-## Advanced Analysis
-Beyond the base TPS, the pipeline includes:
-1.  **Cell-Type Specific Scoring:** Identifies targets unique to Hair Cells, Supporting Cells, SGNs, and Stria Vascularis.
-2.  **Noise Injury Integration:** Incorporates data from noise-exposed cochleae to prioritize rescue targets.
-3.  **Pathway Enrichment:** GO & KEGG analysis to reveal biological mechanisms (e.g., Sensory Perception, Ion Transport).
-4.  **Druggability:** Integrates pLI scores and subcellular localization for clinical feasibility.
+### 2. Efficacy Axis (60%)
+*   **Developmental Peak ($D_{peak}$, 15%):** Regenerative potential (E14-P7).
+*   **Global Vulnerability ($A_{vuln}$, 15%):** Genes lost during aging/trauma.
+*   **Human Support ($S_{sup}$, 15%):** Organoid validation.
+*   **Spatial Tonotopy ($T_{spatial}$, 15%):** Frequency map relevance.
+
+### Scoring Formula
+$$ TPS = 0.40 \cdot S_{hc} + 0.15 \cdot S_{sup} + 0.15 \cdot A_{vuln} + 0.15 \cdot D_{peak} + 0.15 \cdot T_{spatial} $$
+
+### Top Candidates
+*   **Rank #1: POU4F3**
+*   **Rank #2: SOX2**
+*   **Rank #5: ATOH1**
+*   *Note: This revised ranking emphasizes combinatorial reprogramming factors over simple structural genes.*
 
 ## Manuscript & Validation
 This repository includes a `manuscript/` directory with auto-generated drafts for a scientific paper:
