@@ -498,7 +498,7 @@
     <div id="home" class="tab-content active">
         <header>
             <h1>Hearing Gene Prioritization</h1>
-            <p class="subtitle">An integrative multi-omics framework (TPS v2.0) to prioritize gene therapy targets for
+            <p class="subtitle">An integrative multi-omics framework to prioritize gene therapy targets for
                 sensorineural hearing loss.</p>
             <div style="display: flex; gap: 1rem; justify-content: center;">
                 <a onclick="switchTab('data')" class="btn btn-outline" style="cursor: pointer;"><i
@@ -510,7 +510,7 @@
 
         <main>
             <section>
-                <h2><i class="fa-solid fa-star"></i> Top Priority Candidates (v2.0)</h2>
+                <h2><i class="fa-solid fa-star"></i> Top Priority Candidates</h2>
                 <div class="grid">
                     <!-- Rank 1 -->
                     <div class="card gene-card rank-1">
@@ -537,13 +537,13 @@
                         <h3>ATOH1 <span class="card-tag" style="background:#64748b; color:white;">Rank #5</span></h3>
                         <p><strong>Role:</strong> Hair Cell Fate Initiator.</p>
                         <p><strong>Rationale:</strong> The classic "master gene." Placed in top tier, but ranked below
-                            POU4F3 to reflect the consensus that initiation is not enough for survival.</p>
+                            POU4F3 to reflect the consensus that expectation is not enough for survival.</p>
                     </div>
                 </div>
             </section>
 
             <section>
-                <h2><i class="fa-solid fa-layer-group"></i> The TPS Framework (v2.0)</h2>
+                <h2><i class="fa-solid fa-layer-group"></i> The TPS Framework</h2>
                 <div class="grid">
                     <div class="card" style="border-top: 4px solid var(--danger);">
                         <h3>🛡️ Safety Axis (40%)</h3>
@@ -680,20 +680,61 @@
     <div id="figures" class="tab-content">
         <header style="padding: 3rem 2rem;">
             <h1>Figures & Gallery</h1>
-            <p class="subtitle">Visualizations from the manuscript and supplementary information.</p>
+            <p class="subtitle">Comprehensive visualization of the analysis results.</p>
         </header>
         <main>
             <div class="grid">
                 <div class="card">
-                    <h3>Figure 1: Top 30 Candidates</h3>
-                    <img src="results/paper_figures/TPS_Top30.png" style="width:100%; cursor:pointer;"
-                        onclick="openLightbox(this)" alt="Top 30 Ranked Genes">
+                    <h3>Figure 1: Workflow Overview</h3>
+                    <img src="results/paper_figures/Figure1_Workflow.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="TPS Analysis Workflow">
                 </div>
                 <div class="card">
-                    <h3>Figure S3: LISI Integration</h3>
-                    <img src="results/paper_figures/TPS_Module_Heatmap.png" style="width:100%; cursor:pointer;"
-                        onclick="openLightbox(this)" alt="Integration Quality (iLISI 1.93)">
+                    <h3>Figure 3: TPS Ranking Distribution</h3>
+                    <img src="results/paper_figures/Figure3_TPS_Ranking.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="TPS Score Distribution">
                 </div>
+                <div class="card">
+                    <h3>Top 30 Candidates</h3>
+                    <img src="results/paper_figures/TPS_Top30.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="Top 30 Priority Genes">
+                </div>
+                <div class="card">
+                    <h3>Module Contributions</h3>
+                    <img src="results/paper_figures/TPS_Module_Heatmap.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="Module Contribution Heatmap">
+                </div>
+                <div class="card">
+                    <h3>Top 10: Hair Cells</h3>
+                    <img src="results/paper_figures/top10_Hair_Cells.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="Top 10 Hair Cell Specific Targets">
+                </div>
+                <div class="card">
+                    <h3>Top 10: Supporting Cells</h3>
+                    <img src="results/paper_figures/top10_Supporting_Cells.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="Top 10 Supporting Cell Targets">
+                </div>
+                <div class="card">
+                    <h3>Top 10: SGNs</h3>
+                    <img src="results/paper_figures/top10_SGN.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="Top 10 Spiral Ganglion Neuron Targets">
+                </div>
+                <div class="card">
+                    <h3>Top 10: Stria Vascularis</h3>
+                    <img src="results/paper_figures/top10_Stria_Vascularis.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="Top 10 Stria Vascularis Targets">
+                </div>
+                <div class="card">
+                    <h3>Pathway Enrichment</h3>
+                    <img src="results/paper_figures/pathway_barplot.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="GO Pathway Enrichment Analysis">
+                </div>
+                <div class="card">
+                    <h3>Noise Injury Response</h3>
+                    <img src="results/paper_figures/noise_volcano.png" style="width:100%; cursor:pointer;"
+                        onclick="openLightbox(this)" alt="Volcano Plot: Noise Injury">
+                </div>
+
                 <!-- Novelty Identity Cards (User Request) -->
                 <div class="card" style="grid-column: 1 / -1; background: #f0fdf4; border-color: #bbf7d0;">
                     <h3 style="color: #166534;"><i class="fa-solid fa-fingerprint"></i> Novelty Validation: Identity
@@ -718,6 +759,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </main>
     </div>
 
