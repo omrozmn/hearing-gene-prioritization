@@ -677,6 +677,9 @@
         <p>&copy; 2026 Hearing Gene Prioritization Project.</p>
     </footer>
 
+    <!-- Load Data Directly via Script -->
+    <script src="results/data.js"></script>
+
     <script>
         // Navigation Logic
         function switchTab(tabId) {
@@ -691,53 +694,77 @@
             document.getElementById('navLinks').classList.toggle('show');
         }
 
-        // CSV Logic
+        // Data Explorer Logic (Robust JSON Mode)
+        // TPS_DATA is loaded globally from results/data.js
+
         let allRows = [];
         let headers = [];
 
         document.getElementById('nav-data').addEventListener('click', () => {
-            if (allRows.length === 0) loadCSV();
+            // Check if data is loaded from external JS file
+            // We check TPS_DATA which is defined in results/data.js
+            if (typeof TPS_DATA !== 'undefined' && allRows.length === 0) {
+                loadJSONData();
+            } else if (typeof TPS_DATA === 'undefined') {
+                document.getElementById('tableContainer').innerHTML = '<p style="color:red; text-align:center; padding:2rem;">Error loading data source. Please ensure results/data.js is loaded.</p>';
+            }
         });
 
-        function loadCSV() {
+        function loadJSONData() {
             const loader = document.getElementById('loadingbox');
-            const container = document.getElementById('tableContainer');
             loader.style.display = 'block';
 
-            fetch('results/TPS_final.csv')
-                .then(r => r.text())
-                .then(text => {
-                    const lines = text.trim().split(/\r?\n/);
-                    headers = lines[0].split(',');
-                    allRows = lines.slice(1);
+            // Allow UI to update before processing massive array
+            setTimeout(() => {
+                allRows = TPS_DATA; // Use global variable from data.js
+                if (allRows.length > 0) {
+                    headers = Object.keys(allRows[0]);
                     renderTable(allRows.slice(0, 50));
-                    loader.style.display = 'none';
-                })
-                .catch(e => {
-                    container.innerHTML = `<p style="color:red; text-align:center;">Error loading data: ${e.message}</p>`;
-                });
+                }
+                loader.style.display = 'none';
+            }, 50);
         }
 
         function renderTable(rows) {
+            if (!rows || rows.length === 0) return;
+
             let html = '<table><thead><tr>';
-            headers.forEach(h => html += `<th>${h.replace(/"/g, '')}</th>`);
+            headers.forEach(h => html += `<th>${h}</th>`);
             html += '</tr></thead><tbody>';
+
             rows.forEach(r => {
-                const cols = r.split(',').map(c => c.replace(/"/g, ''));
-                html += '<tr>' + cols.map(c => `<td>${c}</td>`).join('') + '</tr>';
+                html += '<tr>';
+                headers.forEach(h => {
+                    html += `<td>${r[h] || ''}</td>`;
+                });
+                html += '</tr>';
             });
+
             html += '</tbody></table>';
+            html += `<div style="padding:1rem; text-align:center; color:#666; font-size:0.9rem;">
+                        Showing first ${rows.length} matches. <br>
+                        ${allRows.length} total genes available.
+                     </div>`;
+
             document.getElementById('tableContainer').innerHTML = html;
         }
 
         function filterTable() {
-            const term = document.getElementById('geneSearch').value.toUpperCase();
+            const term = document.getElementById('geneSearch').value.toUpperCase().trim();
+
             if (term.length < 2) {
                 renderTable(allRows.slice(0, 50));
                 return;
             }
-            const filtered = allRows.filter(r => r.toUpperCase().includes(term));
-            renderTable(filtered.slice(0, 50));
+
+            // Search in ALL fields of the object
+            const filtered = allRows.filter(row => {
+                return Object.values(row).some(val =>
+                    String(val).toUpperCase().includes(term)
+                );
+            });
+
+            renderTable(filtered.slice(0, 100)); // Limit to 100 for performance
         }
 
         // Lightbox
@@ -745,6 +772,7 @@
             const lb = document.getElementById('lightbox');
             lb.style.display = 'flex';
             document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox-caption').innerText = img.alt;
         }
     </script>
 </body>
