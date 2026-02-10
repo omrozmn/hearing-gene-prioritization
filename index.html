@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TPS Discovery Platform | Next-Gen Gene Therapy</title>
 
-    <!-- Fonts: Standard Scientific Look + Tech Vibe -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
@@ -18,9 +18,7 @@
             --bg-color: #030712;
             --card-bg: rgba(30, 41, 59, 0.6);
             --accent: #3b82f6;
-            /* Electric Blue */
             --secondary: #10b981;
-            /* Emerald Green */
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --glass: rgba(255, 255, 255, 0.03);
@@ -155,7 +153,7 @@
             font-weight: 300;
         }
 
-        /* --- The Engine (Controls + Table) --- */
+        /* --- Engine Interface --- */
         .engine-interface {
             background: var(--glass);
             border: 1px solid var(--border);
@@ -363,9 +361,8 @@
     <!-- VIEW 1: EXPLORER (The Engine) -->
     <div id="explorer" class="app-view active">
         <div class="hero">
-            <h1>Dynamic Prioritization Engine</h1>
-            <p class="subtitle">Live ranking of 36,485 cochlear gene candidates based on 15 integrated multi-omics
-                layers.</p>
+            <h1>Priority Index</h1>
+            <p class="subtitle">Live ranking of top 2,000 candidates based on multi-omics integration.</p>
         </div>
 
         <div class="engine-interface">
@@ -375,7 +372,7 @@
                     <input type="text" class="search-input" id="search" placeholder="Type Gene Symbol (e.g. POU4F3)..."
                         onkeyup="filterData()">
                 </div>
-                <div class="stat-badge">Total Candidates: <b id="count-total">36,485</b></div>
+                <div class="stat-badge">Total Candidates: <b id="count-total">2,000+</b></div>
                 <div class="stat-badge">Displaying: <b id="count-shown">--</b></div>
             </div>
 
@@ -385,7 +382,7 @@
                         <tr>
                             <th onclick="sortData('gene')">Gene Symbol <i class="fa-solid fa-sort"></i></th>
                             <th onclick="sortData('rank')">Global Rank <i class="fa-solid fa-sort"></i></th>
-                            <th onclick="sortData('score')">TPS Score Index <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="sortData('final_score')">TPS Score Index <i class="fa-solid fa-sort"></i></th>
                             <th>Priority Tier</th>
                         </tr>
                     </thead>
@@ -404,8 +401,7 @@
     <div id="novelty" class="app-view">
         <div class="hero">
             <h1>Novelty Candidates</h1>
-            <p class="subtitle">High-priority targets with no previous GWAS association, validated through spatial
-                reconstruction.</p>
+            <p class="subtitle">High-priority targets with no previous GWAS association.</p>
         </div>
         <div class="grid-cards">
             <!-- Card 1 -->
@@ -488,31 +484,25 @@
     <script>
         let fullData = [];
         let displayData = [];
-        let sortCol = 'rank'; // Default sort
-        let sortAsc = true;   // Default asc (Rank 1 is best)
+        let sortCol = 'rank';
+        let sortAsc = true;
 
         document.addEventListener('DOMContentLoaded', () => {
-            if (typeof TPS_DATA !== 'undefined') {
+            // 1. Data Loading Safety Check
+            if (typeof TPS_DATA !== 'undefined' && TPS_DATA.length > 0) {
                 fullData = TPS_DATA;
 
-                // Pre-calculate numerical values for fast sorting
-                fullData.forEach(d => {
-                    // Heuristic to find correct keys
-                    let keys = Object.keys(d);
-                    let scoreK = keys.find(k => k.toLowerCase().includes('score') || k.toLowerCase().includes('tps'));
-                    let rankK = keys.find(k => k.toLowerCase().includes('rank'));
+                // 2. Data Validation & Pre-processing (Handle CSV conversion artifacts)
+                // TPS_DATA is likely [ {gene: "POU4F3", rank: 1, final_score: 9.8}, ... ] based on CSV to JSON conversion
 
-                    d._gene = d[keys[0]].replace(/['"]/g, ''); // Clean Name
-                    d._score = scoreK ? parseFloat(d[scoreK]) : 0;
-                    d._rank = rankK ? parseFloat(d[rankK]) : 99999;
-                });
-
-                // Initial Sort
-                sortData('rank', true); // Force initial sort by rank
+                // Initial Sort: Rank 1 -> N
+                sortData('rank', true);
 
                 document.getElementById('loading').style.display = 'none';
+                document.getElementById('count-total').innerText = fullData.length.toLocaleString();
             } else {
-                document.getElementById('loading').innerHTML = "Failed to load database. (results/data.js missing)";
+                document.getElementById('loading').innerHTML = "Failed to load database. (results/data.js missing or empty)";
+                console.error("TPS_DATA is undefined or empty.");
             }
         });
 
@@ -528,12 +518,15 @@
             const q = document.getElementById('search').value.toLowerCase().trim();
             if (q.length < 2) {
                 // If search is cleared, reset to top 100 sorted
-                sortData(sortCol, false); // Re-sort current view
+                sortData(sortCol, false); // Re-apply sort without filter
                 return;
             }
 
-            // Filter
-            displayData = fullData.filter(d => d._gene.toLowerCase().includes(q));
+            // robust filter
+            displayData = fullData.filter(d => {
+                if (!d.gene) return false;
+                return String(d.gene).toLowerCase().includes(q);
+            });
             renderTable();
         }
 
@@ -545,7 +538,13 @@
 
             // Sort full dataset first
             fullData.sort((a, b) => {
-                let va = a['_' + key], vb = b['_' + key];
+                let va = a[key], vb = b[key];
+
+                // Parse numbers if needed, though JSON usually handles this
+                if (key === 'rank' || key === 'final_score') {
+                    va = parseFloat(va); vb = parseFloat(vb);
+                }
+
                 if (va < vb) return sortAsc ? -1 : 1;
                 if (va > vb) return sortAsc ? 1 : -1;
                 return 0;
@@ -564,23 +563,31 @@
             const tbody = document.getElementById('table-body');
             document.getElementById('count-shown').innerText = displayData.length;
 
+            if (displayData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:2rem;">No genes found.</td></tr>';
+                return;
+            }
+
             let html = '';
             displayData.forEach(row => {
-                // Score Visualization
-                let scorePct = (row._score / 15) * 100; if (scorePct > 100) scorePct = 100;
+                // Visualization logic
+                let scoreVal = parseFloat(row.final_score);
+                let scorePct = (scoreVal / 10) * 100; // Assume max 10 for bar visualization
+                if (scorePct > 100) scorePct = 100;
 
                 // Tier Logic
+                let rankVal = parseFloat(row.rank);
                 let tier = '<span style="color:#ef4444;">Low</span>';
-                if (row._rank <= 1000) tier = '<span style="color:#fbbf24;">Medium</span>';
-                if (row._rank <= 100) tier = '<span style="color:#34d399; font-weight:600;">High Priority</span>';
+                if (rankVal <= 1000) tier = '<span style="color:#fbbf24;">Medium</span>';
+                if (rankVal <= 100) tier = '<span style="color:#34d399; font-weight:600;">High Priority</span>';
 
                 html += `
                 <tr>
-                    <td class="gene-col">${row._gene}</td>
-                    <td class="rank-col">#${row._rank}</td>
+                    <td class="gene-col">${row.gene || 'Unknown'}</td>
+                    <td class="rank-col">#${rankVal}</td>
                     <td>
                         <div class="bar-container"><div class="bar-fill" style="width:${scorePct}%"></div></div>
-                        <span style="font-family:'JetBrains Mono'; font-weight:600;">${row._score.toFixed(2)}</span>
+                        <span style="font-family:'JetBrains Mono'; font-weight:600;">${scoreVal.toFixed(2)}</span>
                     </td>
                     <td>${tier}</td>
                 </tr>`;
