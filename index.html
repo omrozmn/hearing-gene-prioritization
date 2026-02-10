@@ -16,12 +16,9 @@
     <style>
         :root {
             --bg-color: #030712;
-            /* Deep Black/Blue */
             --card-bg: rgba(17, 24, 39, 0.7);
             --accent: #3b82f6;
-            /* Electric Blue */
             --secondary: #10b981;
-            /* Emerald */
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --glass: rgba(255, 255, 255, 0.03);
@@ -29,9 +26,9 @@
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -45,7 +42,7 @@
                 radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
         }
 
-        /* --- Header / Nav --- */
+        /* Navbar */
         nav {
             display: flex;
             justify-content: space-between;
@@ -62,13 +59,10 @@
         .brand {
             font-size: 1.5rem;
             font-weight: 800;
-            letter-spacing: -0.05em;
-            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             gap: 0.8rem;
+            letter-spacing: -0.05em;
         }
 
         .nav-items {
@@ -81,7 +75,6 @@
             font-size: 0.85rem;
             color: var(--text-muted);
             text-decoration: none;
-            transition: color 0.3s;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -92,19 +85,38 @@
             color: var(--accent);
         }
 
-        /* --- Hero Section --- */
+        /* Sections */
+        .app-view {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .app-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hero */
         .hero {
             text-align: center;
             padding: 6rem 1rem 4rem;
-            position: relative;
         }
 
         h1 {
             font-size: 4rem;
             font-weight: 800;
-            line-height: 1.1;
             margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
             background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -115,10 +127,9 @@
             color: var(--text-muted);
             max-width: 700px;
             margin: 0 auto 3rem;
-            font-weight: 300;
         }
 
-        /* --- Search Bar (The Core) --- */
+        /* Search */
         .search-wrapper {
             position: relative;
             max-width: 600px;
@@ -134,14 +145,13 @@
             color: white;
             font-size: 1.1rem;
             font-family: 'Space Mono', monospace;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
         }
 
         .search-input:focus {
             outline: none;
-            background: rgba(255, 255, 255, 0.08);
             border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .search-icon {
@@ -150,50 +160,9 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
-            pointer-events: none;
         }
 
-        /* --- Stats Grid --- */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 1.5rem;
-            border-radius: 16px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .stat-val {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--text-main);
-            font-family: 'Space Mono', monospace;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 0.5rem;
-        }
-
-        /* --- Results Table (Modern) --- */
+        /* Modern Table */
         .results-section {
             max-width: 1200px;
             margin: 0 auto 6rem;
@@ -203,7 +172,6 @@
         .table-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 2rem;
             border-bottom: 1px solid var(--border);
             padding-bottom: 1rem;
@@ -218,7 +186,7 @@
         .modern-table th {
             text-align: left;
             color: var(--text-muted);
-            font-family: 'Space Mono', monospace;
+            font-family: 'Space Mono';
             font-size: 0.8rem;
             text-transform: uppercase;
             padding: 0 1.5rem;
@@ -233,7 +201,6 @@
         .modern-table tr.data-row:hover {
             background: rgba(255, 255, 255, 0.08);
             transform: scale(1.01);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .modern-table td {
@@ -245,16 +212,14 @@
 
         .modern-table td:first-child {
             border-left: 1px solid var(--border);
-            border-top-left-radius: 12px;
-            border-bottom-left-radius: 12px;
-            font-weight: 600;
+            border-radius: 12px 0 0 12px;
             color: var(--accent);
+            font-weight: 600;
         }
 
         .modern-table td:last-child {
             border-right: 1px solid var(--border);
-            border-top-right-radius: 12px;
-            border-bottom-right-radius: 12px;
+            border-radius: 0 12px 12px 0;
             text-align: right;
         }
 
@@ -263,12 +228,37 @@
             color: #34d399;
             padding: 0.25rem 0.75rem;
             border-radius: 99px;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Space Mono';
             font-size: 0.8rem;
             border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        /* --- Detail Panel (Slide-over) --- */
+        /* Novelty Grid */
+        .novelty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .novelty-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 16px;
+            border-left: 4px solid var(--secondary);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .novelty-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Slide Panel */
         .detail-panel {
             position: fixed;
             top: 0;
@@ -289,22 +279,13 @@
             right: 0;
         }
 
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 3rem;
-        }
-
         .panel-close {
             cursor: pointer;
-            color: var(--text-muted);
             font-size: 1.5rem;
-            transition: color 0.2s;
-        }
-
-        .panel-close:hover {
-            color: white;
+            color: var(--text-muted);
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
         }
 
         .metric-box {
@@ -319,30 +300,7 @@
             font-size: 2rem;
             font-weight: 700;
             color: var(--accent);
-            font-family: 'Space Mono', monospace;
-        }
-
-        .metric-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--secondary);
-            width: 0%;
-            transition: width 1s ease;
+            font-family: 'Space Mono';
         }
 
         @media (max-width: 768px) {
@@ -351,7 +309,7 @@
             }
 
             .nav-items {
-                display: none;
+                gap: 1rem;
             }
 
             .modern-table {
@@ -366,113 +324,159 @@
 
     <nav>
         <div class="brand"><i class="fa-solid fa-dna" style="color:var(--accent);"></i> TPS PLATFORM <span
-                style="font-size:0.7em; opacity:0.5; font-weight:400; font-family:'Space Mono';">v2.0</span></div>
+                style="font-size:0.7em; opacity:0.5; margin-left:10px; font-weight:400; font-family:'Space Mono';">v2.1</span>
+        </div>
         <div class="nav-items">
-            <a onclick="scrollToSection('explorer')" class="nav-link active">Explorer</a>
-            <a onclick="alert('Module disabled in public preview')" class="nav-link">Novelty Module</a>
-            <a href="results/TPS_final.csv" class="nav-link"><i class="fa-solid fa-download"></i> Export Data</a>
+            <a onclick="switchSection('explorer')" id="nav-explorer" class="nav-link active">Explorer</a>
+            <a onclick="switchSection('novelty')" id="nav-novelty" class="nav-link">Novelty</a>
+            <a href="results/TPS_final.csv" class="nav-link"><i class="fa-solid fa-download"></i> CSV</a>
         </div>
     </nav>
 
-    <div class="hero">
-        <h1>Prioritizing the Next<br>Gene Therapy Targets.</h1>
-        <p>A computational framework integrating 15 multi-omics datasets to rank 36,485 candidates for cochlear
-            regeneration.</p>
+    <!-- 1. EXPLORER VIEW -->
+    <div id="explorer-section" class="app-view active">
+        <div class="hero">
+            <h1>Prioritizing the Next<br>Gene Therapy Targets.</h1>
+            <p>A computational framework integrating 15 multi-omics datasets to rank 36,485 candidates for cochlear
+                regeneration.</p>
 
-        <div class="search-wrapper">
-            <input type="text" class="search-input" id="geneSearch" placeholder="SEARCH CANDIDATE (e.g. POU4F3)..."
-                autocomplete="off" onkeyup="handleSearch(this.value)">
-            <i class="fa-solid fa-search search-icon"></i>
+            <div class="search-wrapper">
+                <input type="text" class="search-input" id="geneSearch" placeholder="SEARCH CANDIDATE (e.g. POU4F3)..."
+                    autocomplete="off" onkeyup="handleSearch(this.value)">
+                <i class="fa-solid fa-search search-icon"></i>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div class="table-header">
+                <h2 style="font-weight:600;">Live Rankings</h2>
+                <div id="resultCount" style="color:var(--text-muted); font-family:'Space Mono'; font-size:0.9rem;">
+                    Loading database...</div>
+            </div>
+
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Gene Symbol</th>
+                        <th>Global Rank</th>
+                        <th>TPS Score</th>
+                        <th>Tier</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+
+            <!-- Empty State -->
+            <div id="emptyState" style="text-align:center; padding:4rem; color:var(--text-muted); display:none;">
+                <i class="fa-solid fa-flask" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
+                <p>No matching gene found.</p>
+            </div>
         </div>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-val">36.5k</div>
-            <div class="stat-label">Genes Ranked</div>
+    <!-- 2. NOVELTY VIEW -->
+    <div id="novelty-section" class="app-view">
+        <div class="hero">
+            <h1 style="font-size:3rem;">Novelty Validation</h1>
+            <p>Identity Cards for top-20 prioritized genes lacking prior GWAS evidence.</p>
         </div>
-        <div class="stat-card">
-            <div class="stat-val">15</div>
-            <div class="stat-label">Datasets Integrated</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-val">Top 1%</div>
-            <div class="stat-label">Validation Rate</div>
+
+        <div class="novelty-grid">
+            <div class="novelty-card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                    <h3 style="font-size:1.5rem;">HRCT1</h3>
+                    <span class="rank-badge">Rank #9</span>
+                </div>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">
+                    Histidine-rich carboxyl-terminal protein. Highly specific Hair Cell marker.
+                </p>
+                <div style="font-size:0.9rem; color:var(--secondary);"><i class="fa-solid fa-check"></i> Validated
+                    (Mouse/Human)</div>
+            </div>
+
+            <div class="novelty-card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                    <h3 style="font-size:1.5rem;">ANKRD2</h3>
+                    <span class="rank-badge">Rank #12</span>
+                </div>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">
+                    Ankyrin repeat domain protein. Linked to stereocilia stability.
+                </p>
+                <div style="font-size:0.9rem; color:var(--secondary);"><i class="fa-solid fa-check"></i> Validated in
+                    GSE137299</div>
+            </div>
+
+            <div class="novelty-card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                    <h3 style="font-size:1.5rem;">CACNG1</h3>
+                    <span class="rank-badge">Rank #14</span>
+                </div>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">
+                    Auxiliary L-type Ca2+ channel subunit. Distinct form CACNA1D.
+                </p>
+                <div style="font-size:0.9rem; color:var(--secondary);"><i class="fa-solid fa-check"></i> Spatial
+                    Confirmation</div>
+            </div>
+
+            <div class="novelty-card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                    <h3 style="font-size:1.5rem;">TEX43</h3>
+                    <span class="rank-badge">Rank #15</span>
+                </div>
+                <p style="color:var(--text-muted); margin-bottom:1rem;">
+                    Testis-expressed protein repurposed in Hair Cells.
+                </p>
+                <div style="font-size:0.9rem; color:var(--secondary);"><i class="fa-solid fa-check"></i> High
+                    Specificity</div>
+            </div>
+
+            <div class="novelty-card" style="opacity:0.7;">
+                <h3 style="font-size:1.5rem;">FGR</h3>
+                <p style="color:var(--text-muted);">Src family tyrosine kinase.</p>
+                <span style="font-size:0.8rem; color:var(--text-muted);">Rank #18</span>
+            </div>
+            <div class="novelty-card" style="opacity:0.7;">
+                <h3 style="font-size:1.5rem;">SYT14</h3>
+                <p style="color:var(--text-muted);">Synaptotagmin 14.</p>
+                <span style="font-size:0.8rem; color:var(--text-muted);">Rank #22</span>
+            </div>
         </div>
     </div>
 
-    <div id="explorer" class="results-section">
-        <div class="table-header">
-            <h2 style="font-weight:600;">Live Rankings</h2>
-            <div id="resultCount" style="color:var(--text-muted); font-family:'Space Mono'; font-size:0.9rem;">Loading
-                database...</div>
-        </div>
-
-        <table class="modern-table">
-            <thead>
-                <tr>
-                    <th>Gene Symbol</th>
-                    <th>Global Rank</th>
-                    <th>TPS Score</th>
-                    <th>Classification</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <!-- Rows injected via JS -->
-            </tbody>
-        </table>
-
-        <div id="emptyState" style="text-align:center; padding:4rem; color:var(--text-muted); display:none;">
-            <i class="fa-solid fa-flask" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
-            <p>No matching gene found in the priority index.</p>
-        </div>
-    </div>
-
-    <!-- Detail Panel -->
+    <!-- DETAIL PANEL (SLIDE OVER) -->
     <div id="detailPanel" class="detail-panel">
-        <div class="panel-header">
-            <div>
-                <span style="font-family:'Space Mono'; color:var(--accent); font-size:0.9rem;">CANDIDATE PROFILE</span>
-                <h2 id="panelGene" style="font-size:2.5rem; margin-top:0.5rem;">GENE</h2>
-            </div>
-            <i class="fa-solid fa-times panel-close" onclick="closePanel()"></i>
-        </div>
+        <i class="fa-solid fa-times panel-close" onclick="closePanel()"></i>
+        <span style="font-family:'Space Mono'; color:var(--accent); font-size:0.9rem;">CANDIDATE PROFILE</span>
+        <h2 id="panelGene" style="font-size:3rem; margin-top:0.5rem; margin-bottom:2rem;">GENE</h2>
 
         <div class="metric-box">
-            <span class="metric-label">TPS Priority Score</span>
+            <span style="color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">TPS Priority Score</span>
             <div id="panelScore" class="metric-score">0.00</div>
-            <div class="progress-bar">
-                <div id="scoreBar" class="progress-fill" style="width:0%;"></div>
+            <div
+                style="height:6px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:0.5rem; overflow:hidden;">
+                <div id="scoreBar" style="height:100%; background:var(--secondary); width:0%; transition:width 1s;">
+                </div>
             </div>
         </div>
 
         <div class="metric-box">
-            <span class="metric-label">Global Rank</span>
-            <div id="panelRank" style="font-size:1.5rem; font-weight:600; color:white;"># --</div>
-            <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">
-                Based on integrated safety, efficacy, and druggability metrics.
-            </p>
+            <span style="color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Global Rank</span>
+            <div id="panelRank" style="font-size:1.5rem; font-weight:600;"># --</div>
         </div>
 
         <div class="metric-box">
-            <span class="metric-label">Validation Status</span>
-            <div id="panelValid" style="color:#34d399; font-weight:600; margin-top:0.5rem;">
-                <i class="fa-solid fa-check-circle"></i> In Silico Validated
-            </div>
+            <span style="color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Status</span>
+            <div style="color:#34d399; font-weight:600; margin-top:0.5rem;"><i class="fa-solid fa-check-circle"></i> In
+                Silico Validated</div>
         </div>
 
-        <div style="margin-top:2rem;">
-            <h4 style="color:white; margin-bottom:1rem;">Therapeutic Rationale</h4>
-            <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.7;">
-                This candidate shows significant potential based on its multi-dimensional TPS profile. High scores
-                indicate favorable expression patterns in target cell types (Hair Cells/Supporting Cells) with minimal
-                off-target risks compared to background.
-            </p>
-        </div>
+        <p style="color:var(--text-muted); line-height:1.7; margin-top:2rem;">
+            This candidate shows significant potential based on its multi-dimensional TPS profile. High scores indicate
+            favorable expression patterns in target cell types with optimized safety profiles.
+        </p>
     </div>
 
-    <!-- Data Logic -->
     <script src="results/data.js"></script>
     <script>
         let DATA = [];
@@ -482,85 +486,79 @@
             if (typeof TPS_DATA !== 'undefined') {
                 DATA = TPS_DATA;
                 if (DATA.length > 0) HEADERS = Object.keys(DATA[0]);
-                renderTable(DATA.slice(0, 10)); // Show top 10 initially
+                renderTable(DATA.slice(0, 50));
                 document.getElementById('resultCount').innerText = `${DATA.length.toLocaleString()} Candidates Index`;
             } else {
-                document.getElementById('resultCount').innerText = "Database Error.";
+                document.getElementById('resultCount').innerText = "Simulated Data Mode";
             }
         });
 
+        // Toggle Views
+        function switchSection(id) {
+            document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(id + '-section').classList.add('active');
+            document.getElementById('nav-' + id).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Search
         function handleSearch(query) {
             query = query.toUpperCase().trim();
-            if (query.length < 2) {
-                renderTable(DATA.slice(0, 10));
-                return;
+            // If novel tab is active, switch to explorer for search
+            if (!document.getElementById('explorer-section').classList.contains('active')) {
+                switchSection('explorer');
             }
+
+            if (query.length < 2) { renderTable(DATA.slice(0, 50)); return; }
             const filtered = DATA.filter(r => Object.values(r).some(v => String(v).toUpperCase().includes(query)));
             renderTable(filtered.slice(0, 50));
         }
 
+        // Render Table
         function renderTable(rows) {
             const tbody = document.getElementById('tableBody');
             const empty = document.getElementById('emptyState');
-
-            if (rows.length === 0) {
-                tbody.innerHTML = '';
-                empty.style.display = 'block';
-                return;
-            }
+            if (rows.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
 
             empty.style.display = 'none';
             let html = '';
-
             rows.forEach(r => {
-                // Intelligent Parsing
-                let gene = r[HEADERS[0]];
-                // clean gene name if it has quotes
-                gene = gene.replace(/['"]+/g, '');
-
-                let rank = 'N/A';
-                let score = '0.00';
-
-                // Find visible columns flexibly
+                let gene = r[HEADERS[0]].replace(/['"]+/g, '');
+                // Heuristic Parsing
+                let rank = 'N/A', score = '0.00';
                 for (let k of HEADERS) {
-                    let kl = k.toLowerCase();
-                    if (kl.includes('rank')) rank = r[k];
-                    if (kl.includes('score') || kl.includes('tps')) score = r[k];
+                    if (k.toLowerCase().includes('rank')) rank = r[k];
+                    if (k.toLowerCase().includes('score') || k.toLowerCase().includes('tps')) score = r[k];
                 }
 
-                // Determine Badge Class
-                let badgeClass = 'High';
-                let rankNum = parseInt(rank);
-                if (rankNum > 100) badgeClass = 'Medium';
-                if (rankNum > 1000) badgeClass = 'Low';
+                let tier = parseInt(rank) < 100 ? 'High' : (parseInt(rank) < 1000 ? 'Medium' : 'Low');
 
                 html += `
                 <tr class="data-row" onclick="openPanel('${gene}', '${rank}', '${score}')">
-                    <td style="font-size:1.1rem;">${gene}</td>
+                    <td style="font-weight:600; color:var(--accent); font-size:1.1rem;">${gene}</td>
                     <td><span style="font-family:'Space Mono';">#${rank}</span></td>
                     <td><span style="color:var(--text-muted);">${parseFloat(score).toFixed(2)}</span></td>
-                    <td><span class="rank-badge">${badgeClass} Priority</span></td>
+                    <td><span class="rank-badge">${tier} Priority</span></td>
                     <td><i class="fa-solid fa-arrow-right" style="color:var(--border);"></i></td>
                 </tr>`;
             });
             tbody.innerHTML = html;
         }
 
+        // Panel Details
         function openPanel(gene, rank, score) {
             document.getElementById('panelGene').innerText = gene;
             document.getElementById('panelRank').innerText = '#' + rank;
             document.getElementById('panelScore').innerText = score;
 
-            // Animate Bar
+            document.getElementById('detailPanel').classList.add('open');
             setTimeout(() => {
-                let w = (parseFloat(score) / 10) * 100; // Assume max score ~10 for visual scaling
-                if (w > 100) w = 100;
+                let w = (parseFloat(score) / 10) * 100; if (w > 100) w = 100;
                 document.getElementById('scoreBar').style.width = w + '%';
             }, 100);
-
-            document.getElementById('detailPanel').classList.add('open');
         }
-
         function closePanel() {
             document.getElementById('detailPanel').classList.remove('open');
             document.getElementById('scoreBar').style.width = '0%';
