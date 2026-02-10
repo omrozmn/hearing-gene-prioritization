@@ -489,8 +489,8 @@
             <a onclick="switchTab('methodology'); toggleNav()" id="nav-methodology">Methodology</a>
             <a onclick="switchTab('data'); toggleNav()" id="nav-data">Data Explorer</a>
             <a onclick="switchTab('figures'); toggleNav()" id="nav-figures">Figures</a>
-            <a href="paper.html" target="_blank">Manuscript <i class="fa-solid fa-arrow-up-right-from-square"
-                    style="font-size: 0.8em;"></i></a>
+            <span style="color: #64748b; padding-bottom: 0.25rem; font-size: 0.95rem; opacity: 0.5;">Manuscript (In
+                Press)</span>
         </div>
     </nav>
 
@@ -501,10 +501,10 @@
             <p class="subtitle">An integrative multi-omics framework (TPS v2.0) to prioritize gene therapy targets for
                 sensorineural hearing loss.</p>
             <div style="display: flex; gap: 1rem; justify-content: center;">
-                <button onclick="switchTab('data')" class="btn btn-outline"><i class="fa-solid fa-table"></i> Browse
-                    Data</button>
-                <a href="https://github.com/omrozmn/hearing-gene-prioritization" class="btn"
-                    style="background: white; color: var(--secondary);"><i class="fa-brands fa-github"></i> GitHub</a>
+                <a onclick="switchTab('data')" class="btn btn-outline" style="cursor: pointer;"><i
+                        class="fa-solid fa-table"></i> Browse Data</a>
+                <span class="btn" style="background: rgba(255,255,255,0.7); color: #333; cursor: not-allowed;"><i
+                        class="fa-solid fa-lock"></i> Manuscript (In Press)</span>
             </div>
         </header>
 
@@ -694,8 +694,30 @@
                     <img src="results/paper_figures/TPS_Module_Heatmap.png" style="width:100%; cursor:pointer;"
                         onclick="openLightbox(this)" alt="Integration Quality (iLISI 1.93)">
                 </div>
-                <!-- Add placeholders for other figures if they exist on disk -->
-            </div>
+                <!-- Novelty Identity Cards (User Request) -->
+                <div class="card" style="grid-column: 1 / -1; background: #f0fdf4; border-color: #bbf7d0;">
+                    <h3 style="color: #166534;"><i class="fa-solid fa-fingerprint"></i> Novelty Validation: Identity
+                        Cards</h3>
+                    <p style="margin-bottom: 1rem;">Detailed validation profiles for top-ranked genes lacking prior GWAS
+                        evidence, confirming their therapeutic potential despite novelty.</p>
+                    <div class="grid" style="gap: 1rem;">
+                        <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <strong>HRCT1 (Rank #9)</strong><br>
+                            <span style="font-size: 0.9rem; color: #666;">Validated as a highly specific hair cell
+                                marker resistant to ambient RNA contamination.</span>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <strong>ANKRD2</strong><br>
+                            <span style="font-size: 0.9rem; color: #666;">Stereocilia stability factor. Validated in
+                                datasets: GSE114157, GSE137299.</span>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <strong>CACNG1</strong><br>
+                            <span style="font-size: 0.9rem; color: #666;">Auxiliary L-type Ca2+ channel subunit.
+                                Distinct from pore-forming CACNA1D.</span>
+                        </div>
+                    </div>
+                </div>
         </main>
     </div>
 
@@ -745,55 +767,88 @@
         }
 
         // CSV Loading Logic for Data Tab
-        let allDataRows = []; // Store data for searching
+        let allDataRows = []; // Store raw CSV lines
+        let dataHeaders = []; // Store headers
 
-        fetch('results/TPS_final.csv')
-            .then(response => response.text())
-            .then(csvText => {
-                const rows = csvText.trim().split('\n');
-                const headers = rows[0].split(',');
-                allDataRows = rows.slice(1); // Store raw rows
+        function loadData() {
+            const tableWrapper = document.getElementById('csv-table-wrapper');
+            tableWrapper.innerHTML = '<div style="padding:2rem; text-align:center; color:#666;"><i class="fa-solid fa-spinner fa-spin"></i> Loading dataset...</div>';
 
-                renderTable(allDataRows.slice(0, 100), headers); // Render top 100 initially
-            });
+            // Pointing to the correct path relative to index.html
+            fetch('results/TPS_final.csv')
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.text();
+                })
+                .then(csvText => {
+                    // Simple CSV parser handling quotes
+                    const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
+                    if (lines.length === 0) throw new Error("CSV is empty");
 
-        function renderTable(dataRows, headers) {
+                    // Parse headers (handling potential quotes)
+                    dataHeaders = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
+
+                    // Store remaining rows
+                    allDataRows = lines.slice(1);
+
+                    // Render initial top 100
+                    renderTable(allDataRows.slice(0, 50));
+                })
+                .catch(error => {
+                    console.error('Error loading CSV:', error);
+                    tableWrapper.innerHTML = `
+                        <div style="padding:2rem; text-align:center; color:#ef4444;">
+                            <i class="fa-solid fa-circle-exclamation"></i> Error loading data.<br>
+                            <small>${error.message}</small><br>
+                            <a href="results/TPS_final.csv" class="btn" style="margin-top:1rem;">Download Data Instead</a>
+                        </div>`;
+                });
+        }
+
+        function renderTable(rows) {
             let html = '<table><thead><tr>';
-            headers.forEach(h => html += `<th>${h}</th>`);
+            dataHeaders.forEach(h => html += `<th>${h}</th>`);
             html += '</tr></thead><tbody>';
 
-            dataRows.forEach(row => {
-                const cols = row.split(',');
-                html += '<tr>';
-                cols.forEach(c => html += `<td>${c}</td>`);
-                html += '</tr>';
-            });
+            if (rows.length === 0) {
+                html += `<tr><td colspan="${dataHeaders.length}" style="text-align:center; padding:2rem;">No matching genes found.</td></tr>`;
+            } else {
+                rows.forEach(row => {
+                    // Simple split (assumes no commas in values for speed, or basic quote handling)
+                    // For robust CSV parsing of thousands of rows, this is a tradeoff for client-side speed
+                    const cols = row.split(',').map(c => c.replace(/^"|"$/g, '').trim());
+                    html += '<tr>';
+                    cols.forEach(c => html += `<td>${c}</td>`);
+                    html += '</tr>';
+                });
+            }
 
             html += '</tbody></table>';
+            html += `<div style="padding:1rem; text-align:center; color:#666; font-size:0.9rem;">
+                        Showing ${rows.length} rows. <br>
+                        Use search to find specific genes.
+                     </div>`;
+
             document.getElementById('csv-table-wrapper').innerHTML = html;
         }
 
         function filterTable() {
             const input = document.getElementById('geneSearch');
-            const filter = input.value.toUpperCase();
+            const filter = input.value.toUpperCase().trim();
 
             if (filter.length < 2) {
-                // Determine headers again (quick hack, ideally store headers globally)
-                fetch('results/TPS_final.csv').then(r => r.text()).then(t => {
-                    const h = t.trim().split('\n')[0].split(',');
-                    renderTable(allDataRows.slice(0, 100), h);
-                });
+                renderTable(allDataRows.slice(0, 50)); // Reset if search is short
                 return;
             }
 
-            const filteredRows = allDataRows.filter(row => row.toUpperCase().includes(filter));
-
-            // Get headers again
-            fetch('results/TPS_final.csv').then(r => r.text()).then(t => {
-                const h = t.trim().split('\n')[0].split(',');
-                renderTable(filteredRows.slice(0, 100), h);
-            });
+            // Search in the first column (Gene) or second column (Description/ID)
+            // or search entire row string for partial match
+            const filtered = allDataRows.filter(row => row.toUpperCase().includes(filter));
+            renderTable(filtered.slice(0, 100)); // Limit display to 100 results for performance
         }
+
+        // Initialize Data Load
+        document.addEventListener('DOMContentLoaded', loadData);
 
         // Lightbox Logic
         function openLightbox(img) {
