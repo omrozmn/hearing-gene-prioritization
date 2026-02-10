@@ -4,25 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TPS Discovery Platform | Next-Gen Gene Therapy</title>
+    <title>TPS Discovery Platform | Functional Genomics</title>
 
-    <!-- Fonts -->
+    <!-- Fonts: Clean, Scientific, Readable -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-color: #030712;
-            --card-bg: rgba(17, 24, 39, 0.7);
-            --accent: #3b82f6;
-            --secondary: #10b981;
-            --text-main: #f8fafc;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --primary: #3b82f6;
+            --text-main: #f1f5f9;
             --text-muted: #94a3b8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
+            --border: #334155;
+            --success: #10b981;
         }
 
         * {
@@ -32,126 +31,114 @@
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
             color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+            line-height: 1.6;
         }
 
-        /* Navbar */
+        /* --- Navbar --- */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 3rem;
-            background: rgba(3, 7, 18, 0.8);
-            backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.95);
             border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
             position: sticky;
             top: 0;
             z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .brand {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-weight: 700;
+            font-size: 1.25rem;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            letter-spacing: -0.05em;
+            gap: 0.5rem;
+            letter-spacing: -0.02em;
         }
 
-        .nav-items {
+        .nav-links {
             display: flex;
             gap: 2rem;
         }
 
-        .nav-link {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.85rem;
+        .nav-links button {
+            background: none;
+            border: none;
             color: var(--text-muted);
-            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
             cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            padding: 0.5rem 0;
+            transition: color 0.2s;
+            font-family: 'Inter', sans-serif;
         }
 
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--accent);
+        .nav-links button:hover,
+        .nav-links button.active {
+            color: var(--primary);
         }
 
-        /* Sections */
-        .app-view {
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
             display: none;
-            animation: fadeIn 0.4s ease;
         }
 
-        .app-view.active {
+        /* Hidden by default */
+        .section.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
+        /* Show active */
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Hero */
-        .hero {
+        header {
+            margin-bottom: 3rem;
             text-align: center;
-            padding: 6rem 1rem 4rem;
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
         }
 
-        .hero p {
-            font-size: 1.25rem;
+        p.subtitle {
             color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-        }
-
-        /* Search */
-        .search-wrapper {
-            position: relative;
+            font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        .search-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            padding: 1.25rem 3.5rem 1.25rem 1.5rem;
-            border-radius: 12px;
-            color: white;
-            font-size: 1.1rem;
-            font-family: 'Space Mono', monospace;
-            transition: all 0.3s;
+        /* --- Search Bar --- */
+        .search-container {
+            margin: 2rem auto;
+            max-width: 600px;
+            position: relative;
         }
 
-        .search-input:focus {
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter';
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
             outline: none;
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
         }
 
         .search-icon {
@@ -162,160 +149,151 @@
             color: var(--text-muted);
         }
 
-        /* Modern Table */
-        .results-section {
-            max-width: 1200px;
-            margin: 0 auto 6rem;
-            padding: 0 2rem;
+        /* --- Data Table --- */
+        .table-responsive {
+            overflow-x: auto;
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--border);
         }
 
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 1rem;
-        }
-
-        .modern-table {
+        table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 0.8rem;
+            border-collapse: collapse;
+            min-width: 700px;
         }
 
-        .modern-table th {
+        th {
             text-align: left;
+            padding: 1rem;
+            background: #0f172a;
+            border-bottom: 1px solid var(--border);
             color: var(--text-muted);
-            font-family: 'Space Mono';
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            padding: 0 1.5rem;
         }
 
-        .modern-table tr.data-row {
-            background: var(--glass);
-            transition: all 0.2s;
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        tr:hover {
+            background: #263345;
             cursor: pointer;
         }
 
-        .modern-table tr.data-row:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: scale(1.01);
+        .code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
         }
 
-        .modern-table td {
-            padding: 1.25rem 1.5rem;
-            color: var(--text-main);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modern-table td:first-child {
-            border-left: 1px solid var(--border);
-            border-radius: 12px 0 0 12px;
-            color: var(--accent);
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
-        .modern-table td:last-child {
-            border-right: 1px solid var(--border);
-            border-radius: 0 12px 12px 0;
-            text-align: right;
-        }
-
-        .rank-badge {
-            background: rgba(16, 185, 129, 0.1);
+        .badge-high {
+            background: rgba(16, 185, 129, 0.2);
             color: #34d399;
-            padding: 0.25rem 0.75rem;
-            border-radius: 99px;
-            font-family: 'Space Mono';
-            font-size: 0.8rem;
-            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        /* Novelty Grid */
-        .novelty-grid {
+        .badge-med {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        /* --- Download Cards --- */
+        .download-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
+            margin-top: 2rem;
+        }
+
+        .dl-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .dl-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .dl-icon {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-right: 1rem;
+        }
+
+        .btn-dl {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* --- Novelty Cards --- */
+        .novelty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .novelty-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            border-radius: 16px;
-            border-left: 4px solid var(--secondary);
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s;
-        }
-
-        .novelty-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Slide Panel */
-        .detail-panel {
-            position: fixed;
-            top: 0;
-            right: -600px;
-            width: 100%;
-            max-width: 500px;
-            height: 100vh;
-            background: #0f172a;
-            border-left: 1px solid var(--border);
-            z-index: 2000;
-            padding: 2rem;
-            overflow-y: auto;
-            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .detail-panel.open {
-            right: 0;
-        }
-
-        .panel-close {
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-        }
-
-        .metric-box {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--surface);
             border: 1px solid var(--border);
             padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        /* --- Detail Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--surface);
+            padding: 2rem;
             border-radius: 12px;
-            margin-bottom: 1rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            border: 1px solid var(--border);
         }
 
-        .metric-score {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-            font-family: 'Space Mono';
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .nav-items {
-                gap: 1rem;
-            }
-
-            .modern-table {
-                display: block;
-                overflow-x: auto;
-            }
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-muted);
         }
     </style>
 </head>
@@ -323,245 +301,273 @@
 <body>
 
     <nav>
-        <div class="brand"><i class="fa-solid fa-dna" style="color:var(--accent);"></i> TPS PLATFORM <span
-                style="font-size:0.7em; opacity:0.5; margin-left:10px; font-weight:400; font-family:'Space Mono';">v2.1</span>
-        </div>
-        <div class="nav-items">
-            <a onclick="switchSection('explorer')" id="nav-explorer" class="nav-link active">Explorer</a>
-            <a onclick="switchSection('novelty')" id="nav-novelty" class="nav-link">Novelty</a>
-            <a href="results/TPS_final.csv" class="nav-link"><i class="fa-solid fa-download"></i> CSV</a>
+        <div class="brand"><i class="fa-solid fa-dna" style="color:var(--primary);"></i> TPS PLATFORM</div>
+        <div class="nav-links">
+            <button onclick="showSection('explorer')" id="btn-explorer" class="active">Gene Explorer</button>
+            <button onclick="showSection('novelty')" id="btn-novelty">Novelty Findings</button>
+            <button onclick="showSection('downloads')" id="btn-downloads">Downloads</button>
         </div>
     </nav>
 
-    <!-- 1. EXPLORER VIEW -->
-    <div id="explorer-section" class="app-view active">
-        <div class="hero">
-            <h1>Prioritizing the Next<br>Gene Therapy Targets.</h1>
-            <p>A computational framework integrating 15 multi-omics datasets to rank 36,485 candidates for cochlear
-                regeneration.</p>
+    <div class="container">
 
-            <div class="search-wrapper">
-                <input type="text" class="search-input" id="geneSearch" placeholder="SEARCH CANDIDATE (e.g. POU4F3)..."
-                    autocomplete="off" onkeyup="handleSearch(this.value)">
+        <!-- SECTION 1: GENE EXPLORER -->
+        <div id="explorer" class="section active">
+            <header>
+                <h1>Prioritizing Gene Therapy Targets</h1>
+                <p class="subtitle">Search 36,485 candidates ranked by the TPS Framework.</p>
+            </header>
+
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search gene symbol (e.g. OTOF, POU4F3)..."
+                    onkeyup="performSearch()">
                 <i class="fa-solid fa-search search-icon"></i>
             </div>
+
+            <div id="loadingInfo" style="text-align:center; color:var(--text-muted); margin-bottom:1rem;">Loading
+                Database...</div>
+
+            <div class="table-responsive">
+                <table id="geneTable">
+                    <thead>
+                        <tr>
+                            <th>Gene Symbol</th>
+                            <th>Global Rank</th>
+                            <th>TPS Score</th>
+                            <th>Priority Tier</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- JS renders here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="noResults" style="text-align:center; padding:2rem; display:none; color:var(--text-muted);">No
+                matching genes found.</div>
         </div>
 
-        <div class="results-section">
-            <div class="table-header">
-                <h2 style="font-weight:600;">Live Rankings</h2>
-                <div id="resultCount" style="color:var(--text-muted); font-family:'Space Mono'; font-size:0.9rem;">
-                    Loading database...</div>
+        <!-- SECTION 2: NOVELTY FINDINGS -->
+        <div id="novelty" class="section">
+            <header>
+                <h1>Novelty Candidates</h1>
+                <p class="subtitle">Top prioritized genes lacking prior GWAS evidence, validated in silico.</p>
+            </header>
+
+            <div class="novelty-grid">
+                <div class="novelty-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                        <h3>HRCT1</h3>
+                        <span class="badge badge-high">Rank #9</span>
+                    </div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">Histidine-rich
+                        carboxyl-terminal protein. Highly specific Hair Cell marker conserved across species.</p>
+                    <div style="font-size:0.85rem; color:var(--success);"><i class="fa-solid fa-check"></i> Validated
+                        (Mouse/Human)</div>
+                </div>
+
+                <div class="novelty-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                        <h3>ANKRD2</h3>
+                        <span class="badge badge-high">Rank #12</span>
+                    </div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">Ankyrin repeat domain
+                        protein. Structurally critical for stereocilia stability.</p>
+                    <div style="font-size:0.85rem; color:var(--success);"><i class="fa-solid fa-check"></i> Validated in
+                        GSE137299</div>
+                </div>
+
+                <div class="novelty-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                        <h3>CACNG1</h3>
+                        <span class="badge badge-high">Rank #14</span>
+                    </div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">L-type Ca2+ channel
+                        subunit. Distinct regulatory role from CACNA1D.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: DOWNLOADS -->
+        <div id="downloads" class="section">
+            <header>
+                <h1>Data Downloads</h1>
+                <p class="subtitle">Access the complete rankings and supplementary datasets.</p>
+            </header>
+
+            <div class="download-grid">
+                <div class="dl-card">
+                    <div style="display:flex; align-items:center;">
+                        <i class="fa-solid fa-table dl-icon"></i>
+                        <div>
+                            <h3 style="font-size:1.1rem;">Full TPS Rankings</h3>
+                            <p style="color:var(--text-muted); font-size:0.9rem;">Complete CSV (36,485 genes)</p>
+                        </div>
+                    </div>
+                    <a href="results/TPS_final.csv" class="btn-dl" download>Download CSV</a>
+                </div>
+
+                <div class="dl-card">
+                    <div style="display:flex; align-items:center;">
+                        <i class="fa-solid fa-list-ol dl-icon"></i>
+                        <div>
+                            <h3 style="font-size:1.1rem;">Top 100 Candidates</h3>
+                            <p style="color:var(--text-muted); font-size:0.9rem;">Filtered list of highest priority
+                                targets</p>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-dl" style="opacity:0.6; cursor:not-allowed;">Coming Soon</a>
+                </div>
+
+                <div class="dl-card">
+                    <div style="display:flex; align-items:center;">
+                        <i class="fa-solid fa-file-code dl-icon"></i>
+                        <div>
+                            <h3 style="font-size:1.1rem;">Source Code</h3>
+                            <p style="color:var(--text-muted); font-size:0.9rem;">GitHub Repository</p>
+                        </div>
+                    </div>
+                    <a href="https://github.com/omrozmn/hearing-gene-prioritization" target="_blank" class="btn-dl">View
+                        Repo</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DETAIL MODAL -->
+    <div id="detailModal" class="modal-overlay">
+        <div class="modal">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalGene" style="font-size:2rem; margin-bottom:0.5rem;">GENE</h2>
+            <div id="modalRank" style="color:var(--primary); font-family:'JetBrains Mono'; margin-bottom:2rem;">#Rank
             </div>
 
-            <table class="modern-table">
-                <thead>
-                    <tr>
-                        <th>Gene Symbol</th>
-                        <th>Global Rank</th>
-                        <th>TPS Score</th>
-                        <th>Tier</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-
-            <!-- Empty State -->
-            <div id="emptyState" style="text-align:center; padding:4rem; color:var(--text-muted); display:none;">
-                <i class="fa-solid fa-flask" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
-                <p>No matching gene found.</p>
+            <div style="background:rgba(255,255,255,0.05); padding:1rem; border-radius:8px; margin-bottom:1rem;">
+                <span style="color:var(--text-muted); font-size:0.85rem;">TPS Score</span>
+                <div id="modalScore" style="font-size:1.5rem; font-weight:700;">0.00</div>
             </div>
+
+            <p style="color:var(--text-muted); font-size:0.9rem;">
+                This gene has been ranked based on safety, efficacy, and druggability metrics integrated from 15
+                datasets.
+            </p>
         </div>
     </div>
 
-    <!-- 2. NOVELTY VIEW -->
-    <div id="novelty-section" class="app-view">
-        <div class="hero">
-            <h1 style="font-size:3rem;">Novelty Validation</h1>
-            <p>Identity Cards for top-20 prioritized genes lacking prior GWAS evidence.</p>
-        </div>
-
-        <div class="novelty-grid">
-            <div class="novelty-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
-                    <h3 style="font-size:1.5rem;">HRCT1</h3>
-                    <span class="rank-badge">Rank #9</span>
-                </div>
-                <p style="color:var(--text-muted); margin-bottom:1rem;">
-                    Histidine-rich carboxyl-terminal protein. Highly specific Hair Cell marker.
-                </p>
-                <div style="font-size:0.9rem; color:var(--secondary);"><i class="fa-solid fa-check"></i> Validated
-                    (Mouse/Human)</div>
-            </div>
-
-            <div class="novelty-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
-                    <h3 style="font-size:1.5rem;">ANKRD2</h3>
-                    <span class="rank-badge">Rank #12</span>
-                </div>
-                <p style="color:var(--text-muted); margin-bottom:1rem;">
-                    Ankyrin repeat domain protein. Linked to stereocilia stability.
-                </p>
-                <div style="font-size:0.9rem; color:var(--secondary);"><i class="fa-solid fa-check"></i> Validated in
-                    GSE137299</div>
-            </div>
-
-            <div class="novelty-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
-                    <h3 style="font-size:1.5rem;">CACNG1</h3>
-                    <span class="rank-badge">Rank #14</span>
-                </div>
-                <p style="color:var(--text-muted); margin-bottom:1rem;">
-                    Auxiliary L-type Ca2+ channel subunit. Distinct form CACNA1D.
-                </p>
-                <div style="font-size:0.9rem; color:var(--secondary);"><i class="fa-solid fa-check"></i> Spatial
-                    Confirmation</div>
-            </div>
-
-            <div class="novelty-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
-                    <h3 style="font-size:1.5rem;">TEX43</h3>
-                    <span class="rank-badge">Rank #15</span>
-                </div>
-                <p style="color:var(--text-muted); margin-bottom:1rem;">
-                    Testis-expressed protein repurposed in Hair Cells.
-                </p>
-                <div style="font-size:0.9rem; color:var(--secondary);"><i class="fa-solid fa-check"></i> High
-                    Specificity</div>
-            </div>
-
-            <div class="novelty-card" style="opacity:0.7;">
-                <h3 style="font-size:1.5rem;">FGR</h3>
-                <p style="color:var(--text-muted);">Src family tyrosine kinase.</p>
-                <span style="font-size:0.8rem; color:var(--text-muted);">Rank #18</span>
-            </div>
-            <div class="novelty-card" style="opacity:0.7;">
-                <h3 style="font-size:1.5rem;">SYT14</h3>
-                <p style="color:var(--text-muted);">Synaptotagmin 14.</p>
-                <span style="font-size:0.8rem; color:var(--text-muted);">Rank #22</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- DETAIL PANEL (SLIDE OVER) -->
-    <div id="detailPanel" class="detail-panel">
-        <i class="fa-solid fa-times panel-close" onclick="closePanel()"></i>
-        <span style="font-family:'Space Mono'; color:var(--accent); font-size:0.9rem;">CANDIDATE PROFILE</span>
-        <h2 id="panelGene" style="font-size:3rem; margin-top:0.5rem; margin-bottom:2rem;">GENE</h2>
-
-        <div class="metric-box">
-            <span style="color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">TPS Priority Score</span>
-            <div id="panelScore" class="metric-score">0.00</div>
-            <div
-                style="height:6px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:0.5rem; overflow:hidden;">
-                <div id="scoreBar" style="height:100%; background:var(--secondary); width:0%; transition:width 1s;">
-                </div>
-            </div>
-        </div>
-
-        <div class="metric-box">
-            <span style="color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Global Rank</span>
-            <div id="panelRank" style="font-size:1.5rem; font-weight:600;"># --</div>
-        </div>
-
-        <div class="metric-box">
-            <span style="color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Status</span>
-            <div style="color:#34d399; font-weight:600; margin-top:0.5rem;"><i class="fa-solid fa-check-circle"></i> In
-                Silico Validated</div>
-        </div>
-
-        <p style="color:var(--text-muted); line-height:1.7; margin-top:2rem;">
-            This candidate shows significant potential based on its multi-dimensional TPS profile. High scores indicate
-            favorable expression patterns in target cell types with optimized safety profiles.
-        </p>
-    </div>
-
+    <!-- DATA LOADING -->
     <script src="results/data.js"></script>
     <script>
         let DATA = [];
         let HEADERS = [];
 
+        // 1. Load Data
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof TPS_DATA !== 'undefined') {
                 DATA = TPS_DATA;
                 if (DATA.length > 0) HEADERS = Object.keys(DATA[0]);
-                renderTable(DATA.slice(0, 50));
-                document.getElementById('resultCount').innerText = `${DATA.length.toLocaleString()} Candidates Index`;
+
+                document.getElementById('loadingInfo').style.display = 'none';
+                renderTable(DATA.slice(0, 50)); // Initial Render
             } else {
-                document.getElementById('resultCount').innerText = "Simulated Data Mode";
+                document.getElementById('loadingInfo').innerHTML = "Error: Data file missing.";
             }
         });
 
-        // Toggle Views
-        function switchSection(id) {
-            document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+        // 2. Navigation
+        function showSection(id) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-links button').forEach(el => el.classList.remove('active'));
 
-            document.getElementById(id + '-section').classList.add('active');
-            document.getElementById('nav-' + id).classList.add('active');
-            window.scrollTo(0, 0);
+            // Show target
+            document.getElementById(id).classList.add('active');
+            document.getElementById('btn-' + id).classList.add('active');
         }
 
-        // Search
-        function handleSearch(query) {
-            query = query.toUpperCase().trim();
-            // If novel tab is active, switch to explorer for search
-            if (!document.getElementById('explorer-section').classList.contains('active')) {
-                switchSection('explorer');
+        // 3. Search Logic (The Critical Fix)
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toUpperCase().trim();
+
+            if (query.length < 2) {
+                renderTable(DATA.slice(0, 50));
+                return;
             }
 
-            if (query.length < 2) { renderTable(DATA.slice(0, 50)); return; }
-            const filtered = DATA.filter(r => Object.values(r).some(v => String(v).toUpperCase().includes(query)));
-            renderTable(filtered.slice(0, 50));
+            // Filter
+            const results = DATA.filter(row => {
+                // Search in all values of the row
+                return Object.values(row).some(val =>
+                    String(val).toUpperCase().includes(query)
+                );
+            });
+
+            renderTable(results.slice(0, 50));
         }
 
-        // Render Table
+        // 4. Render Table
         function renderTable(rows) {
             const tbody = document.getElementById('tableBody');
-            const empty = document.getElementById('emptyState');
-            if (rows.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+            const noResults = document.getElementById('noResults');
 
-            empty.style.display = 'none';
+            tbody.innerHTML = '';
+
+            if (rows.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+
             let html = '';
             rows.forEach(r => {
-                let gene = r[HEADERS[0]].replace(/['"]+/g, '');
-                // Heuristic Parsing
-                let rank = 'N/A', score = '0.00';
+                // Flexible Column Detection
+                let gene = r[HEADERS[0]] || 'Unknown';
+                let rank = 'N/A';
+                let score = '0.00';
+
+                // Find visible columns flexibly
                 for (let k of HEADERS) {
-                    if (k.toLowerCase().includes('rank')) rank = r[k];
-                    if (k.toLowerCase().includes('score') || k.toLowerCase().includes('tps')) score = r[k];
+                    let kl = k.toLowerCase();
+                    if (kl.includes('rank')) rank = r[k];
+                    if (kl.includes('score') || kl.includes('tps')) score = r[k];
                 }
 
-                let tier = parseInt(rank) < 100 ? 'High' : (parseInt(rank) < 1000 ? 'Medium' : 'Low');
+                // Determine Badge
+                let tierClass = 'badge-high';
+                let tierText = 'High Priority';
+                if (parseInt(rank) > 100) { tierClass = 'badge-med'; tierText = 'Medium Priority'; }
 
                 html += `
-                <tr class="data-row" onclick="openPanel('${gene}', '${rank}', '${score}')">
-                    <td style="font-weight:600; color:var(--accent); font-size:1.1rem;">${gene}</td>
-                    <td><span style="font-family:'Space Mono';">#${rank}</span></td>
-                    <td><span style="color:var(--text-muted);">${parseFloat(score).toFixed(2)}</span></td>
-                    <td><span class="rank-badge">${tier} Priority</span></td>
-                    <td><i class="fa-solid fa-arrow-right" style="color:var(--border);"></i></td>
+                <tr onclick="openModal('${gene}', '${rank}', '${score}')">
+                    <td class="code" style="color:var(--primary); font-weight:600;">${gene}</td>
+                    <td>#${rank}</td>
+                    <td>${parseFloat(score).toFixed(2)}</td>
+                    <td><span class="badge ${tierClass}">${tierText}</span></td>
+                    <td><i class="fa-solid fa-chevron-right" style="color:var(--border);"></i></td>
                 </tr>`;
             });
+
             tbody.innerHTML = html;
         }
 
-        // Panel Details
-        function openPanel(gene, rank, score) {
-            document.getElementById('panelGene').innerText = gene;
-            document.getElementById('panelRank').innerText = '#' + rank;
-            document.getElementById('panelScore').innerText = score;
-
-            document.getElementById('detailPanel').classList.add('open');
-            setTimeout(() => {
-                let w = (parseFloat(score) / 10) * 100; if (w > 100) w = 100;
-                document.getElementById('scoreBar').style.width = w + '%';
-            }, 100);
+        // 5. Modal Logic
+        function openModal(gene, rank, score) {
+            document.getElementById('modalGene').innerText = gene;
+            document.getElementById('modalRank').innerText = 'Global Rank #' + rank;
+            document.getElementById('modalScore').innerText = score;
+            document.getElementById('detailModal').style.display = 'flex';
         }
-        function closePanel() {
-            document.getElementById('detailPanel').classList.remove('open');
-            document.getElementById('scoreBar').style.width = '0%';
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        // Close modal on outside click
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('detailModal')) {
+                closeModal();
+            }
         }
     </script>
 </body>
