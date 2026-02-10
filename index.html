@@ -1,600 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TPS Discovery Platform | Next-Gen Gene Therapy</title>
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        :root {
-            --bg-color: #030712;
-            --card-bg: rgba(30, 41, 59, 0.6);
-            --accent: #3b82f6;
-            --secondary: #10b981;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
-        }
-
-        /* --- Navbar --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.25rem 3rem;
-            background: rgba(3, 7, 18, 0.85);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .brand {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            background: linear-gradient(135deg, white, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-items {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.3s;
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        .nav-btn:hover,
-        .nav-btn.active {
-            color: white;
-        }
-
-        .nav-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
-        }
-
-        /* --- Layout --- */
-        .app-view {
-            display: none;
-            animation: fadeIn 0.4s ease;
-            padding-bottom: 4rem;
-        }
-
-        .app-view.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* --- Hero --- */
-        .hero {
-            text-align: center;
-            padding: 5rem 1rem 3rem;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-        }
-
-        p.subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            font-weight: 300;
-        }
-
-        /* --- Engine Interface --- */
-        .engine-interface {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            backdrop-filter: blur(10px);
-        }
-
-        .controls-bar {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .search-group {
-            position: relative;
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .search-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            padding: 0.8rem 1rem 0.8rem 3rem;
-            border-radius: 8px;
-            color: white;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-
-        .search-input:focus {
-            border-color: var(--accent);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-
-        .stat-badge {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-
-        .stat-badge b {
-            color: white;
-            margin-left: 0.5rem;
-            font-family: 'JetBrains Mono';
-        }
-
-        /* Table */
-        .table-responsive {
-            overflow-x: auto;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            max-height: 800px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            min-width: 800px;
-        }
-
-        th {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            user-select: none;
-        }
-
-        th:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: white;
-        }
-
-        td {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-main);
-            font-size: 0.95rem;
-            transition: 0.2s;
-        }
-
-        tr:hover td {
-            background: rgba(59, 130, 246, 0.05);
-        }
-
-        .gene-col {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            color: var(--accent);
-            font-size: 1rem;
-        }
-
-        .rank-col {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            color: white;
-        }
-
-        /* Visualization */
-        .bar-container {
-            width: 120px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            display: inline-block;
-            margin-right: 0.8rem;
-            vertical-align: middle;
-            position: relative;
-        }
-
-        .bar-fill {
-            height: 100%;
-            background: var(--secondary);
-            border-radius: 3px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
-        }
-
-        /* Novelty Cards */
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            border-radius: 12px;
-            transition: transform 0.3s, border-color 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .tag {
-            font-size: 0.75rem;
-            padding: 0.3rem 0.8rem;
-            border-radius: 99px;
-            background: rgba(16, 185, 129, 0.1);
-            color: #34d399;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            font-family: 'JetBrains Mono';
-        }
+        :root { --bg: #030712; --card: rgba(30, 41, 59, 0.6); --acc: #3b82f6; --sec: #10b981; --txt: #f8fafc; --mut: #94a3b8; --brd: rgba(255,255,255,0.08); }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--txt); overflow-x:hidden; background-image: radial-gradient(circle at 10% 20%, rgba(59,130,246,0.08) 0%, transparent 40%); }
+        nav { display:flex; justify-content:space-between; padding:1.2rem 3rem; background:rgba(3,7,18,0.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--brd); position:sticky; top:0; z-index:99; align-items:center; }
+        .brand { font-size:1.4rem; font-weight:800; display:flex; gap:0.8rem; background:linear-gradient(135deg, white, #cbd5e1); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .nav-items { display:flex; gap:2rem; }
+        .nav-btn { background:none; border:none; color:var(--mut); font-family:'Outfit'; font-size:0.9rem; font-weight:500; cursor:pointer; padding:0.5rem 0; transition:0.2s; }
+        .nav-btn:hover, .nav-btn.active { color:white; border-bottom:2px solid var(--acc); }
+        .view { display:none; padding-bottom:4rem; animation:fadeIn 0.4s; }
+        .view.active { display:block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        .hero { text-align:center; padding:5rem 1rem 3rem; }
+        h1 { font-size:3.5rem; margin-bottom:1rem; font-weight:800; letter-spacing:-0.03em; }
+        .interface { background:rgba(255,255,255,0.03); border:1px solid var(--brd); border-radius:16px; padding:2rem; max-width:1200px; margin:0 auto; backdrop-filter:blur(10px); }
+        .controls { display:flex; gap:1rem; margin-bottom:2rem; }
+        input { flex:1; background:rgba(0,0,0,0.3); border:1px solid var(--brd); padding:0.8rem 1rem; border-radius:8px; color:white; font-family:'JetBrains Mono'; font-size:1rem; }
+        input:focus { outline:none; border-color:var(--acc); }
+        table { width:100%; border-collapse:collapse; text-align:left; }
+        th { padding:1rem; color:var(--mut); font-size:0.75rem; text-transform:uppercase; cursor:pointer; user-select:none; }
+        th:hover { color:white; }
+        td { padding:1rem; border-bottom:1px solid var(--brd); font-size:0.95rem; }
+        .bar { height:6px; background:rgba(255,255,255,0.1); border-radius:3px; width:100px; display:inline-block; margin-right:0.6rem; vertical-align:middle; position:relative; }
+        .fill { height:100%; background:var(--sec); border-radius:3px; position:absolute; top:0; left:0; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem; max-width:1200px; margin:0 auto; }
+        .card { background:var(--card); border:1px solid var(--brd); padding:2rem; border-radius:12px; transition:transform 0.2s; }
+        .card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,0.2); }
+        .tag { background:rgba(16,185,129,0.1); color:#34d399; padding:0.2rem 0.6rem; border-radius:99px; font-size:0.75rem; border:1px solid rgba(16,185,129,0.2); font-family:'JetBrains Mono'; }
     </style>
 </head>
-
 <body>
-
     <nav>
-        <div class="brand"><i class="fa-solid fa-dna" style="color:var(--accent);"></i> TPS PLATFORM</div>
+        <div class="brand"><i class="fa-solid fa-dna" style="color:#3b82f6;"></i> TPS PLATFORM</div>
         <div class="nav-items">
-            <button onclick="switchView('explorer')" id="btn-explorer" class="nav-btn active">Data Engine</button>
-            <button onclick="switchView('novelty')" id="btn-novelty" class="nav-btn">Novelty Findings</button>
-            <button onclick="switchView('downloads')" id="btn-downloads" class="nav-btn">Data Access</button>
+            <button onclick="setView('explorer')" id="btn-explorer" class="nav-btn active">Engine</button>
+            <button onclick="setView('novelty')" id="btn-novelty" class="nav-btn">Novelty</button>
+            <button onclick="setView('downloads')" id="btn-downloads" class="nav-btn">Data</button>
         </div>
     </nav>
 
-    <!-- VIEW 1: EXPLORER (The Engine) -->
-    <div id="explorer" class="app-view active">
-        <div class="hero">
-            <h1>Priority Index</h1>
-            <p class="subtitle">Live ranking of top 2,000 candidates based on multi-omics integration.</p>
-        </div>
-
-        <div class="engine-interface">
-            <div class="controls-bar">
-                <div class="search-group">
-                    <i class="fa-solid fa-search search-icon"></i>
-                    <input type="text" class="search-input" id="search" placeholder="Type Gene Symbol (e.g. POU4F3)..."
-                        onkeyup="filterData()">
+    <!-- EXPLORER -->
+    <div id="explorer" class="view active">
+        <div class="hero"><h1>Priority Index</h1><p style="color:#94a3b8; font-size:1.2rem;">Live ranking of top 2,000 cochlear candidates.</p></div>
+        <div class="interface">
+            <div class="controls">
+                <div style="position:relative; flex:1;">
+                    <i class="fa-solid fa-search" style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:#94a3b8;"></i>
+                    <input type="text" id="search" placeholder="Type Gene Symbol (e.g. POU4F3)..." style="padding-left:3rem;" onkeyup="render()">
                 </div>
-                <div class="stat-badge">Total Candidates: <b id="count-total">2,000+</b></div>
-                <div class="stat-badge">Displaying: <b id="count-shown">--</b></div>
+                <div style="padding:0.8rem 1.5rem; background:rgba(255,255,255,0.05); border-radius:8px; display:flex; align-items:center; border:1px solid var(--brd);">
+                    <span style="color:var(--mut); font-size:0.9rem;">Candidates:</span> <b style="color:white; margin-left:0.5rem; font-family:'JetBrains Mono';">2,000</b>
+                </div>
             </div>
-
-            <div class="table-responsive">
+            <div style="overflow-x:auto; max-height:800px; border-radius:8px; border:1px solid var(--brd);">
                 <table>
-                    <thead>
+                    <thead style="background:rgba(0,0,0,0.2); position:sticky; top:0; z-index:10;">
                         <tr>
-                            <th onclick="sortData('gene')">Gene Symbol <i class="fa-solid fa-sort"></i></th>
-                            <th onclick="sortData('rank')">Global Rank <i class="fa-solid fa-sort"></i></th>
-                            <th onclick="sortData('final_score')">TPS Score Index <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="sort('gene')">Gene Symbol <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="sort('rank')">Global Rank <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="sort('final_score')">TPS Score Index <i class="fa-solid fa-sort"></i></th>
                             <th>Priority Tier</th>
                         </tr>
                     </thead>
-                    <tbody id="table-body">
-                        <!-- Populated by JS -->
-                    </tbody>
+                    <tbody id="tbody"></tbody>
                 </table>
-                <div id="loading" style="padding:4rem; text-align:center; color:var(--text-muted);">
-                    <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Initializing Discovery Engine...
-                </div>
+            </div>
+             <div id="loading" style="padding:4rem; text-align:center; color:var(--mut);">
+                <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Initializing Discovery Engine...
             </div>
         </div>
     </div>
 
-    <!-- VIEW 2: NOVELTY -->
-    <div id="novelty" class="app-view">
-        <div class="hero">
-            <h1>Novelty Candidates</h1>
-            <p class="subtitle">High-priority targets with no previous GWAS association.</p>
-        </div>
-        <div class="grid-cards">
-            <!-- Card 1 -->
+    <!-- NOVELTY -->
+    <div id="novelty" class="view">
+        <div class="hero"><h1>Novelty Candidates</h1><p style="color:#94a3b8; font-size:1.2rem;">High-priority targets validated in silico.</p></div>
+        <div class="grid">
             <div class="card">
-                <div class="card-header">
-                    <h2 class="gene-col" style="font-size:1.5rem;">HRCT1</h2> <span class="tag">Rank #9</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                    <h2 style="font-family:'JetBrains Mono'; color:#3b82f6;">HRCT1</h2>
+                    <span class="tag">Rank #9</span>
                 </div>
-                <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1.5rem;">
-                    Identified as a highly specific Hair Cell marker. Integrates robust expression in mature HC with low
-                    off-target scores.
-                </p>
-                <div style="font-size:0.9rem; color:white; display:flex; align-items:center; gap:10px;">
-                    <i class="fa-solid fa-check-circle" style="color:var(--secondary);"></i>
-                    <span>Validated (Mouse/Human)</span>
-                </div>
+                <p style="color:var(--mut); line-height:1.6; margin-bottom:1rem;">Histidine-rich carboxyl-terminal protein. Specific Hair Cell marker.</p>
+                <div style="color:white; font-size:0.9rem;"><i class="fa-solid fa-check-circle" style="color:#10b981; margin-right:5px;"></i> Validated (Mouse/Human)</div>
             </div>
-            <!-- Card 2 -->
             <div class="card">
-                <div class="card-header">
-                    <h2 class="gene-col" style="font-size:1.5rem;">ANKRD2</h2> <span class="tag">Rank #12</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                    <h2 style="font-family:'JetBrains Mono'; color:#3b82f6;">ANKRD2</h2>
+                    <span class="tag">Rank #12</span>
                 </div>
-                <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1.5rem;">
-                    Critical for stereocilia bundle integrity. High regeneration potential based on supporting cell
-                    plasticity metrics.
-                </p>
-                <div style="font-size:0.9rem; color:white; display:flex; align-items:center; gap:10px;">
-                    <i class="fa-solid fa-check-circle" style="color:var(--secondary);"></i>
-                    <span>Validated (GSE137299)</span>
-                </div>
+                <p style="color:var(--mut); line-height:1.6; margin-bottom:1rem;">Ankyrin repeat domain. Critical for stereocilia stability.</p>
+                <div style="color:white; font-size:0.9rem;"><i class="fa-solid fa-check-circle" style="color:#10b981; margin-right:5px;"></i> In Silico Validated</div>
             </div>
-            <!-- Card 3 -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="gene-col" style="font-size:1.5rem;">CACNG1</h2> <span class="tag">Rank #14</span>
+             <div class="card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                    <h2 style="font-family:'JetBrains Mono'; color:#3b82f6;">CACNG1</h2>
+                    <span class="tag">Rank #14</span>
                 </div>
-                <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1.5rem;">
-                    L-type Ca2+ channel subunit. Distinct spatial profile from CACNA1D, suggesting unique functional
-                    role.
-                </p>
-                <div style="font-size:0.9rem; color:white; display:flex; align-items:center; gap:10px;">
-                    <i class="fa-solid fa-check-circle" style="color:var(--secondary);"></i>
-                    <span>Spatial Map Confirmed</span>
-                </div>
+                <p style="color:var(--mut); line-height:1.6; margin-bottom:1rem;">L-type Ca2+ channel subunit. Distinct spatial profile.</p>
+                <div style="color:white; font-size:0.9rem;"><i class="fa-solid fa-check-circle" style="color:#10b981; margin-right:5px;"></i> Spatial Map Confirmed</div>
             </div>
         </div>
     </div>
-
-    <!-- VIEW 3: DOWNLOADS -->
-    <div id="downloads" class="app-view">
-        <div class="hero">
-            <h1>Data Access</h1>
-            <p class="subtitle">Download the complete prioritization datasets for downstream analysis.</p>
-        </div>
-        <div class="grid-cards" style="max-width:900px;">
+    
+    <!-- DOWNLOADS -->
+    <div id="downloads" class="view">
+         <div class="hero"><h1>Data Access</h1><p style="color:#94a3b8; font-size:1.2rem;">Download complete datasets.</p></div>
+         <div class="grid" style="max-width:800px">
             <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <h3 style="color:white; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.5rem;"><i
-                            class="fa-solid fa-file-csv"></i> Full TPS Index (v2.0)</h3>
-                    <p style="color:var(--text-muted);">Complete CSV file containing metrics for all 36,485 genes.</p>
+                    <h3 style="color:white; margin-bottom:0.5rem;"><i class="fa-solid fa-file-csv"></i> Full Dataset (CSV)</h3>
+                    <p style="color:var(--mut);">Complete metrics for 36,485 genes.</p>
                 </div>
-                <a href="results/TPS_final.csv" class="nav-btn"
-                    style="background:var(--accent); color:white; padding:0.6rem 1.5rem; border-radius:6px; text-decoration:none; font-weight:600;">Download
-                    CSV</a>
+                <a href="results/TPS_final.csv" style="background:#3b82f6; color:white; padding:0.6rem 1.5rem; border-radius:6px; text-decoration:none; font-weight:600;">Download v2.0</a>
             </div>
-            <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+             <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <h3 style="color:white; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.5rem;"><i
-                            class="fa-brands fa-github"></i> Repository</h3>
-                    <p style="color:var(--text-muted);">Access the Python pipeline and raw scripts.</p>
+                    <h3 style="color:white; margin-bottom:0.5rem;"><i class="fa-brands fa-github"></i> Repository</h3>
+                    <p style="color:var(--mut);">Python pipeline and source code.</p>
                 </div>
-                <a href="https://github.com/omrozmn/hearing-gene-prioritization" target="_blank" class="nav-btn"
-                    style="border:1px solid var(--border); padding:0.6rem 1.5rem; border-radius:6px; text-decoration:none;">View
-                    GitHub</a>
+                <a href="https://github.com/omrozmn/hearing-gene-prioritization" target="_blank" style="border:1px solid var(--brd); color:var(--mut); padding:0.6rem 1.5rem; border-radius:6px; text-decoration:none;">GitHub</a>
             </div>
-        </div>
+         </div>
     </div>
 
-    <!-- ENGINE LOGIC -->
-    <script src="results/data.js"></script>
     <script>
-        let fullData = [];
-        let displayData = [];
-        let sortCol = 'rank';
-        let sortAsc = true;
+        // --- EMBEDDED DATA START ---
+        const DB = [];
+        // --- EMBEDDED DATA END ---
+        
+        let data = DB;
+        let sortKey = 'rank';
+        let asc = true;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Data Loading Safety Check
-            if (typeof TPS_DATA !== 'undefined' && TPS_DATA.length > 0) {
-                fullData = TPS_DATA;
-
-                // 2. Data Validation & Pre-processing (Handle CSV conversion artifacts)
-                // TPS_DATA is likely [ {gene: "POU4F3", rank: 1, final_score: 9.8}, ... ] based on CSV to JSON conversion
-
-                // Initial Sort: Rank 1 -> N
-                sortData('rank', true);
-
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('count-total').innerText = fullData.length.toLocaleString();
-            } else {
-                document.getElementById('loading').innerHTML = "Failed to load database. (results/data.js missing or empty)";
-                console.error("TPS_DATA is undefined or empty.");
-            }
-        });
-
-        function switchView(id) {
-            document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-
+        function setView(id) {
+            document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(e => e.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.getElementById('btn-' + id).classList.add('active');
+            document.getElementById('btn-'+id).classList.add('active');
         }
 
-        function filterData() {
-            const q = document.getElementById('search').value.toLowerCase().trim();
-            if (q.length < 2) {
-                // If search is cleared, reset to top 100 sorted
-                sortData(sortCol, false); // Re-apply sort without filter
-                return;
-            }
+        function sort(key) {
+            if(sortKey === key) asc = !asc;
+            else { sortKey = key; asc = (key === 'rank' || key === 'gene'); }
+            render();
+        }
 
-            // robust filter
-            displayData = fullData.filter(d => {
-                if (!d.gene) return false;
+        function render() {
+            const q = document.getElementById('search').value.toLowerCase().trim();
+            // Filter
+            let res = data.filter(d => {
+                if(!d.gene) return false;
                 return String(d.gene).toLowerCase().includes(q);
             });
-            renderTable();
-        }
-
-        function sortData(key, force) {
-            if (force === undefined) {
-                if (sortCol === key) sortAsc = !sortAsc; // Toggle
-                else { sortCol = key; sortAsc = (key === 'rank' || key === 'gene') ? true : false; } // Defaults
-            }
-
-            // Sort full dataset first
-            fullData.sort((a, b) => {
-                let va = a[key], vb = b[key];
-
-                // Parse numbers if needed, though JSON usually handles this
-                if (key === 'rank' || key === 'final_score') {
-                    va = parseFloat(va); vb = parseFloat(vb);
-                }
-
-                if (va < vb) return sortAsc ? -1 : 1;
-                if (va > vb) return sortAsc ? 1 : -1;
-                return 0;
+            
+            // Sort
+            res.sort((a,b) => {
+                let va = a[sortKey], vb = b[sortKey];
+                return asc ? (va > vb ? 1 : -1) : (va < vb ? 1 : -1);
             });
 
-            const q = document.getElementById('search').value;
-            if (q.length > 1) {
-                filterData(); // Re-apply filter on sorted data
-            } else {
-                displayData = fullData.slice(0, 100); // Show top 100 by default
-                renderTable();
-            }
-        }
-
-        function renderTable() {
-            const tbody = document.getElementById('table-body');
-            document.getElementById('count-shown').innerText = displayData.length;
-
-            if (displayData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:2rem;">No genes found.</td></tr>';
-                return;
+            const tbody = document.getElementById('tbody');
+            document.getElementById('loading').style.display='none';
+            
+            if(res.length === 0) { 
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:3rem; color:#94a3b8;">No matching genes found.</td></tr>'; 
+                return; 
             }
 
-            let html = '';
-            displayData.forEach(row => {
-                // Visualization logic
-                let scoreVal = parseFloat(row.final_score);
-                let scorePct = (scoreVal / 10) * 100; // Assume max 10 for bar visualization
-                if (scorePct > 100) scorePct = 100;
-
-                // Tier Logic
-                let rankVal = parseFloat(row.rank);
-                let tier = '<span style="color:#ef4444;">Low</span>';
-                if (rankVal <= 1000) tier = '<span style="color:#fbbf24;">Medium</span>';
-                if (rankVal <= 100) tier = '<span style="color:#34d399; font-weight:600;">High Priority</span>';
-
-                html += `
-                <tr>
-                    <td class="gene-col">${row.gene || 'Unknown'}</td>
-                    <td class="rank-col">#${rankVal}</td>
-                    <td>
-                        <div class="bar-container"><div class="bar-fill" style="width:${scorePct}%"></div></div>
-                        <span style="font-family:'JetBrains Mono'; font-weight:600;">${scoreVal.toFixed(2)}</span>
-                    </td>
-                    <td>${tier}</td>
+            tbody.innerHTML = res.slice(0, 100).map(row => {
+                let pct = (row.final_score / 15) * 100; if(pct>100) pct=100;
+                let cls = row.rank <= 100 ? '<span style="color:#34d399; font-weight:600;">High Priority</span>' : (row.rank <= 1000 ? '<span style="color:#fbbf24;">Medium</span>' : '<span style="color:#ef4444;">Low</span>');
+                
+                return `<tr>
+                    <td style="font-family:'JetBrains Mono'; font-weight:700; color:#3b82f6; font-size:1rem;">${row.gene}</td>
+                    <td style="font-family:'JetBrains Mono'; color:white;">#${row.rank}</td>
+                    <td><div class="bar"><div class="fill" style="width:${pct}%"></div></div> <b style="font-family:'JetBrains Mono';">${row.final_score.toFixed(2)}</b></td>
+                    <td>${cls}</td>
                 </tr>`;
-            });
-            tbody.innerHTML = html;
+            }).join('');
         }
+        
+        // Init
+        setTimeout(render, 50); // Small delay to let UI paint
     </script>
 </body>
-
 </html>
