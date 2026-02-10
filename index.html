@@ -22,6 +22,10 @@
             --header-bg: #0f172a;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
@@ -32,13 +36,15 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            font-size: 16px;
+            /* Base font size for readability */
         }
 
-        /* Navigation */
+        /* Mobile-First Navigation */
         nav {
             background: var(--header-bg);
             color: white;
-            padding: 1rem 2rem;
+            padding: 1rem;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -46,19 +52,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            /* Allow wrapping */
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
+        .nav-toggle {
+            display: none;
+            /* Hidden by default on desktop */
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .nav-links a {
@@ -67,8 +83,9 @@
             font-weight: 500;
             transition: color 0.2s;
             cursor: pointer;
-            padding-bottom: 0.25rem;
+            padding: 0.5rem 0;
             border-bottom: 2px solid transparent;
+            font-size: 0.95rem;
         }
 
         .nav-links a:hover,
@@ -77,36 +94,154 @@
             border-bottom-color: var(--primary);
         }
 
+        /* Mobile Nav Styles */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                /* Hidden on mobile initially */
+                width: 100%;
+                flex-direction: column;
+                gap: 0;
+                margin-top: 1rem;
+                background: rgba(15, 23, 42, 0.95);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links a {
+                padding: 1rem;
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .nav-links a.active {
+                background: rgba(37, 99, 235, 0.2);
+                border-bottom-color: transparent;
+            }
+        }
+
         /* Hero Section */
         header {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: white;
-            padding: 5rem 2rem;
+            padding: 3rem 1.5rem;
+            /* Reduced padding for mobile */
             text-align: center;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 2rem;
+            /* Responsive font size */
             font-weight: 800;
             margin: 0 0 1rem 0;
             letter-spacing: -0.025em;
+            line-height: 1.1;
         }
 
         p.subtitle {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: #94a3b8;
-            max-width: 800px;
+            max-width: 100%;
             margin: 0 auto 2rem auto;
+            line-height: 1.5;
         }
 
         /* Main Content */
         main {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
-            flex: 1;
+            padding: 1.5rem;
+            /* Consistent padding */
             width: 100%;
-            box-sizing: border-box;
+        }
+
+        /* Grid System */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            /* Single column default (Mobile) */
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 cols on tablet */
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+                /* 3 cols on desktop */
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            height: 100%;
+            /* Equal height cards */
+        }
+
+        /* Tables - Horizontal Scroll */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            min-width: 600px;
+            /* Force minimum width to trigger scroll */
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            /* Full width on mobile */
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .btn {
+                width: auto;
+                /* Auto width on larger screens */
+                margin-bottom: 0;
+            }
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
         }
 
         /* Tab Content Logic */
@@ -346,11 +481,14 @@
         <div class="logo">
             <i class="fa-solid fa-dna"></i> TPS Portal
         </div>
-        <div class="nav-links">
-            <a onclick="switchTab('home')" class="active" id="nav-home">Overview</a>
-            <a onclick="switchTab('methodology')" id="nav-methodology">Methodology</a>
-            <a onclick="switchTab('data')" id="nav-data">Data Explorer</a>
-            <a onclick="switchTab('figures')" id="nav-figures">Figures</a>
+        <div class="nav-toggle" onclick="toggleNav()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a onclick="switchTab('home'); toggleNav()" class="active" id="nav-home">Overview</a>
+            <a onclick="switchTab('methodology'); toggleNav()" id="nav-methodology">Methodology</a>
+            <a onclick="switchTab('data'); toggleNav()" id="nav-data">Data Explorer</a>
+            <a onclick="switchTab('figures'); toggleNav()" id="nav-figures">Figures</a>
             <a href="paper.html" target="_blank">Manuscript <i class="fa-solid fa-arrow-up-right-from-square"
                     style="font-size: 0.8em;"></i></a>
         </div>
@@ -576,6 +714,20 @@
 
     <!-- SCRIPTS -->
     <script>
+        function toggleNav() {
+            const nav = document.getElementById('navLinks');
+            const icon = document.querySelector('.nav-toggle i');
+            nav.classList.toggle('show');
+
+            if (nav.classList.contains('show')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
         // Tab Switching Logic
         function switchTab(tabId) {
             // Hide all contents
