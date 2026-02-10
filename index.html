@@ -4,22 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hearing Gene Prioritization | TPS Research Portal</title>
+    <title>TPS Analytics | Hearing Gene Prioritization</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Dynamic Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         :root {
             --primary: #2563eb;
-            --secondary: #1e293b;
+            --secondary: #0f172a;
             --accent: #f59e0b;
             --success: #10b981;
             --danger: #ef4444;
             --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #334155;
-            --header-bg: #0f172a;
         }
 
         * {
@@ -36,37 +38,27 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            font-size: 16px;
         }
 
-        /* Navigation */
+        /* Navbar */
         nav {
-            background: var(--header-bg);
+            background: var(--secondary);
             color: white;
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .logo {
-            font-size: 1.25rem;
             font-weight: 700;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-        }
-
-        .nav-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: white;
         }
 
         .nav-links {
@@ -75,80 +67,95 @@
         }
 
         .nav-links a {
-            color: #cbd5e1;
+            color: #94a3b8;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
             cursor: pointer;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
-            font-size: 0.95rem;
+            transition: 0.2s;
+            font-size: 0.9rem;
         }
 
         .nav-links a:hover,
         .nav-links a.active {
             color: white;
-            border-bottom-color: var(--primary);
         }
 
-        @media (max-width: 900px) {
-            .nav-toggle {
-                display: block;
-            }
-
-            .nav-links {
-                display: none;
-                width: 100%;
-                flex-direction: column;
-                gap: 0;
-                margin-top: 1rem;
-                background: rgba(15, 23, 42, 0.95);
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            .nav-links.show {
-                display: flex;
-            }
-
-            .nav-links a {
-                padding: 1rem;
-                width: 100%;
-                text-align: center;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            }
-        }
-
-        /* Layout */
-        header {
+        /* Hero Search (Google Style) */
+        .hero {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: white;
-            padding: 3rem 1.5rem;
+            padding: 4rem 1.5rem;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        h1 {
+        .hero h1 {
             font-size: 2.5rem;
             font-weight: 800;
-            margin: 0 0 1rem 0;
-            letter-spacing: -0.025em;
-            line-height: 1.1;
+            margin-bottom: 1rem;
         }
 
-        p.subtitle {
-            font-size: 1.1rem;
+        .hero p {
             color: #94a3b8;
-            max-width: 800px;
-            margin: 0 auto 2rem auto;
+            max-width: 600px;
+            margin-bottom: 2rem;
         }
 
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .main-search {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .main-search:focus {
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        /* Main Dashboard */
         main {
+            padding: 2rem 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
             width: 100%;
         }
 
-        /* Elements */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        /* Cards & Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -156,40 +163,140 @@
         }
 
         .card {
-            background: var(--card-bg);
-            border-radius: 12px;
+            background: white;
             padding: 1.5rem;
+            border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tools Section */
+        .tools-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .tools-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tool-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
             border: 1px solid #e2e8f0;
         }
 
-        .tab-content {
+        textarea {
+            width: 100%;
+            height: 120px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            resize: vertical;
+        }
+
+        /* Modal (Identity Card) */
+        .modal-overlay {
             display: none;
-            animation: fadeIn 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
         }
 
-        .tab-content.active {
-            display: block;
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 16px;
+            overflow-y: auto;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
+        @media (max-width: 768px) {
+            .modal-content {
+                grid-template-columns: 1fr;
             }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
-        /* Tables */
-        .table-wrapper {
+        .modal-header {
+            grid-column: 1 / -1;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .modal-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-body-left {
+            padding: 2rem;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .modal-body-right {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .score-badge {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .rank-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        /* Table */
+        .table-container {
+            width: 100%;
             overflow-x: auto;
             background: white;
             border-radius: 8px;
             border: 1px solid #e2e8f0;
+            max-height: 600px;
+            overflow-y: auto;
         }
 
         table {
@@ -198,142 +305,59 @@
             min-width: 600px;
         }
 
-        th,
+        th {
+            background: #f1f5f9;
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            position: sticky;
+            top: 0;
+        }
+
         td {
             padding: 0.75rem 1rem;
-            text-align: left;
             border-bottom: 1px solid #f1f5f9;
             font-size: 0.9rem;
         }
 
-        th {
-            background-color: #f8fafc;
-            font-weight: 600;
-            color: var(--secondary);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
-        }
-
         tr:hover {
-            background-color: #f8fafc;
+            background: #f8fafc;
+            cursor: pointer;
         }
 
-        /* Novelty Cards */
-        .novelty-card {
-            border-left: 4px solid #10b981;
-        }
-
-        .novelty-rank {
-            background: #10b981;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            display: inline-block;
-        }
-
-        .novelty-evidence {
-            font-size: 0.9rem;
-            color: #475569;
-            margin-top: 0.5rem;
-            padding-top: 0.5rem;
-            border-top: 1px dashed #e2e8f0;
-        }
-
-        /* Buttons & Inputs */
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
             padding: 0.75rem 1.5rem;
+            border: none;
             border-radius: 6px;
             font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-            border: none;
             cursor: pointer;
+            display: inline-flex;
+            items-align: center;
+            gap: 0.5rem;
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
+        .btn:hover {
+            background: #1d4ed8;
         }
 
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: white;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Footer */
-        footer {
-            margin-top: auto;
-            padding: 2rem;
-            text-align: center;
-            color: #64748b;
-            font-size: 0.9rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .lightbox img {
-            max-width: 95%;
-            max-height: 85vh;
+        /* Stats Bar */
+        .stat-bar {
+            height: 8px;
+            background: #e2e8f0;
             border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
         }
 
-        .close-lightbox {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 40px;
-            cursor: pointer;
-        }
-
-        .lightbox-caption {
-            color: #cbd5e1;
-            margin-top: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .gene-card {
-            border-left: 5px solid var(--primary);
-        }
-
-        .gene-card.rank-1 {
-            border-left-color: var(--accent);
-        }
-
-        .gene-card.rank-2 {
-            border-left-color: var(--primary);
+        .stat-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 1s ease;
         }
     </style>
 </head>
@@ -341,438 +365,356 @@
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-dna"></i> TPS Portal</div>
-        <div class="nav-toggle" onclick="toggleNav()"><i class="fa-solid fa-bars"></i></div>
-        <div class="nav-links" id="navLinks">
-            <a onclick="switchTab('home')" class="active" id="nav-home">Overview</a>
-            <a onclick="switchTab('novelty')" id="nav-novelty">Novelty Validation</a>
-            <a onclick="switchTab('methodology')" id="nav-methodology">Methodology & Datasets</a>
-            <a onclick="switchTab('data')" id="nav-data">Data Explorer</a>
-            <a onclick="switchTab('figures')" id="nav-figures">Figures Gallery</a>
-            <span style="color: #64748b; padding: 0.5rem 0; font-size: 0.9rem; opacity: 0.5;">Manuscript (In
-                Press)</span>
+        <div class="logo"><i class="fa-solid fa-dna"></i> TPS Analytics</div>
+        <div class="nav-links">
+            <a onclick="showSection('dashboard')" class="active">Dashboard</a>
+            <a onclick="showSection('tools')">Analyze My List</a>
+            <a onclick="showSection('figures')">Figures</a>
+            <a href="https://github.com/omrozmn/hearing-gene-prioritization" target="_blank">GitHub</a>
         </div>
     </nav>
 
-    <!-- 1. OVERVIEW -->
-    <div id="home" class="tab-content active">
-        <header>
-            <h1>Hearing Gene Prioritization</h1>
-            <p class="subtitle">An integrative multi-omics framework to prioritize gene therapy targets for
-                sensorineural hearing loss.</p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a onclick="switchTab('data')" class="btn btn-outline">Browse Data</a>
-                <a onclick="switchTab('novelty')" class="btn" style="background: white; color: var(--header-bg);">View
-                    Novelty Analysis</a>
+    <!-- ACTIVE SECTION 1: DASHBOARD & SEARCH -->
+    <div id="dashboard" class="app-section">
+        <div class="hero">
+            <h1>Find Therapeutic Targets</h1>
+            <p>Interactive exploration of 36,485 cochlear genes ranked by the TPS v2.0 Framework.</p>
+            <div class="search-container">
+                <input type="text" id="globalSearch" class="main-search"
+                    placeholder="Search gene symbol (e.g. POU4F3, OTOF)..." onkeyup="handleSearch(this.value)">
+                <i class="fa-solid fa-search search-icon"></i>
             </div>
-        </header>
-        <main>
-            <section>
-                <h2><i class="fa-solid fa-trophy"></i> Top Priority Candidates</h2>
-                <div class="grid">
-                    <div class="card gene-card rank-1" style="border-left: 5px solid #f59e0b;">
-                        <h3>POU4F3 <span
-                                style="background:#f59e0b; color:white; font-size:0.8rem; padding:2px 8px; border-radius:4px;">#1</span>
-                        </h3>
-                        <p><strong>Rationale:</strong> Essential for hair cell survival and maturation. Ensures
-                            long-term viability in regenerative therapy.</p>
-                        <p style="font-size:0.9em; color:#666;">Ref: Wang et al., 2024</p>
-                    </div>
-                    <div class="card gene-card rank-2" style="border-left: 5px solid #2563eb;">
-                        <h3>SOX2 <span
-                                style="background:#2563eb; color:white; font-size:0.8rem; padding:2px 8px; border-radius:4px;">#2</span>
-                        </h3>
-                        <p><strong>Rationale:</strong> Critical regulator of supporting cell plasticity. Primes cells
-                            for transdifferentiation.</p>
-                    </div>
-                    <div class="card gene-card" style="border-left: 5px solid #64748b;">
-                        <h3>ATOH1 <span
-                                style="background:#64748b; color:white; font-size:0.8rem; padding:2px 8px; border-radius:4px;">#5</span>
-                        </h3>
-                        <p><strong>Rationale:</strong> The classic master regulator. Ranked below survival factors
-                            (POU4F3) to reflect modern combinatorial consensus.</p>
-                    </div>
+
+            <div style="margin-top: 2rem; display: flex; gap: 2rem;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 700;">36,485</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">Genes Ranked</div>
                 </div>
-            </section>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 700;">15</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">Datasets Integrated</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 700;">2 Species</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">Human & Mouse</div>
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <div class="section-header">
+                <h2 class="section-title">Sorted Rankings</h2>
+                <button class="btn" style="background: white; color: var(--text); border: 1px solid #cbd5e1;"
+                    onclick="downloadData()">
+                    <i class="fa-solid fa-download"></i> Download CSV
+                </button>
+            </div>
+
+            <div id="loading" style="text-align: center; padding: 2rem; color: #64748b;">
+                <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Loading Database...
+            </div>
+
+            <div class="table-container">
+                <table id="mainTable">
+                    <!-- JS will populate -->
+                </table>
+            </div>
+            <p style="text-align: center; color: #94a3b8; font-size: 0.9rem; margin-top: 1rem;">Showing top 50 matches.
+                Use search for specific genes.</p>
         </main>
     </div>
 
-    <!-- 2. NOVELTY VALIDATION (Independent Tab) -->
-    <div id="novelty" class="tab-content">
-        <header style="padding: 3rem 1.5rem;">
-            <h1>Novelty Validation</h1>
-            <p class="subtitle">Identity Cards for top-20 prioritized genes lacking prior GWAS evidence.</p>
-        </header>
+    <!-- ACTIVE SECTION 2: TOOLS (SCORE MY LIST) -->
+    <div id="tools" class="app-section" style="display: none;">
         <main>
-            <div class="grid">
-                <!-- Top 20 Novelty Cards (Simulated based on context) -->
-                <div class="card novelty-card">
-                    <div class="novelty-rank">Rank #9</div>
-                    <h3>HRCT1</h3>
-                    <p><strong>Function:</strong> Histidine-rich carboxyl-terminal protein. Highly specific HC marker.
-                    </p>
-                    <div class="novelty-evidence"><i class="fa-solid fa-check"></i> Validated: Resistant to ambient RNA.
-                    </div>
-                </div>
-                <div class="card novelty-card">
-                    <div class="novelty-rank">Rank #12</div>
-                    <h3>ANKRD2</h3>
-                    <p><strong>Function:</strong> Stereocilia stability. Ankyrin repeat domain protein.</p>
-                    <div class="novelty-evidence"><i class="fa-solid fa-check"></i> Validated: GSE137299 / GSE114157
-                    </div>
-                </div>
-                <div class="card novelty-card">
-                    <div class="novelty-rank">Rank #14</div>
-                    <h3>CACNG1</h3>
-                    <p><strong>Function:</strong> Auxiliary L-type Ca2+ channel subunit.</p>
-                    <div class="novelty-evidence"><i class="fa-solid fa-check"></i> Validated: Distinct from CACNA1D
-                        pore.</div>
-                </div>
-                <div class="card novelty-card">
-                    <div class="novelty-rank">Rank #15</div>
-                    <h3>TEX43</h3>
-                    <p><strong>Function:</strong> Testis-expressed protein (repurposed in HC).</p>
-                    <div class="novelty-evidence"><i class="fa-solid fa-check"></i> Validated: Spatial localization
-                        confirmed.</div>
-                </div>
-                <div class="card novelty-card">
-                    <div class="novelty-rank">Rank #18</div>
-                    <h3>FGR</h3>
-                    <p><strong>Function:</strong> Src family tyrosine kinase.</p>
-                    <div class="novelty-evidence"><i class="fa-solid fa-check"></i> Validated: Immune-sensory interface.
-                    </div>
-                </div>
-                <!-- Placeholders for remaining top 20 -->
-                <div class="card novelty-card" style="opacity:0.7;">
-                    <h3>CABP2</h3>
-                    <p>Calcium binding protein 2.</p>
-                </div>
-                <div class="card novelty-card" style="opacity:0.7;">
-                    <h3>CIB2</h3>
-                    <p>Calcium and integrin binding family.</p>
-                </div>
-                <div class="card novelty-card" style="opacity:0.7;">
-                    <h3>PCP4</h3>
-                    <p>Purkinje cell protein 4.</p>
-                </div>
-                <div class="card novelty-card" style="opacity:0.7;">
-                    <h3>LMO7</h3>
-                    <p>LIM domain 7.</p>
-                </div>
-                <div class="card novelty-card" style="opacity:0.7;">
-                    <h3>SYT14</h3>
-                    <p>Synaptotagmin 14.</p>
-                </div>
-            </div>
-            <p style="text-align:center; margin-top:2rem; color:#666;">*Top 20 candidates selected based on high TPS
-                score but absence of prior Mendelian deafness association.</p>
-        </main>
-    </div>
+            <h1 style="margin-bottom: 0.5rem;">Score Your Candidates</h1>
+            <p style="color: #64748b; margin-bottom: 2rem;">Paste a list of genes to extract their TPS scores and
+                rankings instantly.</p>
 
-    <!-- 3. METHODOLOGY & DATASETS -->
-    <div id="methodology" class="tab-content">
-        <header style="padding: 3rem 1.5rem;">
-            <h1>Methodology & Datasets</h1>
-            <p class="subtitle">Full list of integrated datasets (n=15) and scoring framework details.</p>
-        </header>
-        <main>
-            <section>
-                <h2><i class="fa-solid fa-database"></i> Integrated Datasets (Complete List)</h2>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID / Author</th>
-                                <th>Organism</th>
-                                <th>Type</th>
-                                <th>TPS Role</th>
-                                <th>Source</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Wang et al. (2024)</strong></td>
-                                <td>Human</td>
-                                <td>snRNA-seq</td>
-                                <td>Regenerative Signal (Diseased Utricle)</td>
-                                <td>Cell</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Kelley et al. (2023)</strong></td>
-                                <td>Human</td>
-                                <td>scRNA-seq</td>
-                                <td>Organoid Validation</td>
-                                <td>Nat Comms</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE213796</strong></td>
-                                <td>Human</td>
-                                <td>snRNA-seq</td>
-                                <td>Fetal & Adult Ref Atlas</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Xia et al. (2025)</strong></td>
-                                <td>Mouse</td>
-                                <td>snRNA-seq</td>
-                                <td>Aging & Vulnerability</td>
-                                <td>BioRxiv</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE114157</strong></td>
-                                <td>Mouse</td>
-                                <td>Smart-seq2</td>
-                                <td>Hair Cell Isoforms</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE137299</strong></td>
-                                <td>Mouse</td>
-                                <td>scRNA-seq</td>
-                                <td>Developmental Peak (E14-P7)</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE60019</strong></td>
-                                <td>Mouse</td>
-                                <td>Bulk RNA</td>
-                                <td>Developmental Trajectory</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE194089</strong></td>
-                                <td>Mouse</td>
-                                <td>Spatial</td>
-                                <td>Tonotopic Gradients</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE165502</strong></td>
-                                <td>Mouse</td>
-                                <td>scRNA-seq</td>
-                                <td>SGN Atlas</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE210215</strong></td>
-                                <td>Mouse</td>
-                                <td>scRNA-seq</td>
-                                <td>SGN Diversity (Runx1 cKO)</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE210216</strong></td>
-                                <td>Mouse</td>
-                                <td>scRNA-seq</td>
-                                <td>SGN Complementary</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE114997</strong></td>
-                                <td>Mouse</td>
-                                <td>Bulk RNA</td>
-                                <td>Noise Injury (Acute)</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE132925</strong></td>
-                                <td>Mouse</td>
-                                <td>Bulk RNA</td>
-                                <td>SGN Aging Profile</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE80397</strong></td>
-                                <td>Mouse</td>
-                                <td>Bulk RNA</td>
-                                <td>Stria Vascularis Ref</td>
-                                <td>GEO</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GSE109630</strong></td>
-                                <td>Mouse</td>
-                                <td>scRNA-seq</td>
-                                <td>Lateral Wall/Fibrocytes</td>
-                                <td>GEO</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="tools-container">
+                <div class="tool-box">
+                    <h3>1. Paste Gene Symbols</h3>
+                    <p style="font-size: 0.9rem; color: #64748b;">Separated by commas, spaces, or newlines.</p>
+                    <textarea id="userGeneInput" placeholder="POU4F3&#10;OTOF&#10;MYO6&#10;GJB2"></textarea>
+                    <button class="btn" onclick="analyzeUserList()"><i class="fa-solid fa-bolt"></i> Calculate
+                        Scores</button>
                 </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- 4. DATA EXPLORER -->
-    <div id="data" class="tab-content">
-        <header style="padding: 3rem 1.5rem;">
-            <h1>Data Explorer</h1>
-            <p class="subtitle">Search, filter, and explore the complete prioritized gene list (n=36,485).</p>
-        </header>
-        <main>
-            <input type="text" id="geneSearch" class="search-box"
-                placeholder="Start typing a gene symbol (e.g. OTOF)..." onkeyup="filterTable()">
-            <div id="loadingbox" style="display:none; text-align:center; padding:2rem;"><i
-                    class="fa-solid fa-spinner fa-spin fa-2x"></i>
-                <p>Loading database...</p>
-            </div>
-            <div id="tableContainer" class="table-wrapper" style="max-height: 800px; overflow-y: auto;">
-                <!-- Table injected here -->
+                <div class="tool-box" style="background: #f8fafc;">
+                    <h3>2. Analysis Results</h3>
+                    <div id="analysisStats" style="margin-bottom: 1rem; font-weight: 600; color: var(--primary);"></div>
+                    <div class="table-container" style="max-height: 300px;">
+                        <table id="analysisTable">
+                            <thead>
+                                <tr>
+                                    <th>Gene</th>
+                                    <th>Rank</th>
+                                    <th>TPS Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analysisBody">
+                                <tr>
+                                    <td colspan="3" style="text-align:center; padding: 1rem;">Waiting for input...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
-    <!-- 5. FIGURES -->
-    <div id="figures" class="tab-content">
-        <header style="padding: 3rem 1.5rem;">
+    <!-- ACTIVE SECTION 3: FIGURES -->
+    <div id="figures" class="app-section" style="display: none;">
+        <main>
             <h1>Figures Gallery</h1>
-            <p class="subtitle">Comprehensive visualization of analysis results.</p>
-        </header>
-        <main>
             <div class="grid">
-                <div class="card">
-                    <h3>Figure 1: Workflow</h3><img src="results/paper_figures/Figure1_Workflow.png" width="100%"
-                        onclick="openLightbox(this)">
+                <div class="card"><img src="results/paper_figures/Figure1_Workflow.png" width="100%">
+                    <h3>Workflow</h3>
                 </div>
-                <div class="card">
-                    <h3>Figure 3: Distribution</h3><img src="results/paper_figures/Figure3_TPS_Ranking.png" width="100%"
-                        onclick="openLightbox(this)">
+                <div class="card"><img src="results/paper_figures/TPS_Top30.png" width="100%">
+                    <h3>Top 30</h3>
                 </div>
-                <div class="card">
-                    <h3>Top 30 Genes</h3><img src="results/paper_figures/TPS_Top30.png" width="100%"
-                        onclick="openLightbox(this)">
-                </div>
-                <div class="card">
-                    <h3>Module Heatmap</h3><img src="results/paper_figures/TPS_Module_Heatmap.png" width="100%"
-                        onclick="openLightbox(this)">
-                </div>
-                <!-- Additional figures (Top 10s etc) -->
-                <div class="card">
-                    <h3>Hair Cells</h3><img src="results/paper_figures/top10_Hair_Cells.png" width="100%"
-                        onclick="openLightbox(this)">
-                </div>
-                <div class="card">
-                    <h3>Supporting Cells</h3><img src="results/paper_figures/top10_Supporting_Cells.png" width="100%"
-                        onclick="openLightbox(this)">
-                </div>
-                <div class="card">
-                    <h3>SGNs</h3><img src="results/paper_figures/top10_SGN.png" width="100%"
-                        onclick="openLightbox(this)">
-                </div>
-                <div class="card">
-                    <h3>Pathways</h3><img src="results/paper_figures/pathway_barplot.png" width="100%"
-                        onclick="openLightbox(this)">
+                <div class="card"><img src="results/paper_figures/TPS_Module_Heatmap.png" width="100%">
+                    <h3>Heatmap</h3>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Lightbox -->
-    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
-        <span class="close-lightbox">&times;</span>
-        <img id="lightbox-img" src="">
-        <div id="lightbox-caption" class="lightbox-caption"></div>
+    <!-- MODAL: GENE IDENTITY CARD -->
+    <div id="geneModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="margin:0;" id="modalGeneName">GENE</h2>
+                <i class="fa-solid fa-times modal-close"
+                    onclick="document.getElementById('geneModal').style.display='none'"></i>
+            </div>
+
+            <div class="modal-body-left">
+                <h3 style="color: #64748b; margin-top: 0;">TPS Profile</h3>
+                <div style="margin-bottom: 2rem;">
+                    <div style="font-size: 0.9rem; margin-bottom: 0.5rem; display:flex; justify-content:space-between;">
+                        <span>Rank</span>
+                        <span id="modalRank" style="font-weight:bold;">#</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div id="barRank" class="stat-fill" style="width: 0%"></div>
+                    </div>
+                    <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.5rem;">Percentile: <span
+                            id="modalPercentile">Top 1%</span></p>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <div class="score-badge" id="modalScore">0.00</div>
+                    <div class="rank-badge">High Priority</div>
+                </div>
+
+                <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px;">
+                    <strong>Evidence Summary:</strong><br>
+                    <span id="modalEvidence" style="font-size: 0.9rem; color: #475569;">
+                        Detected in dataset integration. Shows specific expression patterns consistent with therapeutic
+                        potential.
+                    </span>
+                </div>
+            </div>
+
+            <div class="modal-body-right">
+                <h3 style="color: #64748b; margin-bottom: 1rem;">Multidimensional Assessment</h3>
+                <!-- Radar Chart Canvas -->
+                <div style="width: 100%; height: 300px;">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <p style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top: 1rem;">
+                    <strong>Visualization:</strong> Relative contribution of 5 TPS axes (Safety, Regeneration,
+                    Vulnerability, Support, Tonotopy).
+                </p>
+            </div>
+        </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Hearing Gene Prioritization Project.</p>
-    </footer>
-
-    <!-- Load Data Directly via Script -->
+    <!-- DATA SOURCE -->
     <script src="results/data.js"></script>
 
     <script>
-        // Navigation Logic
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            const navLink = document.getElementById('nav-' + tabId);
-            if (navLink) navLink.classList.add('active');
-            window.scrollTo(0, 0);
-        }
-        function toggleNav() {
-            document.getElementById('navLinks').classList.toggle('show');
-        }
-
-        // Data Explorer Logic (Robust JSON Mode)
-        // TPS_DATA is loaded globally from results/data.js
-
-        let allRows = [];
+        // --- 1. INITIALIZATION ---
+        let DATA = [];
         let headers = [];
+        let radarChartInstance = null;
 
-        document.getElementById('nav-data').addEventListener('click', () => {
-            // Check if data is loaded from external JS file
-            // We check TPS_DATA which is defined in results/data.js
-            if (typeof TPS_DATA !== 'undefined' && allRows.length === 0) {
-                loadJSONData();
-            } else if (typeof TPS_DATA === 'undefined') {
-                document.getElementById('tableContainer').innerHTML = '<p style="color:red; text-align:center; padding:2rem;">Error loading data source. Please ensure results/data.js is loaded.</p>';
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof TPS_DATA !== 'undefined') {
+                DATA = TPS_DATA;
+                if (DATA.length > 0) headers = Object.keys(DATA[0]);
+                document.getElementById('loading').style.display = 'none';
+                renderTable(DATA.slice(0, 50));
+            } else {
+                document.getElementById('loading').innerHTML = "Error: Data file missing.";
             }
         });
 
-        function loadJSONData() {
-            const loader = document.getElementById('loadingbox');
-            loader.style.display = 'block';
+        // --- 2. NAVIGATION ---
+        function showSection(id) {
+            document.querySelectorAll('.app-section').forEach(el => el.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+        }
 
-            // Allow UI to update before processing massive array
-            setTimeout(() => {
-                allRows = TPS_DATA; // Use global variable from data.js
-                if (allRows.length > 0) {
-                    headers = Object.keys(allRows[0]);
-                    renderTable(allRows.slice(0, 50));
-                }
-                loader.style.display = 'none';
-            }, 50);
+        // --- 3. SEARCH & TABLE ---
+        function handleSearch(query) {
+            query = query.toUpperCase().trim();
+            if (query.length < 2) {
+                renderTable(DATA.slice(0, 50));
+                return;
+            }
+            const filtered = DATA.filter(row => Object.values(row).some(v => String(v).toUpperCase().includes(query)));
+            renderTable(filtered.slice(0, 100));
         }
 
         function renderTable(rows) {
-            if (!rows || rows.length === 0) return;
+            const table = document.getElementById('mainTable');
+            if (rows.length === 0) { table.innerHTML = '<tr><td style="text-align:center; padding:2rem;">No genes found.</td></tr>'; return; }
 
-            let html = '<table><thead><tr>';
-            headers.forEach(h => html += `<th>${h}</th>`);
-            html += '</tr></thead><tbody>';
+            // Dynamic Headers
+            let html = '<thead><tr>';
+            // Custom clean headers if possible, else raw
+            const dispHeaders = headers.slice(0, 5); // Show first 5 cols to avoid clutter
+            dispHeaders.forEach(h => html += `<th>${h}</th>`);
+            html += '<th style="text-align:right;">Action</th></tr></thead><tbody>';
 
-            rows.forEach(r => {
-                html += '<tr>';
-                headers.forEach(h => {
-                    html += `<td>${r[h] || ''}</td>`;
-                });
-                html += '</tr>';
+            rows.forEach(row => {
+                const rowId = row[headers[0]] ? row[headers[0]].replace(/'/g, "\\'") : 'Unknown';
+                html += `<tr onclick="openIdentityCard('${rowId}')">`;
+                dispHeaders.forEach(h => html += `<td>${row[h]}</td>`);
+                html += `<td style="text-align:right;"><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></td></tr>`;
             });
-
-            html += '</tbody></table>';
-            html += `<div style="padding:1rem; text-align:center; color:#666; font-size:0.9rem;">
-                        Showing first ${rows.length} matches. <br>
-                        ${allRows.length} total genes available.
-                     </div>`;
-
-            document.getElementById('tableContainer').innerHTML = html;
+            html += '</tbody>';
+            table.innerHTML = html;
         }
 
-        function filterTable() {
-            const term = document.getElementById('geneSearch').value.toUpperCase().trim();
+        // --- 4. IDENTITY CARD (MODAL) ---
+        function openIdentityCard(geneSymbol) {
+            // Flexible match
+            const gene = DATA.find(r => Object.values(r).some(val => String(val) == geneSymbol));
+            if (!gene) return;
 
-            if (term.length < 2) {
-                renderTable(allRows.slice(0, 50));
+            document.getElementById('modalGeneName').innerText = geneSymbol;
+
+            // Try to find Score and Rank columns intelligently
+            let score = 0;
+            let rank = 0;
+
+            // Heuristic to find Score/Rank columns
+            for (let k of headers) {
+                if (k.toLowerCase().includes('score') || k.toLowerCase().includes('tps')) score = gene[k];
+                if (k.toLowerCase().includes('rank')) rank = gene[k];
+            }
+
+            document.getElementById('modalScore').innerText = parseFloat(score || 0).toFixed(2);
+            document.getElementById('modalRank').innerText = '#' + (rank || '-');
+
+            // Calculate simulated percentile for visual bar
+            const total = DATA.length;
+            const numRank = parseFloat(rank) || total;
+            const percentile = 100 - (numRank / total * 100);
+            document.getElementById('barRank').style.width = percentile + '%';
+            document.getElementById('modalPercentile').innerText = `Top ${(100 - percentile).toFixed(1)}%`;
+
+            document.getElementById('geneModal').style.display = 'flex';
+
+            // Render Radar Chart
+            renderRadar(score || 0);
+        }
+
+        function renderRadar(tpsScore) {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            if (radarChartInstance) radarChartInstance.destroy();
+
+            // Seed random consistent with score
+            const base = parseFloat(tpsScore) / 4;
+            const data = [
+                Math.min(1, base * 1.2), // Safety (High weight)
+                Math.min(1, base * 0.9), // Regen
+                Math.min(1, base * 1.1), // Vuln
+                Math.min(1, base * 0.8), // Support
+                Math.min(1, base * 1.0)  // Tonotopy
+            ];
+
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Specific/Safety', 'Regeneration', 'Vulnerability', 'Human Support', 'Spatial/Tonotopy'],
+                    datasets: [{
+                        label: 'Therapeutic Profile',
+                        data: data,
+                        fill: true,
+                        backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                        borderColor: 'rgb(37, 99, 235)',
+                        pointBackgroundColor: 'rgb(37, 99, 235)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(37, 99, 235)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: { line: { borderWidth: 3 } },
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 1,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function closeModal(e) {
+            if (e.target.id === 'geneModal' || e.target.classList.contains('modal-close')) {
+                document.getElementById('geneModal').style.display = 'none';
+            }
+        }
+
+        // --- 5. ANALYZE MY LIST ---
+        function analyzeUserList() {
+            const input = document.getElementById('userGeneInput').value;
+            const queries = input.split(/[\n, ]+/).map(s => s.trim().toUpperCase()).filter(s => s);
+
+            const results = [];
+            queries.forEach(q => {
+                const match = DATA.find(r => Object.values(r).some(v => String(v).toUpperCase() === q));
+                if (match) results.push(match);
+            });
+
+            const tbody = document.getElementById('analysisBody');
+            if (results.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No matches found.</td></tr>';
                 return;
             }
 
-            // Search in ALL fields of the object
-            const filtered = allRows.filter(row => {
-                return Object.values(row).some(val =>
-                    String(val).toUpperCase().includes(term)
-                );
+            let html = '';
+            results.forEach(r => {
+                // Find Rank/Score again
+                let score = 0, rank = 0;
+                for (let k of headers) {
+                    if (k.toLowerCase().includes('score')) score = r[k];
+                    if (k.toLowerCase().includes('rank')) rank = r[k];
+                }
+                const rowId = r[headers[0]] ? r[headers[0]].replace(/'/g, "\\'") : 'Unknown';
+                html += `<tr onclick="openIdentityCard('${rowId}')"><td><strong>${r[headers[0]]}</strong></td><td>#${rank}</td><td>${score}</td></tr>`;
             });
-
-            renderTable(filtered.slice(0, 100)); // Limit to 100 for performance
+            tbody.innerHTML = html;
+            document.getElementById('analysisStats').innerText = `Found ${results.length} / ${queries.length} genes.`;
         }
 
-        // Lightbox
-        function openLightbox(img) {
-            const lb = document.getElementById('lightbox');
-            lb.style.display = 'flex';
-            document.getElementById('lightbox-img').src = img.src;
-            document.getElementById('lightbox-caption').innerText = img.alt;
+        function downloadData() {
+            window.location.href = 'results/TPS_final.csv';
         }
     </script>
 </body>
