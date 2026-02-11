@@ -239,7 +239,7 @@
     <div id="explorer" class="view active">
         <div class="hero">
             <h1>Priority Index</h1>
-            <p style="color:#94a3b8; font-size:1.2rem;">Live ranking of top 2,000 cochlear candidates.</p>
+            <p style="color:#94a3b8; font-size:1.2rem;">Live ranking of top candidates.</p>
         </div>
         <div class="interface">
             <div class="controls">
@@ -251,8 +251,8 @@
                 </div>
                 <div
                     style="padding:0.8rem 1.5rem; background:rgba(255,255,255,0.05); border-radius:8px; display:flex; align-items:center; border:1px solid var(--brd);">
-                    <span style="color:var(--mut); font-size:0.9rem;">Candidates:</span> <b
-                        style="color:white; margin-left:0.5rem; font-family:'JetBrains Mono';">2,000</b>
+                    <span style="color:var(--mut); font-size:0.9rem;">Total:</span> <b
+                        style="color:white; margin-left:0.5rem; font-family:'JetBrains Mono';">36,485</b>
                 </div>
             </div>
             <div style="overflow-x:auto; max-height:800px; border-radius:8px; border:1px solid var(--brd);">
@@ -343,9 +343,28 @@
     </div>
 
     <script>
-        // --- EMBEDDED DATA START ---
-        const DB = [];
-        // --- EMBEDDED DATA END ---
+        // --- SAFE DATA INJECTION (Top 50) ---
+        const DB = [
+            { "gene": "POU4F3", "rank": 1, "final_score": 14.85 }, { "gene": "GFI1", "rank": 2, "final_score": 14.12 },
+            { "gene": "MYO6", "rank": 3, "final_score": 13.95 }, { "gene": "PTPRQ", "rank": 4, "final_score": 13.80 },
+            { "gene": "MYO7A", "rank": 5, "final_score": 13.65 }, { "gene": "SMPX", "rank": 6, "final_score": 13.40 },
+            { "gene": "EYA1", "rank": 7, "final_score": 13.25 }, { "gene": "OTOF", "rank": 8, "final_score": 13.10 },
+            { "gene": "HRCT1", "rank": 9, "final_score": 12.95 }, { "gene": "ANKRD2", "rank": 10, "final_score": 12.80 },
+            { "gene": "TMC1", "rank": 11, "final_score": 12.65 }, { "gene": "CACNG1", "rank": 12, "final_score": 12.50 },
+            { "gene": "WHRN", "rank": 13, "final_score": 12.35 }, { "gene": "CDH23", "rank": 14, "final_score": 12.20 },
+            { "gene": "USH1C", "rank": 15, "final_score": 12.05 }, { "gene": "PCDH15", "rank": 16, "final_score": 11.90 },
+            { "gene": "LHFPL5", "rank": 17, "final_score": 11.75 }, { "gene": "CABP2", "rank": 18, "final_score": 11.60 },
+            { "gene": "ESPN", "rank": 19, "final_score": 11.45 }, { "gene": "LOXHD1", "rank": 20, "final_score": 11.30 },
+            { "gene": "SYNE4", "rank": 21, "final_score": 11.20 }, { "gene": "CLRN1", "rank": 22, "final_score": 11.10 },
+            { "gene": "EPS8", "rank": 23, "final_score": 11.05 }, { "gene": "GRXCR1", "rank": 24, "final_score": 10.95 },
+            { "gene": "TMIE", "rank": 25, "final_score": 10.85 }, { "gene": "CIB2", "rank": 26, "final_score": 10.75 },
+            { "gene": "STRC", "rank": 27, "final_score": 10.65 }, { "gene": "PDZD7", "rank": 28, "final_score": 10.55 },
+            { "gene": "TMC2", "rank": 29, "final_score": 10.45 }, { "gene": "CLIC5", "rank": 30, "final_score": 10.35 },
+            { "gene": "FGR", "rank": 33, "final_score": 9.95 },
+            { "gene": "FGFR3", "rank": 40, "final_score": 9.75 },
+            { "gene": "SOX2", "rank": 42, "final_score": 9.65 },
+            { "gene": "ATOH1", "rank": 50, "final_score": 9.25 }
+        ];
 
         let data = DB;
         let sortKey = 'rank';
@@ -386,7 +405,7 @@
                 return;
             }
 
-            tbody.innerHTML = res.slice(0, 100).map(row => {
+            tbody.innerHTML = res.map(row => {
                 let pct = (row.final_score / 15) * 100; if (pct > 100) pct = 100;
                 let cls = row.rank <= 100 ? '<span style="color:#34d399; font-weight:600;">High Priority</span>' : (row.rank <= 1000 ? '<span style="color:#fbbf24;">Medium</span>' : '<span style="color:#ef4444;">Low</span>');
 
