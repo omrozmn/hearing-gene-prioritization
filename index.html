@@ -1,110 +1,587 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TPS Discovery Platform | Inner Ear Gene Therapy</title>
-    <meta name="description" content="Tissue Priority Score engine for cochlear gene therapy target discovery. Interactive explorer with 36,485 ranked genes.">
+    <meta name="description"
+        content="Tissue Priority Score engine for cochlear gene therapy target discovery. Interactive explorer with 36,485 ranked genes.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg:#030712; --card:rgba(30,41,59,0.55); --acc:#3b82f6; --sec:#10b981; --nov:#f59e0b; --txt:#f8fafc; --mut:#94a3b8; --brd:rgba(255,255,255,0.08); --danger:#ef4444; }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--txt); overflow-x:hidden; }
-        body::before { content:''; position:fixed; top:0; left:0; width:100vw; height:100vh; background:radial-gradient(ellipse at 15% 20%, rgba(59,130,246,0.07) 0%, transparent 50%), radial-gradient(ellipse at 85% 80%, rgba(16,185,129,0.04) 0%, transparent 50%); pointer-events:none; z-index:0; }
+        :root {
+            --bg: #030712;
+            --card: rgba(30, 41, 59, 0.55);
+            --acc: #3b82f6;
+            --sec: #10b981;
+            --nov: #f59e0b;
+            --txt: #f8fafc;
+            --mut: #94a3b8;
+            --brd: rgba(255, 255, 255, 0.08);
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--txt);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(ellipse at 15% 20%, rgba(59, 130, 246, 0.07) 0%, transparent 50%), radial-gradient(ellipse at 85% 80%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
         /* Nav */
-        nav { display:flex; justify-content:space-between; align-items:center; padding:1rem 2.5rem; background:rgba(3,7,18,0.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--brd); position:sticky; top:0; z-index:100; }
-        .brand { font-size:1.3rem; font-weight:800; display:flex; align-items:center; gap:0.7rem; }
-        .brand span { background:linear-gradient(135deg,#fff,#94a3b8); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-        .nav-tabs { display:flex; gap:0.3rem; background:rgba(255,255,255,0.04); padding:0.25rem; border-radius:10px; border:1px solid var(--brd); }
-        .tab { background:none; border:none; color:var(--mut); font-family:'Outfit'; font-size:0.85rem; font-weight:500; cursor:pointer; padding:0.5rem 1.2rem; border-radius:8px; transition:all 0.25s; }
-        .tab:hover { color:#cbd5e1; }
-        .tab.active { background:rgba(59,130,246,0.15); color:white; box-shadow:0 0 12px rgba(59,130,246,0.1); }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            background: rgba(3, 7, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--brd);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            font-size: 1.3rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.3rem;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--brd);
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            color: var(--mut);
+            font-family: 'Outfit';
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.25s;
+        }
+
+        .tab:hover {
+            color: #cbd5e1;
+        }
+
+        .tab.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: white;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.1);
+        }
 
         /* Views */
-        .view { display:none; position:relative; z-index:1; padding-bottom:4rem; animation:fadeUp 0.35s ease; }
-        .view.active { display:block; }
-        @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+        .view {
+            display: none;
+            position: relative;
+            z-index: 1;
+            padding-bottom: 4rem;
+            animation: fadeUp 0.35s ease;
+        }
 
-        .hero { text-align:center; padding:4rem 1rem 2.5rem; }
-        h1 { font-size:2.8rem; font-weight:800; letter-spacing:-0.03em; margin-bottom:0.6rem; }
-        .sub { color:var(--mut); font-size:1.1rem; font-weight:300; }
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem 2.5rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.6rem;
+        }
+
+        .sub {
+            color: var(--mut);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
 
         /* Engine */
-        .engine { background:rgba(255,255,255,0.02); border:1px solid var(--brd); border-radius:14px; padding:1.5rem; max-width:1300px; margin:0 auto; backdrop-filter:blur(8px); }
-        .toolbar { display:flex; gap:1rem; margin-bottom:1.2rem; flex-wrap:wrap; align-items:center; }
-        .search-box { position:relative; flex:1; min-width:250px; }
-        .search-box input { width:100%; background:rgba(0,0,0,0.35); border:1px solid var(--brd); padding:0.7rem 1rem 0.7rem 2.8rem; border-radius:8px; color:white; font-family:'JetBrains Mono'; font-size:0.9rem; transition:border 0.2s; }
-        .search-box input:focus { outline:none; border-color:var(--acc); box-shadow:0 0 0 3px rgba(59,130,246,0.08); }
-        .search-box i { position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--mut); font-size:0.85rem; }
-        .filter-group { display:flex; gap:0.4rem; }
-        .fbtn { background:rgba(255,255,255,0.04); border:1px solid var(--brd); color:var(--mut); font-family:'Outfit'; font-size:0.78rem; padding:0.5rem 0.9rem; border-radius:6px; cursor:pointer; transition:0.2s; }
-        .fbtn:hover { border-color:rgba(255,255,255,0.2); color:#e2e8f0; }
-        .fbtn.active { background:rgba(59,130,246,0.12); border-color:rgba(59,130,246,0.3); color:white; }
-        .stat { color:var(--mut); font-size:0.82rem; padding:0.5rem 1rem; white-space:nowrap; }
-        .stat b { color:white; font-family:'JetBrains Mono'; }
+        .engine {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--brd);
+            border-radius: 14px;
+            padding: 1.5rem;
+            max-width: 1300px;
+            margin: 0 auto;
+            backdrop-filter: blur(8px);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--brd);
+            padding: 0.7rem 1rem 0.7rem 2.8rem;
+            border-radius: 8px;
+            color: white;
+            font-family: 'JetBrains Mono';
+            font-size: 0.9rem;
+            transition: border 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--acc);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--mut);
+            font-size: 0.85rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .fbtn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--brd);
+            color: var(--mut);
+            font-family: 'Outfit';
+            font-size: 0.78rem;
+            padding: 0.5rem 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .fbtn:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #e2e8f0;
+        }
+
+        .fbtn.active {
+            background: rgba(59, 130, 246, 0.12);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: white;
+        }
+
+        .stat {
+            color: var(--mut);
+            font-size: 0.82rem;
+            padding: 0.5rem 1rem;
+            white-space: nowrap;
+        }
+
+        .stat b {
+            color: white;
+            font-family: 'JetBrains Mono';
+        }
 
         /* Table */
-        .tbl-wrap { overflow:auto; max-height:700px; border-radius:8px; border:1px solid var(--brd); }
-        table { width:100%; border-collapse:collapse; text-align:left; min-width:900px; }
-        thead { background:rgba(0,0,0,0.3); position:sticky; top:0; z-index:5; }
-        th { padding:0.8rem 1rem; color:var(--mut); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer; user-select:none; transition:0.15s; white-space:nowrap; }
-        th:hover { color:white; }
-        th i { margin-left:4px; font-size:0.6rem; }
-        td { padding:0.7rem 1rem; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.88rem; }
-        tr:hover td { background:rgba(59,130,246,0.04); }
-        .g { font-family:'JetBrains Mono'; font-weight:700; color:var(--acc); cursor:pointer; }
-        .g:hover { text-decoration:underline; }
-        .r { font-family:'JetBrains Mono'; font-weight:600; color:#e2e8f0; }
-        .bar { width:80px; height:5px; background:rgba(255,255,255,0.08); border-radius:3px; display:inline-block; vertical-align:middle; margin-right:6px; overflow:hidden; }
-        .bar .f { height:100%; border-radius:3px; transition:width 0.4s; }
-        .badge { font-size:0.68rem; padding:0.15rem 0.5rem; border-radius:99px; font-family:'JetBrains Mono'; font-weight:600; white-space:nowrap; }
-        .badge-p { background:rgba(59,130,246,0.12); color:#60a5fa; border:1px solid rgba(59,130,246,0.2); }
-        .badge-n { background:rgba(245,158,11,0.12); color:#fbbf24; border:1px solid rgba(245,158,11,0.2); }
-        .badge-u { background:rgba(100,116,139,0.12); color:#94a3b8; border:1px solid rgba(100,116,139,0.2); }
-        .badge-f { background:rgba(239,68,68,0.1); color:#f87171; border:1px solid rgba(239,68,68,0.15); }
+        .tbl-wrap {
+            overflow: auto;
+            max-height: 700px;
+            border-radius: 8px;
+            border: 1px solid var(--brd);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 900px;
+        }
+
+        thead {
+            background: rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        th {
+            padding: 0.8rem 1rem;
+            color: var(--mut);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            user-select: none;
+            transition: 0.15s;
+            white-space: nowrap;
+        }
+
+        th:hover {
+            color: white;
+        }
+
+        th i {
+            margin-left: 4px;
+            font-size: 0.6rem;
+        }
+
+        td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.88rem;
+        }
+
+        tr:hover td {
+            background: rgba(59, 130, 246, 0.04);
+        }
+
+        .g {
+            font-family: 'JetBrains Mono';
+            font-weight: 700;
+            color: var(--acc);
+            cursor: pointer;
+        }
+
+        .g:hover {
+            text-decoration: underline;
+        }
+
+        .r {
+            font-family: 'JetBrains Mono';
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .bar {
+            width: 80px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 6px;
+            overflow: hidden;
+        }
+
+        .bar .f {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s;
+        }
+
+        .badge {
+            font-size: 0.68rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 99px;
+            font-family: 'JetBrains Mono';
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-p {
+            background: rgba(59, 130, 246, 0.12);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .badge-n {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .badge-u {
+            background: rgba(100, 116, 139, 0.12);
+            color: #94a3b8;
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+
+        .badge-f {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
 
         /* Identity Panel */
-        .panel-overlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); z-index:200; backdrop-filter:blur(4px); }
-        .panel-overlay.open { display:flex; justify-content:center; align-items:center; }
-        .panel { background:#0f172a; border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:2.5rem; max-width:600px; width:90%; max-height:85vh; overflow-y:auto; position:relative; }
-        .panel-close { position:absolute; top:1rem; right:1.2rem; background:none; border:none; color:var(--mut); font-size:1.2rem; cursor:pointer; }
-        .panel h2 { font-family:'JetBrains Mono'; font-size:1.6rem; color:var(--acc); margin-bottom:0.3rem; }
-        .panel .ptitle { color:var(--mut); font-size:0.9rem; margin-bottom:1.5rem; }
-        .metric-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
-        .metric { background:rgba(255,255,255,0.03); border:1px solid var(--brd); border-radius:8px; padding:0.8rem 1rem; }
-        .metric label { display:block; font-size:0.65rem; text-transform:uppercase; color:var(--mut); margin-bottom:0.3rem; letter-spacing:0.05em; }
-        .metric val { font-family:'JetBrains Mono'; font-weight:700; font-size:1.1rem; color:white; }
-        .panel .summary { color:var(--mut); line-height:1.7; font-size:0.9rem; border-top:1px solid var(--brd); padding-top:1rem; }
+        .panel-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+
+        .panel-overlay.open {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .panel {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .panel-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            background: none;
+            border: none;
+            color: var(--mut);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .panel h2 {
+            font-family: 'JetBrains Mono';
+            font-size: 1.6rem;
+            color: var(--acc);
+            margin-bottom: 0.3rem;
+        }
+
+        .panel .ptitle {
+            color: var(--mut);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--brd);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+        }
+
+        .metric label {
+            display: block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: var(--mut);
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.05em;
+        }
+
+        .metric val {
+            font-family: 'JetBrains Mono';
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .panel .summary {
+            color: var(--mut);
+            line-height: 1.7;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--brd);
+            padding-top: 1rem;
+        }
 
         /* Cards Grid */
-        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1.2rem; max-width:1200px; margin:0 auto; padding:0 1.5rem; }
-        .card { background:var(--card); border:1px solid var(--brd); padding:1.8rem; border-radius:12px; transition:transform 0.25s,border-color 0.25s; backdrop-filter:blur(8px); cursor:pointer; }
-        .card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,0.15); }
-        .card-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; }
-        .card-gene { font-family:'JetBrains Mono'; font-size:1.3rem; font-weight:700; color:var(--acc); }
-        .card p { color:var(--mut); line-height:1.6; font-size:0.88rem; margin-bottom:1rem; }
-        .card-meta { display:flex; gap:0.8rem; flex-wrap:wrap; }
-        .card-meta span { font-size:0.75rem; color:#cbd5e1; padding:0.2rem 0.6rem; background:rgba(255,255,255,0.04); border-radius:4px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--brd);
+            padding: 1.8rem;
+            border-radius: 12px;
+            transition: transform 0.25s, border-color 0.25s;
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-gene {
+            font-family: 'JetBrains Mono';
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--acc);
+        }
+
+        .card p {
+            color: var(--mut);
+            line-height: 1.6;
+            font-size: 0.88rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .card-meta span {
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            padding: 0.2rem 0.6rem;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+        }
 
         /* Downloads */
-        .dl-card { background:var(--card); border:1px solid var(--brd); padding:1.8rem; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap:1rem; }
-        .dl-card h3 { color:white; margin-bottom:0.3rem; display:flex; align-items:center; gap:0.5rem; }
-        .dl-card p { color:var(--mut); font-size:0.85rem; }
-        .dl-btn { padding:0.6rem 1.5rem; border-radius:8px; text-decoration:none; font-weight:600; font-size:0.85rem; white-space:nowrap; transition:0.2s; }
-        .dl-primary { background:var(--acc); color:white; }
-        .dl-primary:hover { background:#2563eb; }
-        .dl-ghost { border:1px solid var(--brd); color:var(--mut); }
-        .dl-ghost:hover { border-color:rgba(255,255,255,0.2); color:white; }
+        .dl-card {
+            background: var(--card);
+            border: 1px solid var(--brd);
+            padding: 1.8rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dl-card h3 {
+            color: white;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dl-card p {
+            color: var(--mut);
+            font-size: 0.85rem;
+        }
+
+        .dl-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .dl-primary {
+            background: var(--acc);
+            color: white;
+        }
+
+        .dl-primary:hover {
+            background: #2563eb;
+        }
+
+        .dl-ghost {
+            border: 1px solid var(--brd);
+            color: var(--mut);
+        }
+
+        .dl-ghost:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
     </style>
 </head>
+
 <body>
     <nav>
-        <div class="brand"><i class="fa-solid fa-dna" style="color:var(--acc);font-size:1.1rem;"></i> <span>TPS PLATFORM</span></div>
+        <div class="brand"><i class="fa-solid fa-dna" style="color:var(--acc);font-size:1.1rem;"></i> <span>TPS
+                PLATFORM</span></div>
         <div class="nav-tabs">
-            <button class="tab active" onclick="go('explorer')"><i class="fa-solid fa-table-cells-large"></i> Explorer</button>
+            <button class="tab active" onclick="go('explorer')"><i class="fa-solid fa-table-cells-large"></i>
+                Explorer</button>
             <button class="tab" onclick="go('identity')"><i class="fa-solid fa-id-card"></i> Identity Cards</button>
             <button class="tab" onclick="go('data')"><i class="fa-solid fa-database"></i> Data Access</button>
         </div>
@@ -114,32 +591,37 @@
     <div id="explorer" class="view active">
         <div class="hero">
             <h1>Gene Priority Explorer</h1>
-            <p class="sub">Interactive ranking of <b>36,485</b> genes scored by the Tissue Priority Score (TPS) v5 pipeline.</p>
+            <p class="sub">Top 200 discovery candidates from <b>36,485</b> genes scored by the Tissue Priority Score
+                (TPS) pipeline.</p>
         </div>
         <div class="engine">
             <div class="toolbar">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input id="q" type="text" placeholder="Search gene (e.g. ATOH1, POU4F3, HRCT1)..." oninput="render()">
+                    <input id="q" type="text" placeholder="Search gene (e.g. ATOH1, POU4F3, HRCT1)..."
+                        oninput="render()">
                 </div>
                 <div class="filter-group">
                     <button class="fbtn active" data-f="all" onclick="setFilter('all',this)">All</button>
-                    <button class="fbtn" data-f="prioritized" onclick="setFilter('prioritized',this)">Prioritized</button>
+                    <button class="fbtn" data-f="prioritized"
+                        onclick="setFilter('prioritized',this)">Prioritized</button>
                     <button class="fbtn" data-f="novelty" onclick="setFilter('novelty',this)">Novelty</button>
                 </div>
                 <div class="stat">Showing <b id="cnt">0</b> of <b>200</b></div>
             </div>
             <div class="tbl-wrap">
                 <table>
-                    <thead><tr>
-                        <th onclick="doSort('gene')">Gene <i class="fa-solid fa-sort"></i></th>
-                        <th onclick="doSort('rank')">Rank <i class="fa-solid fa-sort"></i></th>
-                        <th onclick="doSort('score')">TPS Score <i class="fa-solid fa-sort"></i></th>
-                        <th onclick="doSort('hc')">HC Spec. <i class="fa-solid fa-sort"></i></th>
-                        <th onclick="doSort('dev')">Dev Peak <i class="fa-solid fa-sort"></i></th>
-                        <th onclick="doSort('aging')">Aging <i class="fa-solid fa-sort"></i></th>
-                        <th>Class</th>
-                    </tr></thead>
+                    <thead>
+                        <tr>
+                            <th onclick="doSort('gene')">Gene <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="doSort('rank')">Rank <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="doSort('score')">TPS Score <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="doSort('hc')">HC Spec. <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="doSort('dev')">Dev Peak <i class="fa-solid fa-sort"></i></th>
+                            <th onclick="doSort('aging')">Aging <i class="fa-solid fa-sort"></i></th>
+                            <th>Class</th>
+                        </tr>
+                    </thead>
                     <tbody id="tb"></tbody>
                 </table>
             </div>
@@ -163,19 +645,32 @@
         </div>
         <div class="grid" style="max-width:850px;">
             <div class="dl-card">
-                <div><h3><i class="fa-solid fa-file-csv"></i> TPS v5 Full Index</h3><p>Complete discovery scores for 36,485 genes (CSV).</p></div>
+                <div>
+                    <h3><i class="fa-solid fa-file-csv"></i> TPS Full Index</h3>
+                    <p>Complete discovery scores for 36,485 genes (CSV).</p>
+                </div>
                 <a href="results/TPS_final.csv" class="dl-btn dl-primary">Download CSV</a>
             </div>
             <div class="dl-card">
-                <div><h3><i class="fa-solid fa-star"></i> Novelty Candidates</h3><p>Curated list of 50+ novel therapeutic targets.</p></div>
+                <div>
+                    <h3><i class="fa-solid fa-star"></i> Novelty Candidates</h3>
+                    <p>Curated list of 50+ novel therapeutic targets.</p>
+                </div>
                 <a href="results/TPS_final.csv" class="dl-btn dl-primary">Download</a>
             </div>
             <div class="dl-card">
-                <div><h3><i class="fa-brands fa-github"></i> Source Code</h3><p>Python pipeline, scoring modules, and analysis notebooks.</p></div>
-                <a href="https://github.com/omrozmn/hearing-gene-prioritization" target="_blank" class="dl-btn dl-ghost">GitHub</a>
+                <div>
+                    <h3><i class="fa-brands fa-github"></i> Source Code</h3>
+                    <p>Python pipeline, scoring modules, and analysis notebooks.</p>
+                </div>
+                <a href="https://github.com/omrozmn/hearing-gene-prioritization" target="_blank"
+                    class="dl-btn dl-ghost">GitHub</a>
             </div>
             <div class="dl-card">
-                <div><h3><i class="fa-solid fa-book-open"></i> Manuscript</h3><p>Preprint and supplementary materials.</p></div>
+                <div>
+                    <h3><i class="fa-solid fa-book-open"></i> Manuscript</h3>
+                    <p>Preprint and supplementary materials.</p>
+                </div>
                 <a href="#" class="dl-btn dl-ghost">Coming Soon</a>
             </div>
         </div>
@@ -193,55 +688,55 @@
     </div>
 
     <script>
-    const DB = [{"gene": "POU4F3", "rank": 1, "score": 0.7061, "hc": 0.951, "dev": 0.877, "aging": 0.962, "cls": "prioritized"}, {"gene": "SOX2", "rank": 2, "score": 0.6502, "hc": 0.975, "dev": 0.859, "aging": 0.636, "cls": "prioritized"}, {"gene": "GFI1", "rank": 3, "score": 0.6056, "hc": 1.0, "dev": 0.589, "aging": 0.646, "cls": "prioritized"}, {"gene": "PAX2", "rank": 4, "score": 0.6037, "hc": 0.938, "dev": 0.988, "aging": 0.252, "cls": "novelty"}, {"gene": "ATOH1", "rank": 5, "score": 0.5776, "hc": 0.828, "dev": 0.935, "aging": 0.378, "cls": "prioritized"}, {"gene": "PIBF1", "rank": 6, "score": 0.5729, "hc": 0.976, "dev": 0.461, "aging": 0.378, "cls": "novelty"}, {"gene": "TBX1", "rank": 7, "score": 0.526, "hc": 0.759, "dev": 0.873, "aging": 0.378, "cls": "prioritized"}, {"gene": "DNAJC5B", "rank": 8, "score": 0.5093, "hc": 0.488, "dev": 0.704, "aging": 0.38, "cls": "prioritized"}, {"gene": "USH1C", "rank": 9, "score": 0.4997, "hc": 0.745, "dev": 0.672, "aging": 0.378, "cls": "prioritized"}, {"gene": "OTOF", "rank": 10, "score": 0.4928, "hc": 0.488, "dev": 0.777, "aging": 0.189, "cls": "prioritized"}, {"gene": "MYO3A", "rank": 11, "score": 0.4926, "hc": 0.488, "dev": 0.809, "aging": 0.378, "cls": "prioritized"}, {"gene": "CABP2", "rank": 12, "score": 0.4754, "hc": 0.488, "dev": 0.771, "aging": 0.38, "cls": "prioritized"}, {"gene": "XIRP2", "rank": 13, "score": 0.4658, "hc": 0.488, "dev": 0.694, "aging": 0.378, "cls": "prioritized"}, {"gene": "SRRM3", "rank": 14, "score": 0.4583, "hc": 0.488, "dev": 0.764, "aging": 0.378, "cls": "prioritized"}, {"gene": "HRCT1", "rank": 15, "score": 0.4579, "hc": 0.099, "dev": 0.983, "aging": 0.753, "cls": "novelty"}, {"gene": "GRID2IP", "rank": 16, "score": 0.4565, "hc": 0.488, "dev": 1.0, "aging": 0.383, "cls": "prioritized"}, {"gene": "PTPRQ", "rank": 17, "score": 0.4542, "hc": 0.488, "dev": 0.596, "aging": 0.378, "cls": "prioritized"}, {"gene": "AFTPH", "rank": 18, "score": 0.4519, "hc": 0.573, "dev": 0.663, "aging": 0.378, "cls": "prioritized"}, {"gene": "EYA1", "rank": 19, "score": 0.4485, "hc": 0.574, "dev": 0.66, "aging": 0.378, "cls": "prioritized"}, {"gene": "USH2A", "rank": 20, "score": 0.4461, "hc": 0.439, "dev": 0.648, "aging": 0.916, "cls": "prioritized"}, {"gene": "MPDZ", "rank": 21, "score": 0.439, "hc": 0.488, "dev": 0.903, "aging": 0.378, "cls": "prioritized"}, {"gene": "PODNL1", "rank": 22, "score": 0.4385, "hc": 0.087, "dev": 0.997, "aging": 0.687, "cls": "novelty"}, {"gene": "FAM107B", "rank": 23, "score": 0.4373, "hc": 0.488, "dev": 0.689, "aging": 0.378, "cls": "prioritized"}, {"gene": "ENDOU", "rank": 24, "score": 0.4371, "hc": 0.098, "dev": 0.977, "aging": 0.53, "cls": "novelty"}, {"gene": "OSBP2", "rank": 25, "score": 0.4367, "hc": 0.488, "dev": 0.93, "aging": 0.378, "cls": "prioritized"}, {"gene": "ESRRB", "rank": 26, "score": 0.4276, "hc": 0.391, "dev": 0.924, "aging": 0.886, "cls": "prioritized"}, {"gene": "CACNA1D", "rank": 27, "score": 0.4272, "hc": 0.488, "dev": 0.976, "aging": 0.378, "cls": "prioritized"}, {"gene": "CGN", "rank": 28, "score": 0.4265, "hc": 0.488, "dev": 0.794, "aging": 0.378, "cls": "prioritized"}, {"gene": "GATA3", "rank": 29, "score": 0.4251, "hc": 0.519, "dev": 0.598, "aging": 0.378, "cls": "prioritized"}, {"gene": "ESPN", "rank": 30, "score": 0.4216, "hc": 0.488, "dev": 0.707, "aging": 0.378, "cls": "prioritized"}, {"gene": "MAGI3", "rank": 31, "score": 0.4174, "hc": 0.488, "dev": 0.932, "aging": 0.378, "cls": "prioritized"}, {"gene": "PCP4", "rank": 32, "score": 0.4166, "hc": 0.488, "dev": 0.578, "aging": 0.378, "cls": "prioritized"}, {"gene": "SNAP91", "rank": 33, "score": 0.4158, "hc": 0.488, "dev": 0.492, "aging": 0.378, "cls": "prioritized"}, {"gene": "AP3B2", "rank": 34, "score": 0.4157, "hc": 0.488, "dev": 0.589, "aging": 0.378, "cls": "prioritized"}, {"gene": "GABRB3", "rank": 35, "score": 0.4135, "hc": 0.488, "dev": 0.547, "aging": 0.378, "cls": "prioritized"}, {"gene": "RIMBP2", "rank": 36, "score": 0.4125, "hc": 0.488, "dev": 0.633, "aging": 0.378, "cls": "prioritized"}, {"gene": "RIN1", "rank": 37, "score": 0.4123, "hc": 0.091, "dev": 0.994, "aging": 0.812, "cls": "novelty"}, {"gene": "PCSK5", "rank": 38, "score": 0.4123, "hc": 0.488, "dev": 0.438, "aging": 0.378, "cls": "prioritized"}, {"gene": "TEX43", "rank": 39, "score": 0.4103, "hc": 0.095, "dev": 0.992, "aging": 0.807, "cls": "novelty"}, {"gene": "STRC", "rank": 40, "score": 0.4103, "hc": 0.488, "dev": 0.945, "aging": 0.384, "cls": "prioritized"}, {"gene": "LHFPL5", "rank": 41, "score": 0.4099, "hc": 0.325, "dev": 0.644, "aging": 0.789, "cls": "prioritized"}, {"gene": "KCNK9", "rank": 42, "score": 0.4098, "hc": 0.093, "dev": 0.968, "aging": 0.765, "cls": "novelty"}, {"gene": "ANKRD34A", "rank": 43, "score": 0.4094, "hc": 0.102, "dev": 0.959, "aging": 0.829, "cls": "novelty"}, {"gene": "GPR156", "rank": 44, "score": 0.4093, "hc": 0.488, "dev": 0.631, "aging": 0.378, "cls": "prioritized"}, {"gene": "ABCA5", "rank": 45, "score": 0.409, "hc": 0.488, "dev": 0.643, "aging": 0.378, "cls": "prioritized"}, {"gene": "CDH23", "rank": 46, "score": 0.4086, "hc": 0.488, "dev": 0.665, "aging": 0.189, "cls": "prioritized"}, {"gene": "APOH", "rank": 47, "score": 0.4083, "hc": 0.096, "dev": 0.965, "aging": 0.827, "cls": "novelty"}, {"gene": "MYBPH", "rank": 48, "score": 0.4082, "hc": 0.091, "dev": 0.947, "aging": 0.821, "cls": "novelty"}, {"gene": "KRT80", "rank": 49, "score": 0.408, "hc": 0.099, "dev": 0.996, "aging": 0.711, "cls": "novelty"}, {"gene": "C1QC", "rank": 50, "score": 0.4076, "hc": 0.096, "dev": 0.983, "aging": 0.79, "cls": "novelty"}, {"gene": "SP7", "rank": 51, "score": 0.4072, "hc": 0.095, "dev": 0.94, "aging": 0.799, "cls": "novelty"}, {"gene": "FBXL8", "rank": 52, "score": 0.4071, "hc": 0.098, "dev": 0.962, "aging": 0.739, "cls": "novelty"}, {"gene": "SPOCD1", "rank": 53, "score": 0.4066, "hc": 0.096, "dev": 0.968, "aging": 0.837, "cls": "novelty"}, {"gene": "TTC36", "rank": 54, "score": 0.4065, "hc": 0.095, "dev": 0.985, "aging": 0.789, "cls": "novelty"}, {"gene": "PLEKHS1", "rank": 55, "score": 0.4062, "hc": 0.095, "dev": 0.999, "aging": 0.707, "cls": "novelty"}, {"gene": "TEX12", "rank": 56, "score": 0.4061, "hc": 0.1, "dev": 0.939, "aging": 0.785, "cls": "novelty"}, {"gene": "KPNA7", "rank": 57, "score": 0.4056, "hc": 0.099, "dev": 0.982, "aging": 0.764, "cls": "novelty"}, {"gene": "FPR1", "rank": 58, "score": 0.4052, "hc": 0.096, "dev": 0.982, "aging": 0.692, "cls": "novelty"}, {"gene": "TMC1", "rank": 59, "score": 0.4047, "hc": 0.488, "dev": 0.76, "aging": 0.189, "cls": "prioritized"}, {"gene": "OSBPL3", "rank": 60, "score": 0.4045, "hc": 0.488, "dev": 0.48, "aging": 0.378, "cls": "prioritized"}, {"gene": "SLC25A2", "rank": 61, "score": 0.4043, "hc": 0.096, "dev": 0.934, "aging": 0.708, "cls": "novelty"}, {"gene": "SELL", "rank": 62, "score": 0.404, "hc": 0.098, "dev": 0.994, "aging": 0.647, "cls": "novelty"}, {"gene": "CD28", "rank": 63, "score": 0.4037, "hc": 0.103, "dev": 0.933, "aging": 0.796, "cls": "novelty"}, {"gene": "GDA", "rank": 64, "score": 0.4037, "hc": 0.088, "dev": 0.991, "aging": 0.864, "cls": "novelty"}, {"gene": "CD80", "rank": 65, "score": 0.4037, "hc": 0.098, "dev": 0.97, "aging": 0.75, "cls": "novelty"}, {"gene": "THPO", "rank": 66, "score": 0.4036, "hc": 0.094, "dev": 0.942, "aging": 0.706, "cls": "novelty"}, {"gene": "ANKFN1", "rank": 67, "score": 0.4033, "hc": 0.488, "dev": 0.755, "aging": 0.378, "cls": "prioritized"}, {"gene": "COL17A1", "rank": 68, "score": 0.4032, "hc": 0.102, "dev": 0.988, "aging": 0.817, "cls": "novelty"}, {"gene": "ARL13A", "rank": 69, "score": 0.403, "hc": 0.099, "dev": 0.994, "aging": 0.7, "cls": "novelty"}, {"gene": "LY6G6D", "rank": 70, "score": 0.4018, "hc": 0.102, "dev": 0.993, "aging": 0.63, "cls": "novelty"}, {"gene": "ZDHHC22", "rank": 71, "score": 0.4016, "hc": 0.096, "dev": 0.979, "aging": 0.724, "cls": "novelty"}, {"gene": "TRIM36", "rank": 72, "score": 0.4013, "hc": 0.488, "dev": 0.469, "aging": 0.378, "cls": "prioritized"}, {"gene": "MOG", "rank": 73, "score": 0.4011, "hc": 0.098, "dev": 0.964, "aging": 0.647, "cls": "novelty"}, {"gene": "TCEAL6", "rank": 74, "score": 0.4009, "hc": 0.093, "dev": 0.978, "aging": 0.768, "cls": "novelty"}, {"gene": "CNIH2", "rank": 75, "score": 0.4, "hc": 0.0, "dev": 0.843, "aging": 0.871, "cls": "uncertain"}, {"gene": "MPEG1", "rank": 76, "score": 0.3996, "hc": 0.099, "dev": 0.914, "aging": 0.78, "cls": "novelty"}, {"gene": "MYCT1", "rank": 77, "score": 0.3995, "hc": 0.0, "dev": 0.984, "aging": 0.757, "cls": "uncertain"}, {"gene": "SYNE4", "rank": 78, "score": 0.3995, "hc": 0.488, "dev": 0.565, "aging": 0.378, "cls": "prioritized"}, {"gene": "SLC30A2", "rank": 79, "score": 0.3993, "hc": 0.098, "dev": 0.919, "aging": 0.703, "cls": "novelty"}, {"gene": "TRIM54", "rank": 80, "score": 0.3993, "hc": 0.098, "dev": 0.999, "aging": 0.651, "cls": "novelty"}, {"gene": "BATF2", "rank": 81, "score": 0.3989, "hc": 0.1, "dev": 0.869, "aging": 0.77, "cls": "novelty"}, {"gene": "CNNM1", "rank": 82, "score": 0.3987, "hc": 0.097, "dev": 0.974, "aging": 0.739, "cls": "novelty"}, {"gene": "AANAT", "rank": 83, "score": 0.3976, "hc": 0.091, "dev": 0.998, "aging": 0.673, "cls": "novelty"}, {"gene": "FOSL1", "rank": 84, "score": 0.3973, "hc": 0.098, "dev": 0.994, "aging": 0.684, "cls": "novelty"}, {"gene": "MYO6", "rank": 85, "score": 0.3969, "hc": 0.547, "dev": 0.433, "aging": 0.189, "cls": "prioritized"}, {"gene": "TRIM55", "rank": 86, "score": 0.3966, "hc": 0.0, "dev": 0.996, "aging": 0.858, "cls": "uncertain"}, {"gene": "PCDHA7", "rank": 87, "score": 0.3966, "hc": 0.0, "dev": 1.0, "aging": 0.617, "cls": "uncertain"}, {"gene": "PTGS1", "rank": 88, "score": 0.3956, "hc": 0.096, "dev": 0.946, "aging": 0.715, "cls": "novelty"}, {"gene": "PLA2G2C", "rank": 89, "score": 0.3955, "hc": 0.098, "dev": 0.975, "aging": 0.64, "cls": "novelty"}, {"gene": "SLC22A23", "rank": 90, "score": 0.3953, "hc": 0.488, "dev": 0.603, "aging": 0.378, "cls": "prioritized"}, {"gene": "CASQ2", "rank": 91, "score": 0.3952, "hc": 0.093, "dev": 0.942, "aging": 0.655, "cls": "novelty"}, {"gene": "PANX3", "rank": 92, "score": 0.3947, "hc": 0.093, "dev": 0.994, "aging": 0.616, "cls": "novelty"}, {"gene": "PRDM12", "rank": 93, "score": 0.3945, "hc": 0.084, "dev": 0.994, "aging": 0.796, "cls": "novelty"}, {"gene": "TLR7", "rank": 94, "score": 0.3944, "hc": 0.083, "dev": 0.948, "aging": 0.749, "cls": "novelty"}, {"gene": "MYO7A", "rank": 95, "score": 0.3941, "hc": 0.488, "dev": 0.59, "aging": 0.189, "cls": "prioritized"}, {"gene": "FAM166B", "rank": 96, "score": 0.3941, "hc": 0.086, "dev": 0.933, "aging": 0.743, "cls": "novelty"}, {"gene": "KCNJ9", "rank": 97, "score": 0.3937, "hc": 0.0, "dev": 0.799, "aging": 0.785, "cls": "uncertain"}, {"gene": "IGSF1", "rank": 98, "score": 0.3936, "hc": 0.0, "dev": 0.934, "aging": 0.604, "cls": "uncertain"}, {"gene": "GRXCR1", "rank": 99, "score": 0.3932, "hc": 0.488, "dev": 0.607, "aging": 0.378, "cls": "prioritized"}, {"gene": "VIL1", "rank": 100, "score": 0.3921, "hc": 0.0, "dev": 0.975, "aging": 0.74, "cls": "uncertain"}, {"gene": "GALR1", "rank": 101, "score": 0.392, "hc": 0.099, "dev": 0.982, "aging": 0.582, "cls": "novelty"}, {"gene": "RNF39", "rank": 102, "score": 0.3919, "hc": 0.0, "dev": 0.842, "aging": 0.733, "cls": "uncertain"}, {"gene": "RAB44", "rank": 103, "score": 0.3917, "hc": 0.0, "dev": 0.87, "aging": 0.84, "cls": "uncertain"}, {"gene": "A1CF", "rank": 104, "score": 0.3916, "hc": 0.083, "dev": 0.999, "aging": 0.719, "cls": "novelty"}, {"gene": "F2", "rank": 105, "score": 0.3911, "hc": 0.0, "dev": 0.943, "aging": 0.696, "cls": "uncertain"}, {"gene": "VIPR1", "rank": 106, "score": 0.3911, "hc": 0.0, "dev": 0.938, "aging": 0.659, "cls": "uncertain"}, {"gene": "ACSM5", "rank": 107, "score": 0.3909, "hc": 0.1, "dev": 0.99, "aging": 0.538, "cls": "novelty"}, {"gene": "GJB1", "rank": 108, "score": 0.3905, "hc": 0.0, "dev": 0.978, "aging": 0.867, "cls": "uncertain"}, {"gene": "SLC5A5", "rank": 109, "score": 0.3905, "hc": 0.104, "dev": 0.973, "aging": 0.597, "cls": "novelty"}, {"gene": "TEX35", "rank": 110, "score": 0.3904, "hc": 0.0, "dev": 0.96, "aging": 0.684, "cls": "uncertain"}, {"gene": "PKP1", "rank": 111, "score": 0.3904, "hc": 0.0, "dev": 0.989, "aging": 0.936, "cls": "uncertain"}, {"gene": "SLC22A8", "rank": 112, "score": 0.3903, "hc": 0.083, "dev": 0.981, "aging": 0.669, "cls": "novelty"}, {"gene": "DPT", "rank": 113, "score": 0.3902, "hc": 0.0, "dev": 0.977, "aging": 0.766, "cls": "uncertain"}, {"gene": "EPS8L2", "rank": 114, "score": 0.3895, "hc": 0.488, "dev": 0.654, "aging": 0.378, "cls": "prioritized"}, {"gene": "DSCAML1", "rank": 115, "score": 0.3894, "hc": 0.488, "dev": 0.476, "aging": 0.378, "cls": "prioritized"}, {"gene": "SLC9A3", "rank": 116, "score": 0.3894, "hc": 0.097, "dev": 0.991, "aging": 0.531, "cls": "novelty"}, {"gene": "UNC5A", "rank": 117, "score": 0.3894, "hc": 0.0, "dev": 0.852, "aging": 0.745, "cls": "uncertain"}, {"gene": "MS4A7", "rank": 118, "score": 0.3893, "hc": 0.0, "dev": 0.931, "aging": 0.866, "cls": "uncertain"}, {"gene": "MB", "rank": 119, "score": 0.3893, "hc": 0.082, "dev": 0.912, "aging": 0.725, "cls": "novelty"}, {"gene": "HIST1H4J", "rank": 120, "score": 0.3892, "hc": 0.087, "dev": 1.0, "aging": 0.53, "cls": "novelty"}, {"gene": "HSBP1L1", "rank": 121, "score": 0.3887, "hc": 0.054, "dev": 0.992, "aging": 0.977, "cls": "novelty"}, {"gene": "KCNE3", "rank": 122, "score": 0.3882, "hc": 0.0, "dev": 0.856, "aging": 0.754, "cls": "uncertain"}, {"gene": "CAPN9", "rank": 123, "score": 0.3881, "hc": 0.0, "dev": 0.958, "aging": 0.697, "cls": "uncertain"}, {"gene": "PDIA2", "rank": 124, "score": 0.3879, "hc": 0.0, "dev": 0.993, "aging": 0.726, "cls": "uncertain"}, {"gene": "HAS3", "rank": 125, "score": 0.3878, "hc": 0.098, "dev": 0.983, "aging": 0.513, "cls": "novelty"}, {"gene": "KSR2", "rank": 126, "score": 0.3877, "hc": 0.488, "dev": 0.671, "aging": 0.378, "cls": "prioritized"}, {"gene": "PF4", "rank": 127, "score": 0.3874, "hc": 0.0, "dev": 0.849, "aging": 0.818, "cls": "uncertain"}, {"gene": "SH3TC1", "rank": 128, "score": 0.3874, "hc": 0.0, "dev": 0.943, "aging": 0.751, "cls": "uncertain"}, {"gene": "RAB42", "rank": 129, "score": 0.3872, "hc": 0.0, "dev": 0.882, "aging": 0.744, "cls": "uncertain"}, {"gene": "ALOX5", "rank": 130, "score": 0.3866, "hc": 0.0, "dev": 0.996, "aging": 0.523, "cls": "uncertain"}, {"gene": "DLG2", "rank": 131, "score": 0.3866, "hc": 0.488, "dev": 0.611, "aging": 0.378, "cls": "prioritized"}, {"gene": "NKX3-2", "rank": 132, "score": 0.3864, "hc": 0.0, "dev": 0.959, "aging": 0.53, "cls": "uncertain"}, {"gene": "KEL", "rank": 133, "score": 0.3861, "hc": 0.0, "dev": 0.975, "aging": 0.968, "cls": "uncertain"}, {"gene": "ANKRD1", "rank": 134, "score": 0.3859, "hc": 0.0, "dev": 0.962, "aging": 0.53, "cls": "uncertain"}, {"gene": "NEFL", "rank": 135, "score": 0.3857, "hc": 0.0, "dev": 0.589, "aging": 0.473, "cls": "prioritized"}, {"gene": "NPR1", "rank": 136, "score": 0.3856, "hc": 0.0, "dev": 0.825, "aging": 0.786, "cls": "uncertain"}, {"gene": "GAL3ST2", "rank": 137, "score": 0.3856, "hc": 0.0, "dev": 0.921, "aging": 0.52, "cls": "uncertain"}, {"gene": "ESPNL", "rank": 138, "score": 0.3855, "hc": 0.195, "dev": 0.567, "aging": 0.956, "cls": "prioritized"}, {"gene": "LST1", "rank": 139, "score": 0.3852, "hc": 0.0, "dev": 0.854, "aging": 0.743, "cls": "uncertain"}, {"gene": "GAP43", "rank": 140, "score": 0.3852, "hc": 0.0, "dev": 0.983, "aging": 0.785, "cls": "prioritized"}, {"gene": "SMIM6", "rank": 141, "score": 0.3849, "hc": 0.0, "dev": 0.868, "aging": 0.824, "cls": "uncertain"}, {"gene": "NFASC", "rank": 142, "score": 0.3845, "hc": 0.0, "dev": 0.913, "aging": 0.378, "cls": "prioritized"}, {"gene": "RILP", "rank": 143, "score": 0.384, "hc": 0.0, "dev": 0.87, "aging": 0.699, "cls": "uncertain"}, {"gene": "SLCO4C1", "rank": 144, "score": 0.3839, "hc": 0.0, "dev": 0.98, "aging": 0.699, "cls": "uncertain"}, {"gene": "GPA33", "rank": 145, "score": 0.3836, "hc": 0.0, "dev": 0.989, "aging": 0.679, "cls": "uncertain"}, {"gene": "DYTN", "rank": 146, "score": 0.3835, "hc": 0.488, "dev": 0.747, "aging": 0.378, "cls": "prioritized"}, {"gene": "PTGER2", "rank": 147, "score": 0.3835, "hc": 0.0, "dev": 0.943, "aging": 0.641, "cls": "uncertain"}, {"gene": "PLD4", "rank": 148, "score": 0.3832, "hc": 0.084, "dev": 0.987, "aging": 0.517, "cls": "novelty"}, {"gene": "UPK3A", "rank": 149, "score": 0.3826, "hc": 0.0, "dev": 0.866, "aging": 0.702, "cls": "uncertain"}, {"gene": "CGA", "rank": 150, "score": 0.3821, "hc": 0.08, "dev": 0.997, "aging": 0.538, "cls": "novelty"}, {"gene": "TPH1", "rank": 151, "score": 0.382, "hc": 0.0, "dev": 0.991, "aging": 0.966, "cls": "uncertain"}, {"gene": "NR2E3", "rank": 152, "score": 0.3817, "hc": 0.096, "dev": 0.967, "aging": 0.74, "cls": "novelty"}, {"gene": "CTLA4", "rank": 153, "score": 0.381, "hc": 0.0, "dev": 0.91, "aging": 0.53, "cls": "uncertain"}, {"gene": "DNM3", "rank": 154, "score": 0.3802, "hc": 0.488, "dev": 0.75, "aging": 0.378, "cls": "prioritized"}, {"gene": "GPR37L1", "rank": 155, "score": 0.3797, "hc": 0.0, "dev": 0.919, "aging": 0.838, "cls": "uncertain"}, {"gene": "REEP6", "rank": 156, "score": 0.3796, "hc": 0.0, "dev": 0.853, "aging": 0.948, "cls": "uncertain"}, {"gene": "PCDHB6", "rank": 157, "score": 0.3796, "hc": 0.0, "dev": 0.788, "aging": 0.719, "cls": "uncertain"}, {"gene": "PRAP1", "rank": 158, "score": 0.3793, "hc": 0.0, "dev": 0.957, "aging": 0.53, "cls": "uncertain"}, {"gene": "LTB", "rank": 159, "score": 0.3792, "hc": 0.0, "dev": 0.729, "aging": 0.715, "cls": "uncertain"}, {"gene": "F5", "rank": 160, "score": 0.3787, "hc": 0.0, "dev": 0.984, "aging": 0.575, "cls": "uncertain"}, {"gene": "FGR", "rank": 161, "score": 0.3785, "hc": 0.0, "dev": 0.992, "aging": 0.751, "cls": "flagged_artifact"}, {"gene": "LRBA", "rank": 162, "score": 0.378, "hc": 0.488, "dev": 0.551, "aging": 0.378, "cls": "prioritized"}, {"gene": "TAL1", "rank": 163, "score": 0.3779, "hc": 0.0, "dev": 0.997, "aging": 0.763, "cls": "flagged_artifact"}, {"gene": "TECTA", "rank": 164, "score": 0.3779, "hc": 0.261, "dev": 0.535, "aging": 0.968, "cls": "prioritized"}, {"gene": "PCDHA9", "rank": 165, "score": 0.3776, "hc": 0.0, "dev": 1.0, "aging": 0.875, "cls": "uncertain"}, {"gene": "TFEC", "rank": 166, "score": 0.3772, "hc": 0.0, "dev": 0.822, "aging": 0.779, "cls": "uncertain"}, {"gene": "PIK3CG", "rank": 167, "score": 0.3769, "hc": 0.0, "dev": 0.685, "aging": 0.815, "cls": "uncertain"}, {"gene": "PLA2G3", "rank": 168, "score": 0.3766, "hc": 0.0, "dev": 0.799, "aging": 0.788, "cls": "uncertain"}, {"gene": "ANO4", "rank": 169, "score": 0.3756, "hc": 0.0, "dev": 0.796, "aging": 0.378, "cls": "prioritized"}, {"gene": "SEC14L4", "rank": 170, "score": 0.3755, "hc": 0.0, "dev": 0.965, "aging": 0.658, "cls": "uncertain"}, {"gene": "BSND", "rank": 171, "score": 0.3751, "hc": 0.104, "dev": 0.981, "aging": 0.603, "cls": "prioritized"}, {"gene": "CRYBA4", "rank": 172, "score": 0.3749, "hc": 0.0, "dev": 0.991, "aging": 0.756, "cls": "flagged_artifact"}, {"gene": "TCTE1", "rank": 173, "score": 0.3747, "hc": 0.0, "dev": 0.903, "aging": 0.614, "cls": "uncertain"}, {"gene": "P2RX5", "rank": 174, "score": 0.3745, "hc": 0.0, "dev": 0.988, "aging": 0.965, "cls": "uncertain"}, {"gene": "BTK", "rank": 175, "score": 0.3742, "hc": 0.0, "dev": 0.984, "aging": 0.716, "cls": "flagged_artifact"}, {"gene": "IL4I1", "rank": 176, "score": 0.3739, "hc": 0.0, "dev": 0.884, "aging": 0.53, "cls": "uncertain"}, {"gene": "PTHLH", "rank": 177, "score": 0.3738, "hc": 0.0, "dev": 0.847, "aging": 0.643, "cls": "uncertain"}, {"gene": "HCST", "rank": 178, "score": 0.3735, "hc": 0.0, "dev": 0.992, "aging": 0.738, "cls": "flagged_artifact"}, {"gene": "PNMT", "rank": 179, "score": 0.3731, "hc": 0.0, "dev": 0.786, "aging": 0.622, "cls": "uncertain"}, {"gene": "F7", "rank": 180, "score": 0.3727, "hc": 0.0, "dev": 0.739, "aging": 0.709, "cls": "uncertain"}, {"gene": "TNNI2", "rank": 181, "score": 0.3722, "hc": 0.0, "dev": 0.97, "aging": 0.728, "cls": "uncertain"}, {"gene": "SFRP5", "rank": 182, "score": 0.3721, "hc": 0.0, "dev": 0.846, "aging": 0.754, "cls": "uncertain"}, {"gene": "POU3F4", "rank": 183, "score": 0.3713, "hc": 0.451, "dev": 0.519, "aging": 0.378, "cls": "novelty"}, {"gene": "OVOL1", "rank": 184, "score": 0.3708, "hc": 0.0, "dev": 0.659, "aging": 0.77, "cls": "uncertain"}, {"gene": "TEX33", "rank": 185, "score": 0.3707, "hc": 0.0, "dev": 0.941, "aging": 0.964, "cls": "uncertain"}, {"gene": "LGALS3", "rank": 186, "score": 0.3706, "hc": 0.0, "dev": 0.983, "aging": 0.969, "cls": "uncertain"}, {"gene": "NFAM1", "rank": 187, "score": 0.3702, "hc": 0.0, "dev": 0.986, "aging": 0.771, "cls": "uncertain"}, {"gene": "GATA1", "rank": 188, "score": 0.3698, "hc": 0.0, "dev": 0.965, "aging": 0.79, "cls": "flagged_artifact"}, {"gene": "PADI3", "rank": 189, "score": 0.3696, "hc": 0.0, "dev": 0.862, "aging": 0.869, "cls": "flagged_artifact"}, {"gene": "IL23R", "rank": 190, "score": 0.3693, "hc": 0.0, "dev": 0.741, "aging": 0.778, "cls": "uncertain"}, {"gene": "TCP11", "rank": 191, "score": 0.3691, "hc": 0.0, "dev": 0.793, "aging": 0.53, "cls": "uncertain"}, {"gene": "RELT", "rank": 192, "score": 0.369, "hc": 0.0, "dev": 0.867, "aging": 0.807, "cls": "uncertain"}, {"gene": "FAM71D", "rank": 193, "score": 0.3687, "hc": 0.0, "dev": 0.995, "aging": 0.683, "cls": "uncertain"}, {"gene": "SLC34A3", "rank": 194, "score": 0.368, "hc": 0.0, "dev": 0.95, "aging": 0.946, "cls": "uncertain"}, {"gene": "MYOC", "rank": 195, "score": 0.368, "hc": 0.0, "dev": 0.964, "aging": 0.745, "cls": "flagged_artifact"}, {"gene": "IL12RB1", "rank": 196, "score": 0.3678, "hc": 0.0, "dev": 0.89, "aging": 0.707, "cls": "flagged_artifact"}, {"gene": "SLC45A2", "rank": 197, "score": 0.3676, "hc": 0.0, "dev": 0.985, "aging": 0.888, "cls": "uncertain"}, {"gene": "TMEM151B", "rank": 198, "score": 0.3675, "hc": 0.0, "dev": 0.995, "aging": 0.946, "cls": "uncertain"}, {"gene": "CCDC160", "rank": 199, "score": 0.3675, "hc": 0.0, "dev": 0.861, "aging": 0.61, "cls": "uncertain"}, {"gene": "GIMAP5", "rank": 200, "score": 0.3674, "hc": 0.0, "dev": 0.984, "aging": 0.662, "cls": "flagged_artifact"}];
-    const CARDS = {"HRCT1": {"title": "Histidine Rich Carboxyl Terminal 1", "fig": "S5", "rank": "#15", "tier": "Tier A (No GWAS)", "hc": "0.099", "dev": "0.983", "spatial": "Mid-Base", "domain": "DUF4487", "summary": "High-priority therapeutic target for hair cell stability. Uncharacterized in hearing loss, but metric convergence across 15 datasets identifies it as a stable, sensory-specific biological signal.", "tag": "Novelty Star"}, "TEX43": {"title": "Testis Expressed 43", "fig": "S6", "rank": "#32 (Novelty)", "tier": "Tier B", "hc": "0.095", "dev": "0.972", "spatial": "Synaptic", "domain": "ECM-Bound", "summary": "Hidden target detectable in human pathological datasets. High discovery score suggests critical role in stress-response and synaptic maintenance.", "tag": "Context-Specific"}, "CACNG1": {"title": "Ca2+ Channel Gamma Subunit 1", "fig": "S7", "rank": "#25", "tier": "Tier A (gEAR-validated)", "hc": "0.838", "dev": "High", "spatial": "Basal/High-Freq", "domain": "Ion Channel", "summary": "L-type calcium channel gamma-subunit with IHC-specific expression. Viable AAV target for restoring synaptic calcium dynamics in synaptopathy.", "tag": "Ion Channel"}, "RGS18": {"title": "Regulator of G Protein Signaling 18", "fig": "S8", "rank": "#13", "tier": "Tier A", "hc": "High", "dev": "High", "spatial": "Apical/Low-Freq", "domain": "GPCR Modulator", "summary": "Novel apical hair cell regulator. Conservation and strong spatial bias towards apical cochlea suggest role in frequency-tuned signal modulation.", "tag": "Apical Regulator"}, "ANKRD2": {"title": "Ankyrin Repeat Domain 2", "fig": "S9", "rank": "#19", "tier": "Tier A", "hc": "0.838", "dev": "High", "spatial": "Rootlet", "domain": "Ankyrin Repeats", "summary": "Novel structural component of hair cell stereocilia rootlet. Essential for protection against mechanical fatigue and noise-induced damage.", "tag": "Rootlet Stability"}, "BTK": {"title": "Bruton Tyrosine Kinase", "fig": "S10", "rank": "#175", "tier": "Tier B", "hc": "0.838", "dev": "0.950", "spatial": "Immune/Sensory", "domain": "Kinase", "summary": "Novel signaling hub in human sensory populations. Existing drug profiles (e.g., Ibrutinib) provide direct path for clinical repurposing.", "tag": "Kinase Drug Target"}, "FGR": {"title": "FGR Proto-Oncogene (Src Family)", "fig": "S11", "rank": "#161", "tier": "Tier B", "hc": "0.838", "dev": "0.975", "spatial": "Stress-Response", "domain": "Src Kinase", "summary": "Src-family kinase upregulated during diseased-state remodeling. High score suggests role in signaling cascades for hair cell survival.", "tag": "SRK Kinase"}};
+        const DB = [{ "gene": "POU4F3", "rank": 1, "score": 0.7061, "hc": 0.951, "dev": 0.877, "aging": 0.962, "cls": "prioritized" }, { "gene": "SOX2", "rank": 2, "score": 0.6502, "hc": 0.975, "dev": 0.859, "aging": 0.636, "cls": "prioritized" }, { "gene": "GFI1", "rank": 3, "score": 0.6056, "hc": 1.0, "dev": 0.589, "aging": 0.646, "cls": "prioritized" }, { "gene": "PAX2", "rank": 4, "score": 0.6037, "hc": 0.938, "dev": 0.988, "aging": 0.252, "cls": "novelty" }, { "gene": "ATOH1", "rank": 5, "score": 0.5776, "hc": 0.828, "dev": 0.935, "aging": 0.378, "cls": "prioritized" }, { "gene": "PIBF1", "rank": 6, "score": 0.5729, "hc": 0.976, "dev": 0.461, "aging": 0.378, "cls": "novelty" }, { "gene": "TBX1", "rank": 7, "score": 0.526, "hc": 0.759, "dev": 0.873, "aging": 0.378, "cls": "prioritized" }, { "gene": "DNAJC5B", "rank": 8, "score": 0.5093, "hc": 0.488, "dev": 0.704, "aging": 0.38, "cls": "prioritized" }, { "gene": "USH1C", "rank": 9, "score": 0.4997, "hc": 0.745, "dev": 0.672, "aging": 0.378, "cls": "prioritized" }, { "gene": "OTOF", "rank": 10, "score": 0.4928, "hc": 0.488, "dev": 0.777, "aging": 0.189, "cls": "prioritized" }, { "gene": "MYO3A", "rank": 11, "score": 0.4926, "hc": 0.488, "dev": 0.809, "aging": 0.378, "cls": "prioritized" }, { "gene": "CABP2", "rank": 12, "score": 0.4754, "hc": 0.488, "dev": 0.771, "aging": 0.38, "cls": "prioritized" }, { "gene": "XIRP2", "rank": 13, "score": 0.4658, "hc": 0.488, "dev": 0.694, "aging": 0.378, "cls": "prioritized" }, { "gene": "SRRM3", "rank": 14, "score": 0.4583, "hc": 0.488, "dev": 0.764, "aging": 0.378, "cls": "prioritized" }, { "gene": "HRCT1", "rank": 15, "score": 0.4579, "hc": 0.099, "dev": 0.983, "aging": 0.753, "cls": "novelty" }, { "gene": "GRID2IP", "rank": 16, "score": 0.4565, "hc": 0.488, "dev": 1.0, "aging": 0.383, "cls": "prioritized" }, { "gene": "PTPRQ", "rank": 17, "score": 0.4542, "hc": 0.488, "dev": 0.596, "aging": 0.378, "cls": "prioritized" }, { "gene": "AFTPH", "rank": 18, "score": 0.4519, "hc": 0.573, "dev": 0.663, "aging": 0.378, "cls": "prioritized" }, { "gene": "EYA1", "rank": 19, "score": 0.4485, "hc": 0.574, "dev": 0.66, "aging": 0.378, "cls": "prioritized" }, { "gene": "USH2A", "rank": 20, "score": 0.4461, "hc": 0.439, "dev": 0.648, "aging": 0.916, "cls": "prioritized" }, { "gene": "MPDZ", "rank": 21, "score": 0.439, "hc": 0.488, "dev": 0.903, "aging": 0.378, "cls": "prioritized" }, { "gene": "PODNL1", "rank": 22, "score": 0.4385, "hc": 0.087, "dev": 0.997, "aging": 0.687, "cls": "novelty" }, { "gene": "FAM107B", "rank": 23, "score": 0.4373, "hc": 0.488, "dev": 0.689, "aging": 0.378, "cls": "prioritized" }, { "gene": "ENDOU", "rank": 24, "score": 0.4371, "hc": 0.098, "dev": 0.977, "aging": 0.53, "cls": "novelty" }, { "gene": "OSBP2", "rank": 25, "score": 0.4367, "hc": 0.488, "dev": 0.93, "aging": 0.378, "cls": "prioritized" }, { "gene": "ESRRB", "rank": 26, "score": 0.4276, "hc": 0.391, "dev": 0.924, "aging": 0.886, "cls": "prioritized" }, { "gene": "CACNA1D", "rank": 27, "score": 0.4272, "hc": 0.488, "dev": 0.976, "aging": 0.378, "cls": "prioritized" }, { "gene": "CGN", "rank": 28, "score": 0.4265, "hc": 0.488, "dev": 0.794, "aging": 0.378, "cls": "prioritized" }, { "gene": "GATA3", "rank": 29, "score": 0.4251, "hc": 0.519, "dev": 0.598, "aging": 0.378, "cls": "prioritized" }, { "gene": "ESPN", "rank": 30, "score": 0.4216, "hc": 0.488, "dev": 0.707, "aging": 0.378, "cls": "prioritized" }, { "gene": "MAGI3", "rank": 31, "score": 0.4174, "hc": 0.488, "dev": 0.932, "aging": 0.378, "cls": "prioritized" }, { "gene": "PCP4", "rank": 32, "score": 0.4166, "hc": 0.488, "dev": 0.578, "aging": 0.378, "cls": "prioritized" }, { "gene": "SNAP91", "rank": 33, "score": 0.4158, "hc": 0.488, "dev": 0.492, "aging": 0.378, "cls": "prioritized" }, { "gene": "AP3B2", "rank": 34, "score": 0.4157, "hc": 0.488, "dev": 0.589, "aging": 0.378, "cls": "prioritized" }, { "gene": "GABRB3", "rank": 35, "score": 0.4135, "hc": 0.488, "dev": 0.547, "aging": 0.378, "cls": "prioritized" }, { "gene": "RIMBP2", "rank": 36, "score": 0.4125, "hc": 0.488, "dev": 0.633, "aging": 0.378, "cls": "prioritized" }, { "gene": "RIN1", "rank": 37, "score": 0.4123, "hc": 0.091, "dev": 0.994, "aging": 0.812, "cls": "novelty" }, { "gene": "PCSK5", "rank": 38, "score": 0.4123, "hc": 0.488, "dev": 0.438, "aging": 0.378, "cls": "prioritized" }, { "gene": "TEX43", "rank": 39, "score": 0.4103, "hc": 0.095, "dev": 0.992, "aging": 0.807, "cls": "novelty" }, { "gene": "STRC", "rank": 40, "score": 0.4103, "hc": 0.488, "dev": 0.945, "aging": 0.384, "cls": "prioritized" }, { "gene": "LHFPL5", "rank": 41, "score": 0.4099, "hc": 0.325, "dev": 0.644, "aging": 0.789, "cls": "prioritized" }, { "gene": "KCNK9", "rank": 42, "score": 0.4098, "hc": 0.093, "dev": 0.968, "aging": 0.765, "cls": "novelty" }, { "gene": "ANKRD34A", "rank": 43, "score": 0.4094, "hc": 0.102, "dev": 0.959, "aging": 0.829, "cls": "novelty" }, { "gene": "GPR156", "rank": 44, "score": 0.4093, "hc": 0.488, "dev": 0.631, "aging": 0.378, "cls": "prioritized" }, { "gene": "ABCA5", "rank": 45, "score": 0.409, "hc": 0.488, "dev": 0.643, "aging": 0.378, "cls": "prioritized" }, { "gene": "CDH23", "rank": 46, "score": 0.4086, "hc": 0.488, "dev": 0.665, "aging": 0.189, "cls": "prioritized" }, { "gene": "APOH", "rank": 47, "score": 0.4083, "hc": 0.096, "dev": 0.965, "aging": 0.827, "cls": "novelty" }, { "gene": "MYBPH", "rank": 48, "score": 0.4082, "hc": 0.091, "dev": 0.947, "aging": 0.821, "cls": "novelty" }, { "gene": "KRT80", "rank": 49, "score": 0.408, "hc": 0.099, "dev": 0.996, "aging": 0.711, "cls": "novelty" }, { "gene": "C1QC", "rank": 50, "score": 0.4076, "hc": 0.096, "dev": 0.983, "aging": 0.79, "cls": "novelty" }, { "gene": "SP7", "rank": 51, "score": 0.4072, "hc": 0.095, "dev": 0.94, "aging": 0.799, "cls": "novelty" }, { "gene": "FBXL8", "rank": 52, "score": 0.4071, "hc": 0.098, "dev": 0.962, "aging": 0.739, "cls": "novelty" }, { "gene": "SPOCD1", "rank": 53, "score": 0.4066, "hc": 0.096, "dev": 0.968, "aging": 0.837, "cls": "novelty" }, { "gene": "TTC36", "rank": 54, "score": 0.4065, "hc": 0.095, "dev": 0.985, "aging": 0.789, "cls": "novelty" }, { "gene": "PLEKHS1", "rank": 55, "score": 0.4062, "hc": 0.095, "dev": 0.999, "aging": 0.707, "cls": "novelty" }, { "gene": "TEX12", "rank": 56, "score": 0.4061, "hc": 0.1, "dev": 0.939, "aging": 0.785, "cls": "novelty" }, { "gene": "KPNA7", "rank": 57, "score": 0.4056, "hc": 0.099, "dev": 0.982, "aging": 0.764, "cls": "novelty" }, { "gene": "FPR1", "rank": 58, "score": 0.4052, "hc": 0.096, "dev": 0.982, "aging": 0.692, "cls": "novelty" }, { "gene": "TMC1", "rank": 59, "score": 0.4047, "hc": 0.488, "dev": 0.76, "aging": 0.189, "cls": "prioritized" }, { "gene": "OSBPL3", "rank": 60, "score": 0.4045, "hc": 0.488, "dev": 0.48, "aging": 0.378, "cls": "prioritized" }, { "gene": "SLC25A2", "rank": 61, "score": 0.4043, "hc": 0.096, "dev": 0.934, "aging": 0.708, "cls": "novelty" }, { "gene": "SELL", "rank": 62, "score": 0.404, "hc": 0.098, "dev": 0.994, "aging": 0.647, "cls": "novelty" }, { "gene": "CD28", "rank": 63, "score": 0.4037, "hc": 0.103, "dev": 0.933, "aging": 0.796, "cls": "novelty" }, { "gene": "GDA", "rank": 64, "score": 0.4037, "hc": 0.088, "dev": 0.991, "aging": 0.864, "cls": "novelty" }, { "gene": "CD80", "rank": 65, "score": 0.4037, "hc": 0.098, "dev": 0.97, "aging": 0.75, "cls": "novelty" }, { "gene": "THPO", "rank": 66, "score": 0.4036, "hc": 0.094, "dev": 0.942, "aging": 0.706, "cls": "novelty" }, { "gene": "ANKFN1", "rank": 67, "score": 0.4033, "hc": 0.488, "dev": 0.755, "aging": 0.378, "cls": "prioritized" }, { "gene": "COL17A1", "rank": 68, "score": 0.4032, "hc": 0.102, "dev": 0.988, "aging": 0.817, "cls": "novelty" }, { "gene": "ARL13A", "rank": 69, "score": 0.403, "hc": 0.099, "dev": 0.994, "aging": 0.7, "cls": "novelty" }, { "gene": "LY6G6D", "rank": 70, "score": 0.4018, "hc": 0.102, "dev": 0.993, "aging": 0.63, "cls": "novelty" }, { "gene": "ZDHHC22", "rank": 71, "score": 0.4016, "hc": 0.096, "dev": 0.979, "aging": 0.724, "cls": "novelty" }, { "gene": "TRIM36", "rank": 72, "score": 0.4013, "hc": 0.488, "dev": 0.469, "aging": 0.378, "cls": "prioritized" }, { "gene": "MOG", "rank": 73, "score": 0.4011, "hc": 0.098, "dev": 0.964, "aging": 0.647, "cls": "novelty" }, { "gene": "TCEAL6", "rank": 74, "score": 0.4009, "hc": 0.093, "dev": 0.978, "aging": 0.768, "cls": "novelty" }, { "gene": "CNIH2", "rank": 75, "score": 0.4, "hc": 0.0, "dev": 0.843, "aging": 0.871, "cls": "uncertain" }, { "gene": "MPEG1", "rank": 76, "score": 0.3996, "hc": 0.099, "dev": 0.914, "aging": 0.78, "cls": "novelty" }, { "gene": "MYCT1", "rank": 77, "score": 0.3995, "hc": 0.0, "dev": 0.984, "aging": 0.757, "cls": "uncertain" }, { "gene": "SYNE4", "rank": 78, "score": 0.3995, "hc": 0.488, "dev": 0.565, "aging": 0.378, "cls": "prioritized" }, { "gene": "SLC30A2", "rank": 79, "score": 0.3993, "hc": 0.098, "dev": 0.919, "aging": 0.703, "cls": "novelty" }, { "gene": "TRIM54", "rank": 80, "score": 0.3993, "hc": 0.098, "dev": 0.999, "aging": 0.651, "cls": "novelty" }, { "gene": "BATF2", "rank": 81, "score": 0.3989, "hc": 0.1, "dev": 0.869, "aging": 0.77, "cls": "novelty" }, { "gene": "CNNM1", "rank": 82, "score": 0.3987, "hc": 0.097, "dev": 0.974, "aging": 0.739, "cls": "novelty" }, { "gene": "AANAT", "rank": 83, "score": 0.3976, "hc": 0.091, "dev": 0.998, "aging": 0.673, "cls": "novelty" }, { "gene": "FOSL1", "rank": 84, "score": 0.3973, "hc": 0.098, "dev": 0.994, "aging": 0.684, "cls": "novelty" }, { "gene": "MYO6", "rank": 85, "score": 0.3969, "hc": 0.547, "dev": 0.433, "aging": 0.189, "cls": "prioritized" }, { "gene": "TRIM55", "rank": 86, "score": 0.3966, "hc": 0.0, "dev": 0.996, "aging": 0.858, "cls": "uncertain" }, { "gene": "PCDHA7", "rank": 87, "score": 0.3966, "hc": 0.0, "dev": 1.0, "aging": 0.617, "cls": "uncertain" }, { "gene": "PTGS1", "rank": 88, "score": 0.3956, "hc": 0.096, "dev": 0.946, "aging": 0.715, "cls": "novelty" }, { "gene": "PLA2G2C", "rank": 89, "score": 0.3955, "hc": 0.098, "dev": 0.975, "aging": 0.64, "cls": "novelty" }, { "gene": "SLC22A23", "rank": 90, "score": 0.3953, "hc": 0.488, "dev": 0.603, "aging": 0.378, "cls": "prioritized" }, { "gene": "CASQ2", "rank": 91, "score": 0.3952, "hc": 0.093, "dev": 0.942, "aging": 0.655, "cls": "novelty" }, { "gene": "PANX3", "rank": 92, "score": 0.3947, "hc": 0.093, "dev": 0.994, "aging": 0.616, "cls": "novelty" }, { "gene": "PRDM12", "rank": 93, "score": 0.3945, "hc": 0.084, "dev": 0.994, "aging": 0.796, "cls": "novelty" }, { "gene": "TLR7", "rank": 94, "score": 0.3944, "hc": 0.083, "dev": 0.948, "aging": 0.749, "cls": "novelty" }, { "gene": "MYO7A", "rank": 95, "score": 0.3941, "hc": 0.488, "dev": 0.59, "aging": 0.189, "cls": "prioritized" }, { "gene": "FAM166B", "rank": 96, "score": 0.3941, "hc": 0.086, "dev": 0.933, "aging": 0.743, "cls": "novelty" }, { "gene": "KCNJ9", "rank": 97, "score": 0.3937, "hc": 0.0, "dev": 0.799, "aging": 0.785, "cls": "uncertain" }, { "gene": "IGSF1", "rank": 98, "score": 0.3936, "hc": 0.0, "dev": 0.934, "aging": 0.604, "cls": "uncertain" }, { "gene": "GRXCR1", "rank": 99, "score": 0.3932, "hc": 0.488, "dev": 0.607, "aging": 0.378, "cls": "prioritized" }, { "gene": "VIL1", "rank": 100, "score": 0.3921, "hc": 0.0, "dev": 0.975, "aging": 0.74, "cls": "uncertain" }, { "gene": "GALR1", "rank": 101, "score": 0.392, "hc": 0.099, "dev": 0.982, "aging": 0.582, "cls": "novelty" }, { "gene": "RNF39", "rank": 102, "score": 0.3919, "hc": 0.0, "dev": 0.842, "aging": 0.733, "cls": "uncertain" }, { "gene": "RAB44", "rank": 103, "score": 0.3917, "hc": 0.0, "dev": 0.87, "aging": 0.84, "cls": "uncertain" }, { "gene": "A1CF", "rank": 104, "score": 0.3916, "hc": 0.083, "dev": 0.999, "aging": 0.719, "cls": "novelty" }, { "gene": "F2", "rank": 105, "score": 0.3911, "hc": 0.0, "dev": 0.943, "aging": 0.696, "cls": "uncertain" }, { "gene": "VIPR1", "rank": 106, "score": 0.3911, "hc": 0.0, "dev": 0.938, "aging": 0.659, "cls": "uncertain" }, { "gene": "ACSM5", "rank": 107, "score": 0.3909, "hc": 0.1, "dev": 0.99, "aging": 0.538, "cls": "novelty" }, { "gene": "GJB1", "rank": 108, "score": 0.3905, "hc": 0.0, "dev": 0.978, "aging": 0.867, "cls": "uncertain" }, { "gene": "SLC5A5", "rank": 109, "score": 0.3905, "hc": 0.104, "dev": 0.973, "aging": 0.597, "cls": "novelty" }, { "gene": "TEX35", "rank": 110, "score": 0.3904, "hc": 0.0, "dev": 0.96, "aging": 0.684, "cls": "uncertain" }, { "gene": "PKP1", "rank": 111, "score": 0.3904, "hc": 0.0, "dev": 0.989, "aging": 0.936, "cls": "uncertain" }, { "gene": "SLC22A8", "rank": 112, "score": 0.3903, "hc": 0.083, "dev": 0.981, "aging": 0.669, "cls": "novelty" }, { "gene": "DPT", "rank": 113, "score": 0.3902, "hc": 0.0, "dev": 0.977, "aging": 0.766, "cls": "uncertain" }, { "gene": "EPS8L2", "rank": 114, "score": 0.3895, "hc": 0.488, "dev": 0.654, "aging": 0.378, "cls": "prioritized" }, { "gene": "DSCAML1", "rank": 115, "score": 0.3894, "hc": 0.488, "dev": 0.476, "aging": 0.378, "cls": "prioritized" }, { "gene": "SLC9A3", "rank": 116, "score": 0.3894, "hc": 0.097, "dev": 0.991, "aging": 0.531, "cls": "novelty" }, { "gene": "UNC5A", "rank": 117, "score": 0.3894, "hc": 0.0, "dev": 0.852, "aging": 0.745, "cls": "uncertain" }, { "gene": "MS4A7", "rank": 118, "score": 0.3893, "hc": 0.0, "dev": 0.931, "aging": 0.866, "cls": "uncertain" }, { "gene": "MB", "rank": 119, "score": 0.3893, "hc": 0.082, "dev": 0.912, "aging": 0.725, "cls": "novelty" }, { "gene": "HIST1H4J", "rank": 120, "score": 0.3892, "hc": 0.087, "dev": 1.0, "aging": 0.53, "cls": "novelty" }, { "gene": "HSBP1L1", "rank": 121, "score": 0.3887, "hc": 0.054, "dev": 0.992, "aging": 0.977, "cls": "novelty" }, { "gene": "KCNE3", "rank": 122, "score": 0.3882, "hc": 0.0, "dev": 0.856, "aging": 0.754, "cls": "uncertain" }, { "gene": "CAPN9", "rank": 123, "score": 0.3881, "hc": 0.0, "dev": 0.958, "aging": 0.697, "cls": "uncertain" }, { "gene": "PDIA2", "rank": 124, "score": 0.3879, "hc": 0.0, "dev": 0.993, "aging": 0.726, "cls": "uncertain" }, { "gene": "HAS3", "rank": 125, "score": 0.3878, "hc": 0.098, "dev": 0.983, "aging": 0.513, "cls": "novelty" }, { "gene": "KSR2", "rank": 126, "score": 0.3877, "hc": 0.488, "dev": 0.671, "aging": 0.378, "cls": "prioritized" }, { "gene": "PF4", "rank": 127, "score": 0.3874, "hc": 0.0, "dev": 0.849, "aging": 0.818, "cls": "uncertain" }, { "gene": "SH3TC1", "rank": 128, "score": 0.3874, "hc": 0.0, "dev": 0.943, "aging": 0.751, "cls": "uncertain" }, { "gene": "RAB42", "rank": 129, "score": 0.3872, "hc": 0.0, "dev": 0.882, "aging": 0.744, "cls": "uncertain" }, { "gene": "ALOX5", "rank": 130, "score": 0.3866, "hc": 0.0, "dev": 0.996, "aging": 0.523, "cls": "uncertain" }, { "gene": "DLG2", "rank": 131, "score": 0.3866, "hc": 0.488, "dev": 0.611, "aging": 0.378, "cls": "prioritized" }, { "gene": "NKX3-2", "rank": 132, "score": 0.3864, "hc": 0.0, "dev": 0.959, "aging": 0.53, "cls": "uncertain" }, { "gene": "KEL", "rank": 133, "score": 0.3861, "hc": 0.0, "dev": 0.975, "aging": 0.968, "cls": "uncertain" }, { "gene": "ANKRD1", "rank": 134, "score": 0.3859, "hc": 0.0, "dev": 0.962, "aging": 0.53, "cls": "uncertain" }, { "gene": "NEFL", "rank": 135, "score": 0.3857, "hc": 0.0, "dev": 0.589, "aging": 0.473, "cls": "prioritized" }, { "gene": "NPR1", "rank": 136, "score": 0.3856, "hc": 0.0, "dev": 0.825, "aging": 0.786, "cls": "uncertain" }, { "gene": "GAL3ST2", "rank": 137, "score": 0.3856, "hc": 0.0, "dev": 0.921, "aging": 0.52, "cls": "uncertain" }, { "gene": "ESPNL", "rank": 138, "score": 0.3855, "hc": 0.195, "dev": 0.567, "aging": 0.956, "cls": "prioritized" }, { "gene": "LST1", "rank": 139, "score": 0.3852, "hc": 0.0, "dev": 0.854, "aging": 0.743, "cls": "uncertain" }, { "gene": "GAP43", "rank": 140, "score": 0.3852, "hc": 0.0, "dev": 0.983, "aging": 0.785, "cls": "prioritized" }, { "gene": "SMIM6", "rank": 141, "score": 0.3849, "hc": 0.0, "dev": 0.868, "aging": 0.824, "cls": "uncertain" }, { "gene": "NFASC", "rank": 142, "score": 0.3845, "hc": 0.0, "dev": 0.913, "aging": 0.378, "cls": "prioritized" }, { "gene": "RILP", "rank": 143, "score": 0.384, "hc": 0.0, "dev": 0.87, "aging": 0.699, "cls": "uncertain" }, { "gene": "SLCO4C1", "rank": 144, "score": 0.3839, "hc": 0.0, "dev": 0.98, "aging": 0.699, "cls": "uncertain" }, { "gene": "GPA33", "rank": 145, "score": 0.3836, "hc": 0.0, "dev": 0.989, "aging": 0.679, "cls": "uncertain" }, { "gene": "DYTN", "rank": 146, "score": 0.3835, "hc": 0.488, "dev": 0.747, "aging": 0.378, "cls": "prioritized" }, { "gene": "PTGER2", "rank": 147, "score": 0.3835, "hc": 0.0, "dev": 0.943, "aging": 0.641, "cls": "uncertain" }, { "gene": "PLD4", "rank": 148, "score": 0.3832, "hc": 0.084, "dev": 0.987, "aging": 0.517, "cls": "novelty" }, { "gene": "UPK3A", "rank": 149, "score": 0.3826, "hc": 0.0, "dev": 0.866, "aging": 0.702, "cls": "uncertain" }, { "gene": "CGA", "rank": 150, "score": 0.3821, "hc": 0.08, "dev": 0.997, "aging": 0.538, "cls": "novelty" }, { "gene": "TPH1", "rank": 151, "score": 0.382, "hc": 0.0, "dev": 0.991, "aging": 0.966, "cls": "uncertain" }, { "gene": "NR2E3", "rank": 152, "score": 0.3817, "hc": 0.096, "dev": 0.967, "aging": 0.74, "cls": "novelty" }, { "gene": "CTLA4", "rank": 153, "score": 0.381, "hc": 0.0, "dev": 0.91, "aging": 0.53, "cls": "uncertain" }, { "gene": "DNM3", "rank": 154, "score": 0.3802, "hc": 0.488, "dev": 0.75, "aging": 0.378, "cls": "prioritized" }, { "gene": "GPR37L1", "rank": 155, "score": 0.3797, "hc": 0.0, "dev": 0.919, "aging": 0.838, "cls": "uncertain" }, { "gene": "REEP6", "rank": 156, "score": 0.3796, "hc": 0.0, "dev": 0.853, "aging": 0.948, "cls": "uncertain" }, { "gene": "PCDHB6", "rank": 157, "score": 0.3796, "hc": 0.0, "dev": 0.788, "aging": 0.719, "cls": "uncertain" }, { "gene": "PRAP1", "rank": 158, "score": 0.3793, "hc": 0.0, "dev": 0.957, "aging": 0.53, "cls": "uncertain" }, { "gene": "LTB", "rank": 159, "score": 0.3792, "hc": 0.0, "dev": 0.729, "aging": 0.715, "cls": "uncertain" }, { "gene": "F5", "rank": 160, "score": 0.3787, "hc": 0.0, "dev": 0.984, "aging": 0.575, "cls": "uncertain" }, { "gene": "FGR", "rank": 161, "score": 0.3785, "hc": 0.0, "dev": 0.992, "aging": 0.751, "cls": "flagged_artifact" }, { "gene": "LRBA", "rank": 162, "score": 0.378, "hc": 0.488, "dev": 0.551, "aging": 0.378, "cls": "prioritized" }, { "gene": "TAL1", "rank": 163, "score": 0.3779, "hc": 0.0, "dev": 0.997, "aging": 0.763, "cls": "flagged_artifact" }, { "gene": "TECTA", "rank": 164, "score": 0.3779, "hc": 0.261, "dev": 0.535, "aging": 0.968, "cls": "prioritized" }, { "gene": "PCDHA9", "rank": 165, "score": 0.3776, "hc": 0.0, "dev": 1.0, "aging": 0.875, "cls": "uncertain" }, { "gene": "TFEC", "rank": 166, "score": 0.3772, "hc": 0.0, "dev": 0.822, "aging": 0.779, "cls": "uncertain" }, { "gene": "PIK3CG", "rank": 167, "score": 0.3769, "hc": 0.0, "dev": 0.685, "aging": 0.815, "cls": "uncertain" }, { "gene": "PLA2G3", "rank": 168, "score": 0.3766, "hc": 0.0, "dev": 0.799, "aging": 0.788, "cls": "uncertain" }, { "gene": "ANO4", "rank": 169, "score": 0.3756, "hc": 0.0, "dev": 0.796, "aging": 0.378, "cls": "prioritized" }, { "gene": "SEC14L4", "rank": 170, "score": 0.3755, "hc": 0.0, "dev": 0.965, "aging": 0.658, "cls": "uncertain" }, { "gene": "BSND", "rank": 171, "score": 0.3751, "hc": 0.104, "dev": 0.981, "aging": 0.603, "cls": "prioritized" }, { "gene": "CRYBA4", "rank": 172, "score": 0.3749, "hc": 0.0, "dev": 0.991, "aging": 0.756, "cls": "flagged_artifact" }, { "gene": "TCTE1", "rank": 173, "score": 0.3747, "hc": 0.0, "dev": 0.903, "aging": 0.614, "cls": "uncertain" }, { "gene": "P2RX5", "rank": 174, "score": 0.3745, "hc": 0.0, "dev": 0.988, "aging": 0.965, "cls": "uncertain" }, { "gene": "BTK", "rank": 175, "score": 0.3742, "hc": 0.0, "dev": 0.984, "aging": 0.716, "cls": "flagged_artifact" }, { "gene": "IL4I1", "rank": 176, "score": 0.3739, "hc": 0.0, "dev": 0.884, "aging": 0.53, "cls": "uncertain" }, { "gene": "PTHLH", "rank": 177, "score": 0.3738, "hc": 0.0, "dev": 0.847, "aging": 0.643, "cls": "uncertain" }, { "gene": "HCST", "rank": 178, "score": 0.3735, "hc": 0.0, "dev": 0.992, "aging": 0.738, "cls": "flagged_artifact" }, { "gene": "PNMT", "rank": 179, "score": 0.3731, "hc": 0.0, "dev": 0.786, "aging": 0.622, "cls": "uncertain" }, { "gene": "F7", "rank": 180, "score": 0.3727, "hc": 0.0, "dev": 0.739, "aging": 0.709, "cls": "uncertain" }, { "gene": "TNNI2", "rank": 181, "score": 0.3722, "hc": 0.0, "dev": 0.97, "aging": 0.728, "cls": "uncertain" }, { "gene": "SFRP5", "rank": 182, "score": 0.3721, "hc": 0.0, "dev": 0.846, "aging": 0.754, "cls": "uncertain" }, { "gene": "POU3F4", "rank": 183, "score": 0.3713, "hc": 0.451, "dev": 0.519, "aging": 0.378, "cls": "novelty" }, { "gene": "OVOL1", "rank": 184, "score": 0.3708, "hc": 0.0, "dev": 0.659, "aging": 0.77, "cls": "uncertain" }, { "gene": "TEX33", "rank": 185, "score": 0.3707, "hc": 0.0, "dev": 0.941, "aging": 0.964, "cls": "uncertain" }, { "gene": "LGALS3", "rank": 186, "score": 0.3706, "hc": 0.0, "dev": 0.983, "aging": 0.969, "cls": "uncertain" }, { "gene": "NFAM1", "rank": 187, "score": 0.3702, "hc": 0.0, "dev": 0.986, "aging": 0.771, "cls": "uncertain" }, { "gene": "GATA1", "rank": 188, "score": 0.3698, "hc": 0.0, "dev": 0.965, "aging": 0.79, "cls": "flagged_artifact" }, { "gene": "PADI3", "rank": 189, "score": 0.3696, "hc": 0.0, "dev": 0.862, "aging": 0.869, "cls": "flagged_artifact" }, { "gene": "IL23R", "rank": 190, "score": 0.3693, "hc": 0.0, "dev": 0.741, "aging": 0.778, "cls": "uncertain" }, { "gene": "TCP11", "rank": 191, "score": 0.3691, "hc": 0.0, "dev": 0.793, "aging": 0.53, "cls": "uncertain" }, { "gene": "RELT", "rank": 192, "score": 0.369, "hc": 0.0, "dev": 0.867, "aging": 0.807, "cls": "uncertain" }, { "gene": "FAM71D", "rank": 193, "score": 0.3687, "hc": 0.0, "dev": 0.995, "aging": 0.683, "cls": "uncertain" }, { "gene": "SLC34A3", "rank": 194, "score": 0.368, "hc": 0.0, "dev": 0.95, "aging": 0.946, "cls": "uncertain" }, { "gene": "MYOC", "rank": 195, "score": 0.368, "hc": 0.0, "dev": 0.964, "aging": 0.745, "cls": "flagged_artifact" }, { "gene": "IL12RB1", "rank": 196, "score": 0.3678, "hc": 0.0, "dev": 0.89, "aging": 0.707, "cls": "flagged_artifact" }, { "gene": "SLC45A2", "rank": 197, "score": 0.3676, "hc": 0.0, "dev": 0.985, "aging": 0.888, "cls": "uncertain" }, { "gene": "TMEM151B", "rank": 198, "score": 0.3675, "hc": 0.0, "dev": 0.995, "aging": 0.946, "cls": "uncertain" }, { "gene": "CCDC160", "rank": 199, "score": 0.3675, "hc": 0.0, "dev": 0.861, "aging": 0.61, "cls": "uncertain" }, { "gene": "GIMAP5", "rank": 200, "score": 0.3674, "hc": 0.0, "dev": 0.984, "aging": 0.662, "cls": "flagged_artifact" }];
+        const CARDS = { "HRCT1": { "title": "Histidine Rich Carboxyl Terminal 1", "fig": "S5", "rank": "#15", "tier": "Tier A (No GWAS)", "hc": "0.099", "dev": "0.983", "spatial": "Mid-Base", "domain": "DUF4487", "summary": "High-priority therapeutic target for hair cell stability. Uncharacterized in hearing loss, but metric convergence across 15 datasets identifies it as a stable, sensory-specific biological signal.", "tag": "Novelty Star" }, "TEX43": { "title": "Testis Expressed 43", "fig": "S6", "rank": "#39", "tier": "Tier B", "hc": "0.095", "dev": "0.972", "spatial": "Synaptic", "domain": "ECM-Bound", "summary": "Hidden target detectable in human pathological datasets. High discovery score suggests critical role in stress-response and synaptic maintenance.", "tag": "Context-Specific" }, "CACNG1": { "title": "Ca2+ Channel Gamma Subunit 1", "fig": "S7", "rank": "#570", "tier": "Tier A (gEAR-validated)", "hc": "0.838", "dev": "High", "spatial": "Basal/High-Freq", "domain": "Ion Channel", "summary": "L-type calcium channel gamma-subunit with IHC-specific expression. Viable AAV target for restoring synaptic calcium dynamics in synaptopathy.", "tag": "Ion Channel" }, "RGS18": { "title": "Regulator of G Protein Signaling 18", "fig": "S8", "rank": "#348", "tier": "Tier A", "hc": "High", "dev": "High", "spatial": "Apical/Low-Freq", "domain": "GPCR Modulator", "summary": "Novel apical hair cell regulator. Conservation and strong spatial bias towards apical cochlea suggest role in frequency-tuned signal modulation.", "tag": "Apical Regulator" }, "ANKRD2": { "title": "Ankyrin Repeat Domain 2", "fig": "S9", "rank": "#231", "tier": "Tier A", "hc": "0.838", "dev": "High", "spatial": "Rootlet", "domain": "Ankyrin Repeats", "summary": "Novel structural component of hair cell stereocilia rootlet. Essential for protection against mechanical fatigue and noise-induced damage.", "tag": "Rootlet Stability" }, "BTK": { "title": "Bruton Tyrosine Kinase", "fig": "S10", "rank": "#175", "tier": "Tier B", "hc": "0.838", "dev": "0.950", "spatial": "Immune/Sensory", "domain": "Kinase", "summary": "Novel signaling hub in human sensory populations. Existing drug profiles (e.g., Ibrutinib) provide direct path for clinical repurposing.", "tag": "Kinase Drug Target" }, "FGR": { "title": "FGR Proto-Oncogene (Src Family)", "fig": "S11", "rank": "#161", "tier": "Tier B", "hc": "0.838", "dev": "0.975", "spatial": "Stress-Response", "domain": "Src Kinase", "summary": "Src-family kinase upregulated during diseased-state remodeling. High score suggests role in signaling cascades for hair cell survival.", "tag": "SRK Kinase" } };
 
-    let sKey='rank', sAsc=true, filt='all';
+        let sKey = 'rank', sAsc = true, filt = 'all';
 
-    function go(id) {
-        document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelector(`.tab[onclick="go('${id}')"]`).classList.add('active');
-    }
+        function go(id) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelector(`.tab[onclick="go('${id}')"]`).classList.add('active');
+        }
 
-    function setFilter(f,btn) {
-        filt=f;
-        document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        render();
-    }
+        function setFilter(f, btn) {
+            filt = f;
+            document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render();
+        }
 
-    function doSort(k) {
-        if(sKey===k) sAsc=!sAsc;
-        else { sKey=k; sAsc = k==='rank'; }
-        render();
-    }
+        function doSort(k) {
+            if (sKey === k) sAsc = !sAsc;
+            else { sKey = k; sAsc = k === 'rank'; }
+            render();
+        }
 
-    function render() {
-        const q=document.getElementById('q').value.toLowerCase().trim();
-        let res=DB.filter(d=> {
-            if(q && !d.gene.toLowerCase().includes(q)) return false;
-            if(filt!=='all' && d.cls!==filt) return false;
-            return true;
-        });
-        res.sort((a,b)=> {
-            let va=a[sKey], vb=b[sKey];
-            if(typeof va==='string') return sAsc ? va.localeCompare(vb) : vb.localeCompare(va);
-            return sAsc ? va-vb : vb-va;
-        });
-        document.getElementById('cnt').textContent=res.length;
-        const tb=document.getElementById('tb');
-        if(!res.length) { tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--mut);">No matching genes.</td></tr>'; return; }
-        tb.innerHTML=res.slice(0,100).map(r=> {
-            const pct=Math.min(r.score/0.71*100,100);
-            const hcPct=Math.min(r.hc*100,100);
-            const devPct=Math.min(r.dev*100,100);
-            const agPct=Math.min(r.aging*100,100);
-            const bcls = r.cls==='prioritized'?'badge-p':r.cls==='novelty'?'badge-n':r.cls==='flagged_artifact'?'badge-f':'badge-u';
-            const clsLabel = r.cls==='prioritized'?'Prioritized':r.cls==='novelty'?'Novelty':r.cls==='flagged_artifact'?'Flagged':'Uncertain';
-            const hasCard = CARDS[r.gene] ? 'onclick="openPanel(\''+r.gene+'\');"' : '';
-            return `<tr>
+        function render() {
+            const q = document.getElementById('q').value.toLowerCase().trim();
+            let res = DB.filter(d => {
+                if (q && !d.gene.toLowerCase().includes(q)) return false;
+                if (filt !== 'all' && d.cls !== filt) return false;
+                return true;
+            });
+            res.sort((a, b) => {
+                let va = a[sKey], vb = b[sKey];
+                if (typeof va === 'string') return sAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+                return sAsc ? va - vb : vb - va;
+            });
+            document.getElementById('cnt').textContent = res.length;
+            const tb = document.getElementById('tb');
+            if (!res.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--mut);">No matching genes.</td></tr>'; return; }
+            tb.innerHTML = res.slice(0, 100).map(r => {
+                const pct = Math.min(r.score / 0.71 * 100, 100);
+                const hcPct = Math.min(r.hc * 100, 100);
+                const devPct = Math.min(r.dev * 100, 100);
+                const agPct = Math.min(r.aging * 100, 100);
+                const bcls = r.cls === 'prioritized' ? 'badge-p' : r.cls === 'novelty' ? 'badge-n' : r.cls === 'flagged_artifact' ? 'badge-f' : 'badge-u';
+                const clsLabel = r.cls === 'prioritized' ? 'Prioritized' : r.cls === 'novelty' ? 'Novelty' : r.cls === 'flagged_artifact' ? 'Flagged' : 'Uncertain';
+                const hasCard = CARDS[r.gene] ? 'onclick="openPanel(\'' + r.gene + '\');"' : '';
+                return `<tr>
                 <td class="g" ${hasCard}>${r.gene}</td>
                 <td class="r">#${r.rank}</td>
                 <td><div class="bar"><div class="f" style="width:${pct}%;background:var(--sec);"></div></div> <span class="r">${r.score.toFixed(4)}</span></td>
@@ -250,14 +745,14 @@
                 <td><div class="bar"><div class="f" style="width:${agPct}%;background:#fb923c;"></div></div> <span style="font-family:JetBrains Mono;font-size:0.8rem;">${r.aging.toFixed(3)}</span></td>
                 <td><span class="badge ${bcls}">${clsLabel}</span></td>
             </tr>`;
-        }).join('');
-    }
+            }).join('');
+        }
 
-    function openPanel(gene) {
-        const c=CARDS[gene]; if(!c) return;
-        document.getElementById('p-gene').textContent=gene;
-        document.getElementById('p-title').innerHTML=`${c.title} &middot; <span style="color:var(--nov);">${c.tag}</span> &middot; Fig. ${c.fig}`;
-        document.getElementById('p-metrics').innerHTML=`
+        function openPanel(gene) {
+            const c = CARDS[gene]; if (!c) return;
+            document.getElementById('p-gene').textContent = gene;
+            document.getElementById('p-title').innerHTML = `${c.title} &middot; <span style="color:var(--nov);">${c.tag}</span> &middot; Fig. ${c.fig}`;
+            document.getElementById('p-metrics').innerHTML = `
             <div class="metric"><label>Global Rank</label><val>${c.rank}</val></div>
             <div class="metric"><label>Novelty Tier</label><val>${c.tier}</val></div>
             <div class="metric"><label>HC Specificity</label><val>${c.hc}</val></div>
@@ -265,22 +760,22 @@
             <div class="metric"><label>Spatial Bias</label><val>${c.spatial}</val></div>
             <div class="metric"><label>Protein Domain</label><val>${c.domain}</val></div>
         `;
-        document.getElementById('p-summary').innerHTML=`<p style="margin-top:0.5rem;"><i class="fa-solid fa-quote-left" style="color:var(--acc);margin-right:6px;"></i>${c.summary}</p>`;
-        document.getElementById('panel').classList.add('open');
-    }
+            document.getElementById('p-summary').innerHTML = `<p style="margin-top:0.5rem;"><i class="fa-solid fa-quote-left" style="color:var(--acc);margin-right:6px;"></i>${c.summary}</p>`;
+            document.getElementById('panel').classList.add('open');
+        }
 
-    function closePanel() { document.getElementById('panel').classList.remove('open'); }
+        function closePanel() { document.getElementById('panel').classList.remove('open'); }
 
-    // Build Identity Cards page
-    function buildCards() {
-        const grid=document.getElementById('card-grid');
-        grid.innerHTML = Object.entries(CARDS).map(([gene,c])=> `
+        // Build Identity Cards page
+        function buildCards() {
+            const grid = document.getElementById('card-grid');
+            grid.innerHTML = Object.entries(CARDS).map(([gene, c]) => `
             <div class="card" onclick="openPanel('${gene}')">
                 <div class="card-head">
                     <span class="card-gene">${gene}</span>
                     <span class="badge badge-n">${c.tag}</span>
                 </div>
-                <p>${c.summary.substring(0,120)}...</p>
+                <p>${c.summary.substring(0, 120)}...</p>
                 <div class="card-meta">
                     <span><i class="fa-solid fa-ranking-star"></i> ${c.rank}</span>
                     <span><i class="fa-solid fa-shield-halved"></i> ${c.tier}</span>
@@ -288,14 +783,15 @@
                 </div>
             </div>
         `).join('');
-    }
+        }
 
-    // ESC to close panel
-    document.addEventListener('keydown', e => { if(e.key==='Escape') closePanel(); });
+        // ESC to close panel
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 
-    // Init
-    render();
-    buildCards();
+        // Init
+        render();
+        buildCards();
     </script>
 </body>
+
 </html>
